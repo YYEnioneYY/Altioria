@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id           String   @id @default(uuid()) @db.Uuid
+  username     String   @unique @db.VarChar(50)
+  passwordHash String   @map("password_hash") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  sessions AdminSession[]
+
+  @@map("admins")
+}
+
+model AdminSession {
+  id        String   @id @default(uuid()) @db.Uuid
+  adminId   String   @map("admin_id") @db.Uuid
+  tokenHash String   @unique @map("token_hash") @db.VarChar(64)
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([expiresAt])
+  @@map("admin_sessions")
+}
