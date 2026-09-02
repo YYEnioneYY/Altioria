@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import type { Response } from 'express';
 
+import { ADMIN_SESSION_COOKIE_NAME } from '../constants/auth.constants';
+
 import { AuthConfigService } from './auth-config.service';
 
 @Injectable()
@@ -15,13 +17,13 @@ export class AuthCookieService {
     expiresAt: Date,
   ): void {
     response.cookie(
-      this.authConfig.sessionCookieName,
+      ADMIN_SESSION_COOKIE_NAME,
       sessionToken,
       {
         httpOnly: true,
-        secure: this.authConfig.isProduction,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
-        path: this.authConfig.sessionCookiePath,
+        path: '/api',
         expires: expiresAt,
       },
     );
@@ -29,12 +31,12 @@ export class AuthCookieService {
 
   clearSessionCookie(response: Response): void {
     response.clearCookie(
-      this.authConfig.sessionCookieName,
+      ADMIN_SESSION_COOKIE_NAME,
       {
         httpOnly: true,
         secure: this.authConfig.isProduction,
         sameSite: 'strict',
-        path: this.authConfig.sessionCookiePath,
+        path: '/api',
       },
     );
   }

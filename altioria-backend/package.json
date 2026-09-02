@@ -22,7 +22,8 @@
   "overrides": {
     "@prisma/config": {
       "deepmerge-ts": "8.0.0"
-    }
+    },
+    "mysql2": "3.24.3"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

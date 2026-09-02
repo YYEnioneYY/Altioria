@@ -1,10 +1,6 @@
-export class LoginAdminDto {
-  id!: string;
-  username!: string;
-  createdAt!: Date;
-}
+import { AdminResponseDto } from "./admin-response.dto";
 
 export class LoginResponseDto {
-  admin!: LoginAdminDto;
+  admin!: AdminResponseDto;
   expiresAt!: Date;
 }

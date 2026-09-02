@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthConfigService {
-  readonly sessionCookieName = 'altioria_admin_session';
-  readonly sessionCookiePath = '/api/admin';
   readonly isProduction: boolean;
   readonly sessionTtlMs: number;
 

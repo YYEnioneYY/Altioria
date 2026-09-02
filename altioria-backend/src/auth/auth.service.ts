@@ -6,7 +6,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import * as argon2 from 'argon2';
 
 import { AuthConfigService } from './services/auth-config.service';
-
+import { hashSessionToken } from './utils/hash-session-token';
 import { PrismaService } from '../prisma/prisma.service';
 import { LoginDto } from './dto/login.dto';
 
@@ -34,22 +34,22 @@ export class AuthService {
 
     const invalidCredentialsError =
       new UnauthorizedException('Неверное имя пользователя или пароль');
-    
+
     const admin = await this.prisma.admin.findUnique({
       where: {
         username: loginDto.username,
       },
     });
-    
+
     if (!admin) {
       throw invalidCredentialsError;
     }
-    
+
     const passwordMatches = await argon2.verify(
       admin.passwordHash,
       loginDto.password,
     );
-    
+
     if (!passwordMatches) {
       throw invalidCredentialsError;
     }
@@ -58,9 +58,7 @@ export class AuthService {
       'base64url',
     );
 
-    const tokenHash = createHash('sha256')
-      .update(sessionToken)
-      .digest('hex');
+    const tokenHash = hashSessionToken(sessionToken);
 
     const now = new Date();
     const expiresAt = new Date(

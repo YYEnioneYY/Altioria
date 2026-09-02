@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Get,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -18,11 +19,17 @@ import {
 } from '@nestjs/swagger';
 import type { Response } from 'express';
 
+import { AdminSessionGuard } from './guards/admin-session.guard';
+import { CurrentAdmin } from './decorators/current-admin.decorator';
+
 import { AuthService } from './auth.service';
 import { AuthCookieService } from './services/auth-cookie.service';
 
 import { LoginDto } from './dto/login.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+
+import { MeResponseDto } from './dto/me-response.dto';
+import type { AuthenticatedAdmin } from './interfaces/authenticated-admin.interface';
 
 @ApiTags('Admin auth')
 @Controller('admin/auth')
@@ -61,6 +68,20 @@ export class AuthController {
     return {
       admin: result.admin,
       expiresAt: result.expiresAt,
+    };
+  }
+
+  @Get('me')
+  @UseGuards(AdminSessionGuard)
+  @Header('Cache-Control', 'no-store')
+  @ApiOperation({
+    summary: 'Получить текущего администратора',
+  })
+  getMe(
+    @CurrentAdmin() admin: AuthenticatedAdmin,
+  ): MeResponseDto {
+    return {
+      admin,
     };
   }
 }
