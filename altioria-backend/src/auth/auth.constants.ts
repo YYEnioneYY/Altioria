@@ -1,1 +1,0 @@
-export const ADMIN_SESSION_COOKIE_NAME = 'altioria_admin_session';

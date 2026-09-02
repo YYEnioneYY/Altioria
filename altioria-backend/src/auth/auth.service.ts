@@ -32,40 +32,26 @@ export class AuthService {
       .trim()
       .toLowerCase();
 
+    const invalidCredentialsError =
+      new UnauthorizedException('Неверное имя пользователя или пароль');
+    
     const admin = await this.prisma.admin.findUnique({
       where: {
-        username,
-      },
-      select: {
-        id: true,
-        username: true,
-        passwordHash: true,
-        createdAt: true,
+        username: loginDto.username,
       },
     });
-
+    
     if (!admin) {
-      await argon2.hash(loginDto.password, {
-        type: argon2.argon2id,
-        memoryCost: 19_456,
-        timeCost: 2,
-        parallelism: 1,
-      });
-
-      throw new UnauthorizedException(
-        'Invalid username or password',
-      );
+      throw invalidCredentialsError;
     }
-
-    const isPasswordValid = await argon2.verify(
+    
+    const passwordMatches = await argon2.verify(
       admin.passwordHash,
       loginDto.password,
     );
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException(
-        'Invalid username or password',
-      );
+    
+    if (!passwordMatches) {
+      throw invalidCredentialsError;
     }
 
     const sessionToken = randomBytes(32).toString(
