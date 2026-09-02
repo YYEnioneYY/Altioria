@@ -12,6 +12,7 @@ import { AdminSessionGuard } from './guards/admin-session.guard';
     AuthService,
     AuthConfigService,
     AuthCookieService,
+    AdminSessionGuard,
   ],
   exports: [AdminSessionGuard],
 })
