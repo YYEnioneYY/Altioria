@@ -34,7 +34,7 @@ export class AuthCookieService {
       ADMIN_SESSION_COOKIE_NAME,
       {
         httpOnly: true,
-        secure: this.authConfig.isProduction,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         path: '/api',
       },

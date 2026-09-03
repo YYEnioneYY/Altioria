@@ -94,4 +94,18 @@ export class AuthService {
       expiresAt,
     };
   }
+
+  async logout(sessionToken: string | undefined): Promise<void> {
+    if (!sessionToken) {
+      return;
+    }
+  
+    const tokenHash = hashSessionToken(sessionToken);
+  
+    await this.prisma.adminSession.deleteMany({
+      where: {
+        tokenHash,
+      },
+    });
+  }
 }

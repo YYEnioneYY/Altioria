@@ -2,13 +2,9 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthConfigService {
-  readonly isProduction: boolean;
   readonly sessionTtlMs: number;
 
   constructor() {
-    this.isProduction =
-      process.env.NODE_ENV === 'production';
-
     this.sessionTtlMs = this.parseSessionTtl(
       process.env.ADMIN_SESSION_TTL_HOURS,
     );

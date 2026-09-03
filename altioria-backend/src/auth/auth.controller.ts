@@ -31,6 +31,8 @@ import { LoginResponseDto } from './dto/login-response.dto';
 import { MeResponseDto } from './dto/me-response.dto';
 import type { AuthenticatedAdmin } from './interfaces/authenticated-admin.interface';
 
+import { SessionToken } from './decorators/session-token.decorator';
+
 @ApiTags('Admin auth')
 @Controller('admin/auth')
 export class AuthController {
@@ -83,5 +85,19 @@ export class AuthController {
     return {
       admin,
     };
+  }
+
+  @Post('logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: 'Выход из аккаунта администратора',
+  })
+  async logout(
+    @SessionToken() sessionToken: string | undefined,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<void> {
+    await this.authService.logout(sessionToken);
+  
+    this.authCookieService.clearSessionCookie(response);
   }
 }
