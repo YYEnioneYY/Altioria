@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { ScheduleModule } from '@nestjs/schedule';
 
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
-    PrismaModule,
-
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([
       {
         ttl: 60_000,
@@ -15,6 +15,7 @@ import { PrismaModule } from './prisma/prisma.module';
       },
     ]),
 
+    PrismaModule,
     AuthModule,
   ],
 })
