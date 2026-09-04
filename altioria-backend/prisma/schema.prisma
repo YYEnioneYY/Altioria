@@ -32,3 +32,18 @@ model AdminSession {
   @@index([expiresAt])
   @@map("admin_sessions")
 }
+
+model Category {
+  id          String   @id @default(uuid()) @db.Uuid
+  slug        String   @unique @db.VarChar(80)
+  nameRu      String   @map("name_ru") @db.VarChar(120)
+  nameEn      String   @map("name_en") @db.VarChar(120)
+  imagePath   String?  @map("image_path") @db.VarChar(500)
+  sortOrder   Int      @default(0) @map("sort_order")
+  isPublished Boolean  @default(false) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([isPublished, sortOrder])
+  @@map("categories")
+}

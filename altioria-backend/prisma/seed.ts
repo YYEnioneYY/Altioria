@@ -39,10 +39,53 @@ const adapter = new PrismaPg({
 
 const prisma = new PrismaClient({ adapter });
 
-async function main(): Promise<void> {
+const categories = [
+  {
+    slug: 'tables',
+    nameRu: 'Столы',
+    nameEn: 'Tables',
+    sortOrder: 10,
+  },
+  {
+    slug: 'lighting',
+    nameRu: 'Освещение',
+    nameEn: 'Lighting',
+    sortOrder: 20,
+  },
+  {
+    slug: 'seating',
+    nameRu: 'Мягкая мебель',
+    nameEn: 'Seating',
+    sortOrder: 30,
+  },
+  {
+    slug: 'storages',
+    nameRu: 'Системы хранения',
+    nameEn: 'Storages',
+    sortOrder: 40,
+  },
+  {
+    slug: 'consoles',
+    nameRu: 'Консоли',
+    nameEn: 'Consoles',
+    sortOrder: 50,
+  },
+  {
+    slug: 'mirrors',
+    nameRu: 'Зеркала',
+    nameEn: 'Mirrors',
+    sortOrder: 60,
+  },
+];
+
+async function seedAdmin(): Promise<void> {
   const existingAdmin = await prisma.admin.findUnique({
-    where: { username },
-    select: { id: true },
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+    },
   });
 
   if (existingAdmin) {
@@ -70,6 +113,35 @@ async function main(): Promise<void> {
   });
 
   console.log('Admin created:', admin);
+}
+
+async function seedCategories(): Promise<void> {
+  await Promise.all(
+    categories.map((category) =>
+      prisma.category.upsert({
+        where: {
+          slug: category.slug,
+        },
+        update: {
+          nameRu: category.nameRu,
+          nameEn: category.nameEn,
+          sortOrder: category.sortOrder,
+        },
+        create: {
+          ...category,
+          imagePath: null,
+          isPublished: false,
+        },
+      }),
+    ),
+  );
+
+  console.log(`Categories seeded: ${categories.length}`);
+}
+
+async function main(): Promise<void> {
+  await seedAdmin();
+  await seedCategories();
 }
 
 main()
