@@ -62,13 +62,28 @@ services:
       target: build
     restart: 'no'
     env_file:
-      - ./altioria-backend/.env
+      - ./altioria-backend/.env.docker
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
     depends_on:
       postgres:
         condition: service_healthy
     command: ['npx', 'prisma', 'migrate', 'deploy']
+
+  backend-seed:
+    build:
+      context: ./altioria-backend
+      dockerfile: Dockerfile
+      target: build
+    restart: 'no'
+    env_file:
+      - ./altioria-backend/.env.docker
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+    command: ['npx', 'prisma', 'db', 'seed']
 
   backend:
     build:
@@ -97,7 +112,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      backend-migrate:
+      backend-seed:
         condition: service_completed_successfully
       minio-init:
         condition: service_completed_successfully
