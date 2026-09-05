@@ -126,11 +126,12 @@ async function seedCategories(): Promise<void> {
           nameRu: category.nameRu,
           nameEn: category.nameEn,
           sortOrder: category.sortOrder,
+          isPublished: true,
         },
         create: {
           ...category,
           imagePath: null,
-          isPublished: false,
+          isPublished: true,
         },
       }),
     ),
