@@ -9,19 +9,20 @@ import {
 import { randomUUID } from 'node:crypto';
 import sharp from 'sharp';
 
+import { ContentLocale } from '../common/enums/content-locale.enum';
+
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '../generated/prisma/client';
 import { StorageService } from '../storage/storage.service';
 import { CategoryResponseDto } from './dto/category-response.dto';
-import {
-  CategoryLocale,
-  GetCategoriesQueryDto,
-} from './dto/get-categories-query.dto';
+import { GetCategoriesQueryDto } from './dto/get-categories-query.dto';
 
 import { AdminCategoryResponseDto } from './dto/admin-category-response.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 import { UpdateCategoryDto } from './dto/update-category.dto';
+
+import { ReorderCategoriesDto } from './dto/reorder-categories.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -37,7 +38,7 @@ export class CategoriesService {
   async findAll(
     query: GetCategoriesQueryDto,
   ): Promise<CategoryResponseDto[]> {
-    const locale = query.locale ?? CategoryLocale.RU;
+    const locale = query.locale ?? ContentLocale.RU;
 
     const categories = await this.prisma.category.findMany({
       where: {
@@ -64,7 +65,7 @@ export class CategoriesService {
       id: category.id,
       slug: category.slug,
       name:
-        locale === CategoryLocale.EN
+        locale === ContentLocale.EN
           ? category.nameEn
           : category.nameRu,
       imageUrl: category.imagePath
@@ -164,6 +165,11 @@ export class CategoriesService {
     dto: CreateCategoryDto,
     imageBuffer?: Buffer,
   ): Promise<AdminCategoryResponseDto> {
+    this.ensurePublishedCategoryHasImage(
+      dto.isPublished ?? false,
+      imageBuffer !== undefined,
+    );
+
     const existingCategory =
       await this.prisma.category.findUnique({
         where: {
@@ -257,6 +263,7 @@ export class CategoriesService {
         select: {
           id: true,
           imagePath: true,
+          isPublished: true,
         },
       });
   
@@ -286,6 +293,21 @@ export class CategoriesService {
         'Нельзя одновременно загрузить и удалить изображение',
       );
     }
+
+    const resultingIsPublished =
+      dto.isPublished ?? existingCategory.isPublished;
+
+    const resultingHasImage =
+      imageBuffer !== undefined ||
+      (
+        dto.removeImage !== true &&
+        existingCategory.imagePath !== null
+      );
+
+    this.ensurePublishedCategoryHasImage(
+      resultingIsPublished,
+      resultingHasImage,
+    );
   
     let newImagePath: string | null | undefined;
   
@@ -435,6 +457,46 @@ export class CategoriesService {
     }
   }
 
+  async reorder(
+    dto: ReorderCategoriesDto,
+  ): Promise<AdminCategoryResponseDto[]> {
+    const categories = await this.prisma.category.findMany({
+      select: {
+        id: true,
+      },
+    });
+  
+    const existingIds = new Set(
+      categories.map((category) => category.id),
+    );
+  
+    const requestedIds = new Set(dto.categoryIds);
+  
+    const containsAllCategories =
+      requestedIds.size === existingIds.size &&
+      dto.categoryIds.every((id) => existingIds.has(id));
+  
+    if (!containsAllCategories) {
+      throw new BadRequestException(
+        'Передан неполный или устаревший список категорий. Обновите страницу',
+      );
+    }
+  
+    await this.prisma.$transaction(
+      dto.categoryIds.map((id, index) =>
+        this.prisma.category.update({
+          where: {
+            id,
+          },
+          data: {
+            sortOrder: (index + 1) * 10,
+          },
+        }),
+      ),
+    );
+  
+    return this.findAllForAdmin();
+  }
 
 
 
@@ -444,6 +506,17 @@ export class CategoriesService {
 
 
 
+
+  private ensurePublishedCategoryHasImage(
+    isPublished: boolean,
+    hasImage: boolean,
+  ): void {
+    if (isPublished && !hasImage) {
+      throw new BadRequestException(
+        'Нельзя опубликовать категорию без изображения',
+      );
+    }
+  }
 
   private async uploadCategoryImage(
     imageBuffer: Buffer,

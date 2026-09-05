@@ -29,6 +29,8 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
+import { ReorderCategoriesDto } from './dto/reorder-categories.dto';
+
 const MAX_CATEGORY_IMAGE_SIZE = 20 * 1024 * 1024;
 
 @ApiTags('Admin categories')
@@ -130,6 +132,16 @@ export class AdminCategoriesController {
       dto,
       image?.buffer,
     );
+  }
+
+  @Patch('reorder')
+  @ApiOperation({
+    summary: 'Изменить порядок категорий',
+  })
+  reorder(
+    @Body() dto: ReorderCategoriesDto,
+  ): Promise<AdminCategoryResponseDto[]> {
+    return this.categoriesService.reorder(dto);
   }
 
   @Patch(':id')

@@ -8,6 +8,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum ProductFileType {
+  DRAWING
+  WIRING_DIAGRAM
+  MODEL_3D
+  OTHER
+}
+
+enum ProductPriceType {
+  FIXED
+  ON_REQUEST
+}
+
 model Admin {
   id           String   @id @default(uuid()) @db.Uuid
   username     String   @unique @db.VarChar(50)
@@ -44,6 +56,98 @@ model Category {
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
+  products Product[]
+
   @@index([isPublished, sortOrder])
   @@map("categories")
+}
+
+model Product {
+  id            String   @id @default(uuid()) @db.Uuid
+  categoryId    String   @map("category_id") @db.Uuid
+  slug          String   @unique @db.VarChar(120)
+  nameRu        String   @map("name_ru") @db.VarChar(160)
+  nameEn        String   @map("name_en") @db.VarChar(160)
+  descriptionRu String?  @map("description_ru") @db.Text
+  descriptionEn String?  @map("description_en") @db.Text
+  sortOrder     Int      @default(0) @map("sort_order")
+  isPublished   Boolean  @default(false) @map("is_published")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  category Category         @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants ProductVariant[]
+
+  @@index([categoryId, isPublished, sortOrder])
+  @@map("products")
+}
+
+model ProductVariant {
+  id            String   @id @default(uuid()) @db.Uuid
+  productId     String   @map("product_id") @db.Uuid
+  slug          String   @db.VarChar(100)
+  labelRu       String?  @map("label_ru") @db.VarChar(120)
+  labelEn       String?  @map("label_en") @db.VarChar(120)
+  descriptionRu String?  @map("description_ru") @db.Text
+  descriptionEn String?  @map("description_en") @db.Text
+  heightMm      Int?     @map("height_mm")
+  widthMm       Int?     @map("width_mm")
+  depthMm       Int?     @map("depth_mm")
+  materialsRu   String?  @map("materials_ru") @db.Text
+  materialsEn   String?  @map("materials_en") @db.Text
+
+  priceType     ProductPriceType @default(ON_REQUEST) @map("price_type")
+  priceAmount   Decimal?         @map("price_amount") @db.Decimal(12, 2)
+  priceCurrency String?          @map("price_currency") @db.VarChar(3)
+
+  sortOrder     Int      @default(0) @map("sort_order")
+  isDefault     Boolean  @default(false) @map("is_default")
+  isPublished   Boolean  @default(false) @map("is_published")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  product Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images  ProductImage[]
+  files   ProductFile[]
+
+  @@unique([productId, slug])
+  @@index([productId, isPublished, sortOrder])
+  @@index([productId, isDefault])
+  @@map("product_variants")
+}
+
+model ProductImage {
+  id        String   @id @default(uuid()) @db.Uuid
+  variantId String   @map("variant_id") @db.Uuid
+  imagePath String   @unique @map("image_path") @db.VarChar(500)
+  altRu     String?  @map("alt_ru") @db.VarChar(255)
+  altEn     String?  @map("alt_en") @db.VarChar(255)
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId, sortOrder])
+  @@map("product_images")
+}
+
+model ProductFile {
+  id           String          @id @default(uuid()) @db.Uuid
+  variantId    String          @map("variant_id") @db.Uuid
+  type         ProductFileType @map("type")
+  filePath     String          @unique @map("file_path") @db.VarChar(500)
+  originalName String          @map("original_name") @db.VarChar(255)
+  mimeType     String          @map("mime_type") @db.VarChar(150)
+  sizeBytes    Int             @map("size_bytes")
+  labelRu      String          @map("label_ru") @db.VarChar(160)
+  labelEn      String          @map("label_en") @db.VarChar(160)
+  sortOrder    Int             @default(0) @map("sort_order")
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @updatedAt @map("updated_at")
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId, type, sortOrder])
+  @@map("product_files")
 }

@@ -1,0 +1,10 @@
+export const MAX_PRODUCT_DOCUMENT_SIZE =
+  25 * 1024 * 1024;
+
+export const MAX_PRODUCT_3D_FILE_SIZE =
+  50 * 1024 * 1024;
+
+export const MAX_PRODUCT_FILE_SIZE =
+  MAX_PRODUCT_3D_FILE_SIZE;
+
+export const MAX_PRODUCT_FILES_PER_VARIANT = 20;
