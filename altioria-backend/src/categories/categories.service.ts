@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 
@@ -24,6 +25,10 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
+  private readonly logger = new Logger(
+    CategoriesService.name,
+  );
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly storageService: StorageService,
@@ -66,6 +71,93 @@ export class CategoriesService {
         ? this.storageService.getPublicUrl(category.imagePath)
         : null,
     }));
+  }
+
+  async findAllForAdmin(): Promise<
+    AdminCategoryResponseDto[]
+  > {
+    const categories =
+      await this.prisma.category.findMany({
+        orderBy: [
+          {
+            sortOrder: 'asc',
+          },
+          {
+            slug: 'asc',
+          },
+        ],
+        select: {
+          id: true,
+          slug: true,
+          nameRu: true,
+          nameEn: true,
+          imagePath: true,
+          sortOrder: true,
+          isPublished: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+  
+    return categories.map((category) => ({
+      id: category.id,
+      slug: category.slug,
+      nameRu: category.nameRu,
+      nameEn: category.nameEn,
+      imageUrl: category.imagePath
+        ? this.storageService.getPublicUrl(
+            category.imagePath,
+          )
+        : null,
+      sortOrder: category.sortOrder,
+      isPublished: category.isPublished,
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt,
+    }));
+  }
+
+  async findOneForAdmin(
+    id: string,
+  ): Promise<AdminCategoryResponseDto> {
+    const category =
+      await this.prisma.category.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+          slug: true,
+          nameRu: true,
+          nameEn: true,
+          imagePath: true,
+          sortOrder: true,
+          isPublished: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+  
+    if (!category) {
+      throw new NotFoundException(
+        'Категория не найдена',
+      );
+    }
+  
+    return {
+      id: category.id,
+      slug: category.slug,
+      nameRu: category.nameRu,
+      nameEn: category.nameEn,
+      imageUrl: category.imagePath
+        ? this.storageService.getPublicUrl(
+            category.imagePath,
+          )
+        : null,
+      sortOrder: category.sortOrder,
+      isPublished: category.isPublished,
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt,
+    };
   }
 
   async create(
@@ -132,8 +224,10 @@ export class CategoriesService {
       };
     } catch (error: unknown) {
       if (imagePath) {
-        await this.storageService.delete(imagePath).catch(() => {
-        });
+        await this.deleteImageSafely(
+          imagePath,
+          'создание категории завершилось ошибкой',
+        );
       }
   
       if (
@@ -350,7 +444,7 @@ export class CategoriesService {
 
 
 
-  
+
   private async uploadCategoryImage(
     imageBuffer: Buffer,
   ): Promise<string> {
@@ -394,13 +488,22 @@ export class CategoriesService {
     imagePath: string,
     reason: string,
   ): Promise<void> {
+    if (imagePath.startsWith('categories/default/')) {
+      return;
+    }
+  
     try {
       await this.storageService.delete(imagePath);
     } catch (error: unknown) {
       const message =
         error instanceof Error
-          ? error.stack
+          ? error.stack ?? error.message
           : String(error);
+  
+      this.logger.error(
+        `Не удалось удалить изображение "${imagePath}": ${reason}`,
+        message,
+      );
     }
   }
 }
