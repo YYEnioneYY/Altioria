@@ -5,6 +5,13 @@ import {
   ProductPriceType,
 } from '../../generated/prisma/client';
 
+export class AdminProductCategoryResponseDto {
+  id!: string;
+  slug!: string;
+  nameRu!: string;
+  nameEn!: string;
+}
+
 export class AdminProductImageResponseDto {
   id!: string;
   imageUrl!: string;
@@ -33,6 +40,10 @@ export class AdminProductFileResponseDto {
 export class AdminProductResponseDto {
   id!: string;
   categoryId!: string;
+  @ApiProperty({
+    type: AdminProductCategoryResponseDto,
+  })
+  category!: AdminProductCategoryResponseDto;
   slug!: string;
 
   nameRu!: string;

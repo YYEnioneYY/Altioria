@@ -31,6 +31,8 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { AdminProductResponseDto } from './dto/admin-product-response.dto';
 
+import { UpdateProductDto } from './dto/update-product.dto';
+
 const adminProductSelect = {
   id: true,
   categoryId: true,
@@ -51,6 +53,15 @@ const adminProductSelect = {
   isPublished: true,
   createdAt: true,
   updatedAt: true,
+
+  category: {
+    select: {
+      id: true,
+      slug: true,
+      nameRu: true,
+      nameEn: true,
+    },
+  },
 
   images: {
     orderBy: [
@@ -109,6 +120,20 @@ interface ProductUploads {
   files: Express.Multer.File[];
 }
 
+interface ProductPriceInput {
+  priceType?: ProductPriceType;
+  priceAmount?: string;
+  priceCurrency?: string;
+}
+
+interface CurrentProductPrice {
+  priceType: ProductPriceType;
+  priceAmount: {
+    toString(): string;
+  } | null;
+  priceCurrency: string | null;
+}
+
 interface PreparedProductFile {
   file: Express.Multer.File;
   type: ProductFileType;
@@ -127,11 +152,59 @@ export class ProductsService {
     private readonly storageService: StorageService,
   ) {}
 
+  async findAllForAdmin():
+    Promise<AdminProductResponseDto[]> {
+    const products =
+      await this.prisma.product.findMany({
+        orderBy: [
+          {
+            category: {
+              sortOrder: 'asc',
+            },
+          },
+          {
+            sortOrder: 'asc',
+          },
+          {
+            slug: 'asc',
+          },
+        ],
+        select: adminProductSelect,
+      });
+  
+    return products.map((product) =>
+      this.toAdminResponse(product),
+    );
+  }
+  
+  async findOneForAdmin(
+    id: string,
+  ): Promise<AdminProductResponseDto> {
+    const product =
+      await this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+        select: adminProductSelect,
+      });
+  
+    if (!product) {
+      throw new NotFoundException(
+        'Товар не найден',
+      );
+    }
+  
+    return this.toAdminResponse(product);
+  }
+
   async create(
     dto: CreateProductDto,
     uploads: ProductUploads,
   ): Promise<AdminProductResponseDto> {
-    this.validateImages(uploads.images);
+    this.validateImages(
+      uploads.images,
+      true,
+    );
 
     const preparedFiles =
       uploads.files.map((file) =>
@@ -298,8 +371,9 @@ export class ProductsService {
         product,
       );
     } catch (error: unknown) {
-      await this.deleteUploadedObjects(
+      await this.deleteObjectsSafely(
         uploadedKeys,
+        'создание товара завершилось ошибкой',
       );
 
       if (
@@ -323,10 +397,532 @@ export class ProductsService {
     }
   }
 
+  async update(
+    id: string,
+    dto: UpdateProductDto,
+    uploads: ProductUploads,
+  ): Promise<AdminProductResponseDto> {
+    this.validateImages(
+      uploads.images,
+      false,
+    );
+  
+    if (
+      uploads.files.length >
+      MAX_PRODUCT_FILES
+    ) {
+      throw new BadRequestException(
+        `Можно загрузить не больше ${MAX_PRODUCT_FILES} файлов`,
+      );
+    }
+  
+    const preparedFiles =
+      uploads.files.map((file) =>
+        this.prepareProductFile(file),
+      );
+  
+    const existingProduct =
+      await this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+          priceType: true,
+          priceAmount: true,
+          priceCurrency: true,
+          isPublished: true,
+  
+          images: {
+            orderBy: {
+              sortOrder: 'desc',
+            },
+            take: 1,
+            select: {
+              sortOrder: true,
+            },
+          },
+  
+          files: {
+            orderBy: {
+              sortOrder: 'desc',
+            },
+            take: 1,
+            select: {
+              sortOrder: true,
+            },
+          },
+  
+          _count: {
+            select: {
+              images: true,
+              files: true,
+            },
+          },
+        },
+      });
+  
+    if (!existingProduct) {
+      throw new NotFoundException(
+        'Товар не найден',
+      );
+    }
+  
+    const hasDataChanges =
+      Object.values(dto).some(
+        (value) => value !== undefined,
+      );
+  
+    if (
+      !hasDataChanges &&
+      uploads.images.length === 0 &&
+      uploads.files.length === 0
+    ) {
+      throw new BadRequestException(
+        'Не передано ни одного изменения',
+      );
+    }
+  
+    const resultingImagesCount =
+      existingProduct._count.images +
+      uploads.images.length;
+  
+    if (
+      resultingImagesCount >
+      MAX_PRODUCT_IMAGES
+    ) {
+      throw new BadRequestException(
+        `У товара может быть не больше ${MAX_PRODUCT_IMAGES} изображений`,
+      );
+    }
+  
+    const resultingFilesCount =
+      existingProduct._count.files +
+      uploads.files.length;
+  
+    if (
+      resultingFilesCount >
+      MAX_PRODUCT_FILES
+    ) {
+      throw new BadRequestException(
+        `У товара может быть не больше ${MAX_PRODUCT_FILES} файлов`,
+      );
+    }
+  
+    const resultingPublished =
+      dto.isPublished ??
+      existingProduct.isPublished;
+  
+    if (
+      resultingPublished &&
+      resultingImagesCount === 0
+    ) {
+      throw new BadRequestException(
+        'Нельзя опубликовать товар без изображения',
+      );
+    }
+  
+    if (dto.categoryId !== undefined) {
+      const category =
+        await this.prisma.category.findUnique({
+          where: {
+            id: dto.categoryId,
+          },
+          select: {
+            id: true,
+          },
+        });
+  
+      if (!category) {
+        throw new NotFoundException(
+          'Категория не найдена',
+        );
+      }
+    }
+  
+    if (dto.slug !== undefined) {
+      const productWithSlug =
+        await this.prisma.product.findUnique({
+          where: {
+            slug: dto.slug,
+          },
+          select: {
+            id: true,
+          },
+        });
+  
+      if (
+        productWithSlug &&
+        productWithSlug.id !== id
+      ) {
+        throw new ConflictException(
+          `Товар со slug "${dto.slug}" уже существует`,
+        );
+      }
+    }
+  
+    const hasPriceChanges =
+      dto.priceType !== undefined ||
+      dto.priceAmount !== undefined ||
+      dto.priceCurrency !== undefined;
+  
+    const price = hasPriceChanges
+      ? this.resolvePrice(
+          dto,
+          existingProduct,
+        )
+      : {};
+  
+    const productId =
+      existingProduct.id;
+  
+    const uploadedKeys: string[] = [];
+  
+    try {
+      const images:
+        Prisma.ProductImageCreateWithoutProductInput[] =
+        [];
+  
+      const firstImageSortOrder =
+        (
+          existingProduct.images[0]
+            ?.sortOrder ?? 0
+        ) + 10;
+  
+      for (
+        let index = 0;
+        index < uploads.images.length;
+        index += 1
+      ) {
+        const image =
+          uploads.images[index];
+  
+        const optimizedImage =
+          await this.optimizeImage(
+            image.buffer,
+          );
+  
+        const imageKey =
+          `products/${productId}/images/${randomUUID()}.webp`;
+  
+        await this.storageService.upload(
+          imageKey,
+          optimizedImage,
+          'image/webp',
+        );
+  
+        uploadedKeys.push(imageKey);
+  
+        images.push({
+          imageKey,
+          altRu: null,
+          altEn: null,
+          sortOrder:
+            firstImageSortOrder +
+            index * 10,
+        });
+      }
+  
+      const files:
+        Prisma.ProductFileCreateWithoutProductInput[] =
+        [];
+  
+      const firstFileSortOrder =
+        (
+          existingProduct.files[0]
+            ?.sortOrder ?? 0
+        ) + 10;
+  
+      for (
+        let index = 0;
+        index < preparedFiles.length;
+        index += 1
+      ) {
+        const prepared =
+          preparedFiles[index];
+  
+        const fileKey =
+          `products/${productId}/files/${randomUUID()}${prepared.extension}`;
+  
+        await this.storageService.upload(
+          fileKey,
+          prepared.file.buffer,
+          prepared.contentType,
+        );
+  
+        uploadedKeys.push(fileKey);
+  
+        files.push({
+          type: prepared.type,
+          fileKey,
+          originalName:
+            prepared.file.originalname,
+          mimeType:
+            prepared.contentType,
+          sizeBytes:
+            prepared.file.size,
+          labelRu: null,
+          labelEn: null,
+          sortOrder:
+            firstFileSortOrder +
+            index * 10,
+        });
+      }
+  
+      const product =
+        await this.prisma.product.update({
+          where: {
+            id,
+          },
+          data: {
+            ...(dto.categoryId !== undefined
+              ? {
+                  categoryId:
+                    dto.categoryId,
+                }
+              : {}),
+  
+            ...(dto.slug !== undefined
+              ? {
+                  slug: dto.slug,
+                }
+              : {}),
+  
+            ...(dto.nameRu !== undefined
+              ? {
+                  nameRu: dto.nameRu,
+                }
+              : {}),
+  
+            ...(dto.nameEn !== undefined
+              ? {
+                  nameEn: dto.nameEn,
+                }
+              : {}),
+  
+            ...(dto.descriptionRu !== undefined
+              ? {
+                  descriptionRu:
+                    dto.descriptionRu,
+                }
+              : {}),
+  
+            ...(dto.descriptionEn !== undefined
+              ? {
+                  descriptionEn:
+                    dto.descriptionEn,
+                }
+              : {}),
+  
+            ...(dto.materialsRu !== undefined
+              ? {
+                  materialsRu:
+                    dto.materialsRu,
+                }
+              : {}),
+  
+            ...(dto.materialsEn !== undefined
+              ? {
+                  materialsEn:
+                    dto.materialsEn,
+                }
+              : {}),
+  
+            ...(dto.heightMm !== undefined
+              ? {
+                  heightMm:
+                    dto.heightMm,
+                }
+              : {}),
+  
+            ...(dto.widthMm !== undefined
+              ? {
+                  widthMm:
+                    dto.widthMm,
+                }
+              : {}),
+  
+            ...(dto.depthMm !== undefined
+              ? {
+                  depthMm:
+                    dto.depthMm,
+                }
+              : {}),
+  
+            ...price,
+  
+            ...(dto.sortOrder !== undefined
+              ? {
+                  sortOrder:
+                    dto.sortOrder,
+                }
+              : {}),
+  
+            ...(dto.isPublished !== undefined
+              ? {
+                  isPublished:
+                    dto.isPublished,
+                }
+              : {}),
+  
+            ...(images.length > 0
+              ? {
+                  images: {
+                    create: images,
+                  },
+                }
+              : {}),
+  
+            ...(files.length > 0
+              ? {
+                  files: {
+                    create: files,
+                  },
+                }
+              : {}),
+          },
+          select: adminProductSelect,
+        });
+  
+      return this.toAdminResponse(
+        product,
+      );
+    } catch (error: unknown) {
+      await this.deleteObjectsSafely(
+        uploadedKeys,
+        'обновление товара завершилось ошибкой',
+      );
+  
+      if (
+        error instanceof
+          Prisma.PrismaClientKnownRequestError
+      ) {
+        if (error.code === 'P2002') {
+          throw new ConflictException(
+            `Товар со slug "${dto.slug}" уже существует`,
+          );
+        }
+  
+        if (error.code === 'P2003') {
+          throw new NotFoundException(
+            'Категория не найдена',
+          );
+        }
+  
+        if (error.code === 'P2025') {
+          throw new NotFoundException(
+            'Товар не найден',
+          );
+        }
+      }
+  
+      throw error;
+    }
+  }
+
+  async remove(
+    id: string,
+  ): Promise<void> {
+    const product =
+      await this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          images: {
+            select: {
+              imageKey: true,
+            },
+          },
+  
+          files: {
+            select: {
+              fileKey: true,
+            },
+          },
+  
+          variants: {
+            select: {
+              images: {
+                select: {
+                  imageKey: true,
+                },
+              },
+  
+              files: {
+                select: {
+                  fileKey: true,
+                },
+              },
+            },
+          },
+        },
+      });
+  
+    if (!product) {
+      throw new NotFoundException(
+        'Товар не найден',
+      );
+    }
+  
+    const storedKeys = [
+      ...product.images.map(
+        (image) => image.imageKey,
+      ),
+  
+      ...product.files.map(
+        (file) => file.fileKey,
+      ),
+  
+      ...product.variants.flatMap(
+        (variant) =>
+          variant.images.map(
+            (image) => image.imageKey,
+          ),
+      ),
+  
+      ...product.variants.flatMap(
+        (variant) =>
+          variant.files.map(
+            (file) => file.fileKey,
+          ),
+      ),
+    ];
+  
+    try {
+      await this.prisma.product.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error: unknown) {
+      if (
+        error instanceof
+          Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new NotFoundException(
+          'Товар не найден',
+        );
+      }
+  
+      throw error;
+    }
+  
+    await this.deleteObjectsSafely(
+      storedKeys,
+      'товар был удалён',
+    );
+  }
+
   private validateImages(
     images: Express.Multer.File[],
+    required: boolean,
   ): void {
-    if (images.length === 0) {
+    if (
+      required &&
+      images.length === 0
+    ) {
       throw new BadRequestException(
         'Загрузите хотя бы одно изображение товара',
       );
@@ -474,7 +1070,8 @@ export class ProductsService {
   }
 
   private resolvePrice(
-    dto: CreateProductDto,
+    dto: ProductPriceInput,
+    current?: CurrentProductPrice,
   ): {
     priceType: ProductPriceType;
     priceAmount: string | null;
@@ -482,8 +1079,9 @@ export class ProductsService {
   } {
     const priceType =
       dto.priceType ??
+      current?.priceType ??
       ProductPriceType.ON_REQUEST;
-
+  
     if (
       priceType ===
       ProductPriceType.ON_REQUEST
@@ -496,36 +1094,41 @@ export class ProductsService {
           'Для цены по запросу нельзя указывать стоимость и валюту',
         );
       }
-
+  
       return {
         priceType,
         priceAmount: null,
         priceCurrency: null,
       };
     }
-
+  
+    const priceAmount =
+      dto.priceAmount ??
+      current?.priceAmount?.toString();
+  
+    const priceCurrency =
+      dto.priceCurrency ??
+      current?.priceCurrency;
+  
     if (
-      !dto.priceAmount ||
-      !dto.priceCurrency
+      !priceAmount ||
+      !priceCurrency
     ) {
       throw new BadRequestException(
         'Для фиксированной цены укажите стоимость и валюту',
       );
     }
-
-    if (
-      Number(dto.priceAmount) <= 0
-    ) {
+  
+    if (Number(priceAmount) <= 0) {
       throw new BadRequestException(
         'Стоимость должна быть больше нуля',
       );
     }
-
+  
     return {
       priceType,
-      priceAmount: dto.priceAmount,
-      priceCurrency:
-        dto.priceCurrency,
+      priceAmount,
+      priceCurrency,
     };
   }
 
@@ -556,8 +1159,9 @@ export class ProductsService {
     }
   }
 
-  private async deleteUploadedObjects(
+  private async deleteObjectsSafely(
     keys: string[],
+    reason: string,
   ): Promise<void> {
     await Promise.all(
       keys.map(async (key) => {
@@ -571,9 +1175,9 @@ export class ProductsService {
               ? error.stack ??
                 error.message
               : String(error);
-
+  
           this.logger.error(
-            `Не удалось удалить "${key}" после ошибки: ${message}`,
+            `Не удалось удалить "${key}" (${reason}): ${message}`,
           );
         }
       }),
@@ -587,6 +1191,12 @@ export class ProductsService {
       id: product.id,
       categoryId:
         product.categoryId,
+      category: {
+        id: product.category.id,
+        slug: product.category.slug,
+        nameRu: product.category.nameRu,
+        nameEn: product.category.nameEn,
+      },
       slug: product.slug,
       nameRu: product.nameRu,
       nameEn: product.nameEn,
