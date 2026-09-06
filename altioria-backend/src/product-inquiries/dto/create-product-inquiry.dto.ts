@@ -28,11 +28,14 @@ export class CreateProductInquiryDto {
   @IsUUID()
   productId!: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     format: 'uuid',
+    description:
+      'ID дополнительного исполнения. Не передаётся для основного товара',
   })
-  @IsUUID()
-  variantId!: string;
+  @IsOptional()
+  @IsUUID('4')
+  variantId?: string;
 
   @ApiProperty({
     example: 'Иван Иванов',

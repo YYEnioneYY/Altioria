@@ -1,175 +1,113 @@
 import {
   Body,
   Controller,
-  Get,
-  Param,
-  ParseFilePipeBuilder,
-  ParseUUIDPipe,
+  HttpStatus,
   Post,
-  Patch,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
-  Delete,
-  HttpCode,
-  HttpStatus,
 } from '@nestjs/common';
-
-import { FilesInterceptor } from '@nestjs/platform-express';
-
 import {
+  FileFieldsInterceptor,
+} from '@nestjs/platform-express';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConflictResponse,
+  ApiConsumes,
+  ApiCreatedResponse,
   ApiOperation,
   ApiTags,
-  ApiBody,
-  ApiConsumes,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 import { AdminSessionGuard } from '../auth/guards/admin-session.guard';
 
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { AdminProductResponseDto } from './dto/admin-product-response.dto';
-
-import { UpdateProductDto } from './dto/update-product.dto';
-
-import { ReorderProductsDto } from './dto/reorder-products.dto';
-import { CreateProductMultipartDto } from './dto/create-product-multipart.dto';
 import {
-  MAX_PRODUCT_IMAGES_PER_UPLOAD,
-  MAX_PRODUCT_IMAGE_SIZE,
-  PRODUCT_IMAGE_FILE_TYPE,
-} from './constants/product-image.constants';
+  MAX_PRODUCT_FILES,
+  MAX_PRODUCT_FILE_SIZE,
+  MAX_PRODUCT_IMAGES,
+  MAX_PRODUCT_UPLOAD_FILES,
+} from './constants/product-upload.constants';
+import { AdminProductResponseDto } from './dto/admin-product-response.dto';
+import { CreateProductMultipartDto } from './dto/create-product-multipart.dto';
+import { ProductsService } from './products.service';
+
+interface ProductUploadFields {
+  images?: Express.Multer.File[];
+  files?: Express.Multer.File[];
+}
 
 @ApiTags('Admin products')
+@ApiUnauthorizedResponse({
+  description:
+    'Администратор не авторизован',
+})
 @Controller('admin/products')
 @UseGuards(AdminSessionGuard)
 export class AdminProductsController {
   constructor(
-    private readonly productsService: ProductsService,
+    private readonly productsService:
+      ProductsService,
   ) {}
-
-  @Get()
-  @ApiOperation({
-    summary:
-      'Получить все товары для админ-панели',
-  })
-  getAll():
-    Promise<AdminProductResponseDto[]> {
-    return this.productsService.findAllForAdmin();
-  }
-
-  @Get(':id')
-  @ApiOperation({
-    summary:
-      'Получить товар по ID для админ-панели',
-  })
-  getOne(
-    @Param(
-      'id',
-      new ParseUUIDPipe({
-        version: '4',
-      }),
-    )
-    id: string,
-  ): Promise<AdminProductResponseDto> {
-    return this.productsService.findOneForAdmin(id);
-  }
 
   @Post()
   @UseInterceptors(
-    FilesInterceptor(
-      'images',
-      MAX_PRODUCT_IMAGES_PER_UPLOAD,
+    FileFieldsInterceptor(
+      [
+        {
+          name: 'images',
+          maxCount:
+            MAX_PRODUCT_IMAGES,
+        },
+        {
+          name: 'files',
+          maxCount:
+            MAX_PRODUCT_FILES,
+        },
+      ],
       {
         limits: {
           files:
-            MAX_PRODUCT_IMAGES_PER_UPLOAD,
+            MAX_PRODUCT_UPLOAD_FILES,
           fileSize:
-            MAX_PRODUCT_IMAGE_SIZE,
+            MAX_PRODUCT_FILE_SIZE,
         },
       },
     ),
   )
   @ApiConsumes('multipart/form-data')
+  @ApiOperation({
+    summary:
+      'Создать товар с изображениями и файлами',
+  })
   @ApiBody({
     type: CreateProductMultipartDto,
   })
-  @ApiOperation({
-    summary:
-      'Создать карточку товара с основными данными и фотографиями',
+  @ApiCreatedResponse({
+    type: AdminProductResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Некорректные данные, изображения или файлы',
+  })
+  @ApiConflictResponse({
+    description:
+      'Товар с таким slug уже существует',
   })
   create(
-    @Body() dto: CreateProductDto,
-
-    @UploadedFiles(
-      new ParseFilePipeBuilder()
-        .addFileTypeValidator({
-          fileType:
-            PRODUCT_IMAGE_FILE_TYPE,
-        })
-        .addMaxSizeValidator({
-          maxSize:
-            MAX_PRODUCT_IMAGE_SIZE,
-        })
-        .build({
-          fileIsRequired: false,
-          errorHttpStatusCode:
-            HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
-    )
-    images?: Express.Multer.File[],
+    @Body() dto: CreateProductMultipartDto,
+    @UploadedFiles()
+    uploads?: ProductUploadFields,
   ): Promise<AdminProductResponseDto> {
     return this.productsService.create(
       dto,
-      images ?? [],
+      {
+        images:
+          uploads?.images ?? [],
+        files:
+          uploads?.files ?? [],
+      },
     );
   }
-
-  @Patch('reorder')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary: 'Изменить порядок товаров внутри категории',
-  })
-  async reorder(
-    @Body() dto: ReorderProductsDto,
-  ): Promise<void> {
-    await this.productsService.reorder(dto);
-  }
-
-  @Patch(':id')
-  @ApiOperation({
-    summary:
-      'Изменить или опубликовать товар',
-  })
-  update(
-    @Param(
-      'id',
-      new ParseUUIDPipe({ version: '4' }),
-    )
-    id: string,
-  
-    @Body()
-    dto: UpdateProductDto,
-  ): Promise<AdminProductResponseDto> {
-    return this.productsService.update(
-      id,
-      dto,
-    );
-  }
-
-  @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary: 'Удалить товар',
-  })
-  async remove(
-    @Param(
-      'id',
-      new ParseUUIDPipe({ version: '4' }),
-    )
-    id: string,
-  ): Promise<void> {
-    await this.productsService.remove(id);
-  }
-
 }

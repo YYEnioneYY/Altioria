@@ -21,9 +21,9 @@ export interface ProductInquiryEmail {
   productNameRu: string;
   productNameEn: string;
 
-  variantId: string;
-  variantNameRu: string;
-  variantNameEn: string;
+  variantId: string | null;
+  variantNameRu: string | null;
+  variantNameEn: string | null;
 }
 
 @Injectable()
@@ -60,6 +60,15 @@ export class EmailService {
   private createTextMessage(
     inquiry: ProductInquiryEmail,
   ): string {
+        const variantLines = inquiry.variantId
+      ? [
+          `Исполнение: ${inquiry.variantNameRu} / ${inquiry.variantNameEn}`,
+          `Variant ID: ${inquiry.variantId}`,
+        ]
+      : [
+          'Исполнение: основной товар',
+        ];
+
     return [
       'Новая заявка с сайта Altioria',
       '',
@@ -68,9 +77,8 @@ export class EmailService {
       `Телефон: ${inquiry.customerPhone}`,
       '',
       `Товар: ${inquiry.productNameRu} / ${inquiry.productNameEn}`,
-      `Вариант: ${inquiry.variantNameRu} / ${inquiry.variantNameEn}`,
       `Product ID: ${inquiry.productId}`,
-      `Variant ID: ${inquiry.variantId}`,
+      ...variantLines,
       '',
       `Вопрос: ${inquiry.questions ?? 'Не указан'}`,
     ].join('\n');
@@ -103,13 +111,32 @@ export class EmailService {
       inquiry.productNameEn,
     );
 
-    const variantRu = this.escapeHtml(
-      inquiry.variantNameRu,
-    );
-
-    const variantEn = this.escapeHtml(
-      inquiry.variantNameEn,
-    );
+    const variantBlock =
+      inquiry.variantId
+        ? `
+            <p>
+              <strong>Исполнение:</strong>
+              ${this.escapeHtml(
+                inquiry.variantNameRu ?? '',
+              )}
+              /
+              ${this.escapeHtml(
+                inquiry.variantNameEn ?? '',
+              )}
+            </p>
+            <p>
+              <strong>Variant ID:</strong>
+              ${this.escapeHtml(
+                inquiry.variantId,
+              )}
+            </p>
+          `
+        : `
+            <p>
+              <strong>Исполнение:</strong>
+              основной товар
+            </p>
+          `;
 
     return `
       <div style="font-family: Arial, sans-serif; color: #1a1a1a;">
@@ -122,7 +149,7 @@ export class EmailService {
 
         <h3>Товар</h3>
         <p><strong>Название:</strong> ${productRu} / ${productEn}</p>
-        <p><strong>Вариант:</strong> ${variantRu} / ${variantEn}</p>
+        <p><strong>Вариант:</strong> ${variantBlock}</p>
         <p><strong>Product ID:</strong> ${inquiry.productId}</p>
         <p><strong>Variant ID:</strong> ${inquiry.variantId}</p>
 

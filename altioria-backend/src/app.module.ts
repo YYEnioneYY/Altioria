@@ -8,10 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StorageModule } from './storage/storage.module';
 import { CategoriesModule } from './categories/categories.module';
-import { ProductsModule } from './products/products.module';
-import { SearchModule } from './search/search.module';
 import { EmailModule } from './email/email.module';
 import { ProductInquiriesModule } from './product-inquiries/product-inquiries.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -27,10 +26,9 @@ import { ProductInquiriesModule } from './product-inquiries/product-inquiries.mo
     AuthModule,
     StorageModule,
     CategoriesModule,
-    ProductsModule,
-    SearchModule,
     EmailModule,
     ProductInquiriesModule,
+    ProductsModule,
   ],
   providers: [
     {

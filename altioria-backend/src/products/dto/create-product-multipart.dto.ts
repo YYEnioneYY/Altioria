@@ -1,16 +1,38 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  ApiProperty,
+  ApiPropertyOptional,
+} from '@nestjs/swagger';
+import { Allow } from 'class-validator';
 
 import { CreateProductDto } from './create-product.dto';
 
-export class CreateProductMultipartDto extends CreateProductDto {
-  @ApiPropertyOptional({
+export class CreateProductMultipartDto
+  extends CreateProductDto
+{
+  @Allow()
+  @ApiProperty({
     type: 'array',
+    minItems: 1,
+    maxItems: 15,
     description:
-      'До 20 фотографий JPG, JPEG, PNG, WEBP или AVIF. Первая фотография станет обложкой товара',
+      'От 1 до 15 изображений. Первая фотография станет обложкой',
     items: {
       type: 'string',
       format: 'binary',
     },
   })
-  images?: string[];
+  images!: string[];
+
+  @Allow()
+  @ApiPropertyOptional({
+    type: 'array',
+    maxItems: 10,
+    description:
+      'PDF, GLB или GLTF. До 10 файлов',
+    items: {
+      type: 'string',
+      format: 'binary',
+    },
+  })
+  files?: string[];
 }

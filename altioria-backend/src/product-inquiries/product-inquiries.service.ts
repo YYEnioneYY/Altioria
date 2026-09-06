@@ -24,37 +24,47 @@ export class ProductInquiriesService {
   async create(
     dto: CreateProductInquiryDto,
   ): Promise<ProductInquiryResponseDto> {
-    const variant =
-      await this.prisma.productVariant.findFirst({
+    const product =
+      await this.prisma.product.findFirst({
         where: {
-          id: dto.variantId,
-          productId: dto.productId,
+          id: dto.productId,
           isPublished: true,
-          product: {
+
+          category: {
             isPublished: true,
-            category: {
-              isPublished: true,
-            },
           },
         },
         select: {
           id: true,
-          slug: true,
-          labelRu: true,
-          labelEn: true,
-          product: {
-            select: {
-              id: true,
-              nameRu: true,
-              nameEn: true,
-            },
-          },
+          nameRu: true,
+          nameEn: true,
         },
       });
 
-    if (!variant) {
+    if (!product) {
       throw new NotFoundException(
-        'Товар или его вариант не найден',
+        'Товар не найден',
+      );
+    }
+
+    const variant = dto.variantId
+      ? await this.prisma.productVariant.findFirst({
+          where: {
+            id: dto.variantId,
+            productId: product.id,
+            isPublished: true,
+          },
+          select: {
+            id: true,
+            nameRu: true,
+            nameEn: true,
+          },
+        })
+      : null;
+
+    if (dto.variantId && !variant) {
+      throw new NotFoundException(
+        'Исполнение товара не найдено',
       );
     }
 
@@ -63,17 +73,19 @@ export class ProductInquiriesService {
         customerName: dto.name,
         customerEmail: dto.email,
         customerPhone: dto.phone,
-        questions: dto.questions || null,
+        questions:
+          dto.questions || null,
 
-        productId: variant.product.id,
-        productNameRu: variant.product.nameRu,
-        productNameEn: variant.product.nameEn,
+        productId: product.id,
+        productNameRu: product.nameRu,
+        productNameEn: product.nameEn,
 
-        variantId: variant.id,
+        variantId:
+          variant?.id ?? null,
         variantNameRu:
-          variant.labelRu ?? 'Основной вариант',
+          variant?.nameRu ?? null,
         variantNameEn:
-          variant.labelEn ?? 'Default variant',
+          variant?.nameEn ?? null,
       });
     } catch (error: unknown) {
       this.logger.error(
