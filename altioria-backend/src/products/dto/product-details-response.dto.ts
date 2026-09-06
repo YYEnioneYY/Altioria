@@ -1,5 +1,6 @@
 import {
   ProductFileType,
+  ProductPriceType,
 } from '../../generated/prisma/client';
 
 export class ProductDetailsCategoryDto {
@@ -43,6 +44,10 @@ export class ProductDetailsVariantDto {
 
   materials!: string | null;
 
+  priceType!: ProductPriceType;
+  priceAmount!: string | null;
+  priceCurrency!: string | null;
+
   isDefault!: boolean;
 
   images!: ProductDetailsImageDto[];
@@ -56,8 +61,6 @@ export class ProductDetailsResponseDto {
   slug!: string;
 
   name!: string;
-
-  description!: string | null;
 
   category!: ProductDetailsCategoryDto;
 

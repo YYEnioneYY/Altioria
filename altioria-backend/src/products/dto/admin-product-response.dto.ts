@@ -16,9 +16,6 @@ export class AdminProductResponseDto {
   nameRu!: string;
   nameEn!: string;
 
-  descriptionRu!: string | null;
-  descriptionEn!: string | null;
-
   sortOrder!: number;
 
   isPublished!: boolean;
@@ -28,6 +25,8 @@ export class AdminProductResponseDto {
   variantsCount!: number;
 
   defaultVariantId!: string | null;
+
+  defaultVariantImagesCount!: number;
 
   createdAt!: Date;
   updatedAt!: Date;

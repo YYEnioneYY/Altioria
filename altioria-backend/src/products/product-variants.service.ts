@@ -6,6 +6,8 @@ import {
   Logger,
 } from '@nestjs/common';
 
+import { randomUUID } from 'node:crypto';
+
 import {
   Prisma,
 } from '../generated/prisma/client';
@@ -19,6 +21,7 @@ import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
 
 import { ReorderProductVariantsDto } from './dto/reorder-product-variants.dto';
 import { resolveProductVariantPrice } from './utils/resolve-product-variant-price';
+import { ProductImagesService } from './product-images.service';
 
 const ADMIN_PRODUCT_VARIANT_SELECT = {
   id: true,
@@ -67,6 +70,8 @@ export class ProductVariantsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly storageService: StorageService,
+    private readonly productImagesService:
+      ProductImagesService,
   ) {}
 
   async findAllForAdmin(
@@ -133,46 +138,57 @@ export class ProductVariantsService {
   async create(
     productId: string,
     dto: CreateProductVariantDto,
+    images: Express.Multer.File[],
   ): Promise<AdminProductVariantResponseDto> {
+    const product =
+      await this.prisma.product.findUnique({
+        where: {
+          id: productId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+    if (!product) {
+      throw new NotFoundException(
+        'Товар не найден',
+      );
+    }
+
+    const existingVariant =
+      await this.prisma.productVariant.findUnique({
+        where: {
+          productId_slug: {
+            productId,
+            slug: dto.slug,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+    if (existingVariant) {
+      throw new ConflictException(
+        `Исполнение со slug "${dto.slug}" уже существует`,
+      );
+    }
+
+    const price = resolveProductVariantPrice(dto);
+    const variantId = randomUUID();
+    const storedImages =
+      await this.productImagesService
+        .storeForNewVariant(
+          productId,
+          variantId,
+          images,
+        );
+
     try {
       const variant =
         await this.prisma.$transaction(
           async (transaction) => {
-            const product =
-              await transaction.product.findUnique({
-                where: {
-                  id: productId,
-                },
-                select: {
-                  id: true,
-                },
-              });
-
-            if (!product) {
-              throw new NotFoundException(
-                'Товар не найден',
-              );
-            }
-
-            const existingVariant =
-              await transaction.productVariant.findUnique({
-                where: {
-                  productId_slug: {
-                    productId,
-                    slug: dto.slug,
-                  },
-                },
-                select: {
-                  id: true,
-                },
-              });
-
-            if (existingVariant) {
-              throw new ConflictException(
-                `Вариант со slug "${dto.slug}" уже существует`,
-              );
-            }
-
             const lastVariant =
               await transaction.productVariant.findFirst({
                 where: {
@@ -186,18 +202,13 @@ export class ProductVariantsService {
                 },
               });
 
-            const isFirstVariant =
-              lastVariant === null;
-
             const sortOrder =
               dto.sortOrder ??
               (lastVariant?.sortOrder ?? 0) + 10;
-            
-            const price =
-              resolveProductVariantPrice(dto);
 
             return transaction.productVariant.create({
               data: {
+                id: variantId,
                 productId,
                 slug: dto.slug,
                 labelRu: dto.labelRu ?? null,
@@ -214,9 +225,17 @@ export class ProductVariantsService {
                 materialsEn:
                   dto.materialsEn ?? null,
                 sortOrder,
-                isDefault: isFirstVariant,
+                isDefault: false,
                 isPublished: false,
                 ...price,
+
+                ...(storedImages.length > 0
+                  ? {
+                      images: {
+                        create: storedImages,
+                      },
+                    }
+                  : {}),
               },
               select:
                 ADMIN_PRODUCT_VARIANT_SELECT,
@@ -226,13 +245,19 @@ export class ProductVariantsService {
 
       return this.toAdminResponse(variant);
     } catch (error: unknown) {
+      await this.productImagesService
+        .deleteStoredImagesSafely(
+          storedImages,
+          'создание исполнения завершилось ошибкой',
+        );
+
       if (
         error instanceof
           Prisma.PrismaClientKnownRequestError
       ) {
         if (error.code === 'P2002') {
           throw new ConflictException(
-            `Вариант со slug "${dto.slug}" уже существует`,
+            `Исполнение со slug "${dto.slug}" уже существует`,
           );
         }
 
@@ -262,6 +287,8 @@ export class ProductVariantsService {
           id: true,
           isDefault: true,
           isPublished: true,
+          descriptionRu: true,
+          descriptionEn: true,
 
           priceType: true,
           priceAmount: true,
@@ -307,6 +334,25 @@ export class ProductVariantsService {
     ) {
       throw new BadRequestException(
         'Нельзя опубликовать вариант без изображения',
+      );
+    }
+
+    const resultingDescriptionRu =
+      dto.descriptionRu ??
+      existingVariant.descriptionRu;
+
+    const resultingDescriptionEn =
+      dto.descriptionEn ??
+      existingVariant.descriptionEn;
+
+    if (
+      resultingIsPublished &&
+      existingVariant.isDefault &&
+      (!resultingDescriptionRu ||
+        !resultingDescriptionEn)
+    ) {
+      throw new BadRequestException(
+        'Для публикации основного товара заполните описание на русском и английском языках',
       );
     }
   

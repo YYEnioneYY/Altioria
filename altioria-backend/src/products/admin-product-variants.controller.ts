@@ -3,18 +3,25 @@ import {
   Controller,
   Get,
   Param,
+  ParseFilePipeBuilder,
   ParseUUIDPipe,
   Post,
   Patch,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
   Delete,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 
+import { FilesInterceptor } from '@nestjs/platform-express';
+
 import {
   ApiOperation,
   ApiTags,
+  ApiBody,
+  ApiConsumes,
 } from '@nestjs/swagger';
 
 import { AdminSessionGuard } from '../auth/guards/admin-session.guard';
@@ -26,6 +33,12 @@ import { AdminProductVariantResponseDto } from './dto/admin-product-variant-resp
 import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
 
 import { ReorderProductVariantsDto } from './dto/reorder-product-variants.dto';
+import { CreateProductVariantMultipartDto } from './dto/create-product-variant-multipart.dto';
+import {
+  MAX_PRODUCT_IMAGES_PER_UPLOAD,
+  MAX_PRODUCT_IMAGE_SIZE,
+  PRODUCT_IMAGE_FILE_TYPE,
+} from './constants/product-image.constants';
 
 @ApiTags('Admin product variants')
 @Controller('admin/products/:productId/variants')
@@ -84,9 +97,27 @@ export class AdminProductVariantsController {
   }
 
   @Post()
+  @UseInterceptors(
+    FilesInterceptor(
+      'images',
+      MAX_PRODUCT_IMAGES_PER_UPLOAD,
+      {
+        limits: {
+          files:
+            MAX_PRODUCT_IMAGES_PER_UPLOAD,
+          fileSize:
+            MAX_PRODUCT_IMAGE_SIZE,
+        },
+      },
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: CreateProductVariantMultipartDto,
+  })
   @ApiOperation({
     summary:
-      'Создать вариант товара',
+      'Добавить исполнение товара с фотографиями',
   })
   create(
     @Param(
@@ -99,10 +130,29 @@ export class AdminProductVariantsController {
 
     @Body()
     dto: CreateProductVariantDto,
+
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType:
+            PRODUCT_IMAGE_FILE_TYPE,
+        })
+        .addMaxSizeValidator({
+          maxSize:
+            MAX_PRODUCT_IMAGE_SIZE,
+        })
+        .build({
+          fileIsRequired: false,
+          errorHttpStatusCode:
+            HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    images?: Express.Multer.File[],
   ): Promise<AdminProductVariantResponseDto> {
     return this.productVariantsService.create(
       productId,
       dto,
+      images ?? [],
     );
   }
 

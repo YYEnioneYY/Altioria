@@ -68,8 +68,6 @@ model Product {
   slug          String   @unique @db.VarChar(120)
   nameRu        String   @map("name_ru") @db.VarChar(160)
   nameEn        String   @map("name_en") @db.VarChar(160)
-  descriptionRu String?  @map("description_ru") @db.Text
-  descriptionEn String?  @map("description_en") @db.Text
   sortOrder     Int      @default(0) @map("sort_order")
   isPublished   Boolean  @default(false) @map("is_published")
   createdAt     DateTime @default(now()) @map("created_at")

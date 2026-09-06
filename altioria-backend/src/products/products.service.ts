@@ -6,6 +6,8 @@ import {
   Logger,
 } from '@nestjs/common';
 
+import { randomUUID } from 'node:crypto';
+
 import {
   Prisma,
 } from '../generated/prisma/client';
@@ -26,6 +28,7 @@ import { ProductDetailsResponseDto } from './dto/product-details-response.dto';
 
 import { ReorderProductsDto } from './dto/reorder-products.dto';
 import { resolveProductVariantPrice } from './utils/resolve-product-variant-price';
+import { ProductImagesService } from './product-images.service';
 
 const ADMIN_PRODUCT_SELECT = {
   id: true,
@@ -33,8 +36,6 @@ const ADMIN_PRODUCT_SELECT = {
   slug: true,
   nameRu: true,
   nameEn: true,
-  descriptionRu: true,
-  descriptionEn: true,
   sortOrder: true,
   isPublished: true,
   createdAt: true,
@@ -62,6 +63,12 @@ const ADMIN_PRODUCT_SELECT = {
     take: 1,
     select: {
       id: true,
+
+      _count: {
+        select: {
+          images: true,
+        },
+      },
     },
   },
 } satisfies Prisma.ProductSelect;
@@ -80,6 +87,8 @@ export class ProductsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly storageService: StorageService,
+    private readonly productImagesService:
+      ProductImagesService,
   ) {}
 
   async findAllForAdmin():
@@ -129,10 +138,10 @@ export class ProductsService {
 
   async create(
     dto: CreateProductDto,
+    images: Express.Multer.File[],
   ): Promise<AdminProductResponseDto> {
-    const initialVariant = dto.initialVariant;
     const price = resolveProductVariantPrice(
-      initialVariant,
+      dto,
     );
 
     const category =
@@ -167,51 +176,55 @@ export class ProductsService {
       );
     }
 
+    const productId = randomUUID();
+    const variantId = randomUUID();
+    const storedImages =
+      await this.productImagesService
+        .storeForNewVariant(
+          productId,
+          variantId,
+          images,
+        );
+
     try {
       const product =
         await this.prisma.product.create({
           data: {
+            id: productId,
             categoryId: dto.categoryId,
             slug: dto.slug,
             nameRu: dto.nameRu,
             nameEn: dto.nameEn,
-            descriptionRu:
-              dto.descriptionRu ?? null,
-            descriptionEn:
-              dto.descriptionEn ?? null,
             sortOrder: dto.sortOrder ?? 0,
             isPublished: false,
 
             variants: {
               create: {
-                slug: initialVariant.slug,
-                labelRu:
-                  initialVariant.labelRu ?? null,
-                labelEn:
-                  initialVariant.labelEn ?? null,
-                descriptionRu:
-                  initialVariant.descriptionRu ??
-                  null,
-                descriptionEn:
-                  initialVariant.descriptionEn ??
-                  null,
-                heightMm:
-                  initialVariant.heightMm ?? null,
-                widthMm:
-                  initialVariant.widthMm ?? null,
-                depthMm:
-                  initialVariant.depthMm ?? null,
+                id: variantId,
+                slug: 'default',
+                labelRu: null,
+                labelEn: null,
+                descriptionRu: dto.descriptionRu,
+                descriptionEn: dto.descriptionEn,
+                heightMm: dto.heightMm ?? null,
+                widthMm: dto.widthMm ?? null,
+                depthMm: dto.depthMm ?? null,
                 materialsRu:
-                  initialVariant.materialsRu ??
-                  null,
+                  dto.materialsRu ?? null,
                 materialsEn:
-                  initialVariant.materialsEn ??
-                  null,
-                sortOrder:
-                  initialVariant.sortOrder ?? 10,
+                  dto.materialsEn ?? null,
+                sortOrder: 10,
                 isDefault: true,
                 isPublished: false,
                 ...price,
+
+                ...(storedImages.length > 0
+                  ? {
+                      images: {
+                        create: storedImages,
+                      },
+                    }
+                  : {}),
               },
             },
           },
@@ -220,6 +233,12 @@ export class ProductsService {
 
       return this.toAdminResponse(product);
     } catch (error: unknown) {
+      await this.productImagesService
+        .deleteStoredImagesSafely(
+          storedImages,
+          'создание товара завершилось ошибкой',
+        );
+
       if (
         error instanceof
           Prisma.PrismaClientKnownRequestError
@@ -260,7 +279,10 @@ export class ProductsService {
             },
             take: 1,
             select: {
+              id: true,
               isPublished: true,
+              descriptionRu: true,
+              descriptionEn: true,
           
               _count: {
                 select: {
@@ -309,20 +331,23 @@ export class ProductsService {
     const resultingIsPublished =
       dto.isPublished ??
       existingProduct.isPublished;
+
+    const defaultVariant =
+      existingProduct.variants[0];
   
     if (resultingIsPublished) {
-      const defaultVariant =
-        existingProduct.variants[0];
-  
       if (!defaultVariant) {
         throw new BadRequestException(
           'Нельзя опубликовать товар без основного варианта',
         );
       }
   
-      if (!defaultVariant.isPublished) {
+      if (
+        !defaultVariant.descriptionRu?.trim() ||
+        !defaultVariant.descriptionEn?.trim()
+      ) {
         throw new BadRequestException(
-          'Сначала опубликуйте основной вариант товара',
+          'Основной вариант должен иметь описание на русском и английском языках',
         );
       }
   
@@ -334,65 +359,74 @@ export class ProductsService {
     }
   
     try {
-      const product =
-        await this.prisma.product.update({
+      const productData = {
+        ...(dto.categoryId !== undefined
+          ? {
+              categoryId: dto.categoryId,
+            }
+          : {}),
+
+        ...(dto.slug !== undefined
+          ? {
+              slug: dto.slug,
+            }
+          : {}),
+
+        ...(dto.nameRu !== undefined
+          ? {
+              nameRu: dto.nameRu,
+            }
+          : {}),
+
+        ...(dto.nameEn !== undefined
+          ? {
+              nameEn: dto.nameEn,
+            }
+          : {}),
+
+        ...(dto.sortOrder !== undefined
+          ? {
+              sortOrder: dto.sortOrder,
+            }
+          : {}),
+
+        ...(dto.isPublished !== undefined
+          ? {
+              isPublished: dto.isPublished,
+            }
+          : {}),
+      };
+
+      const updateProduct = (
+        prisma: Prisma.TransactionClient,
+      ) =>
+        prisma.product.update({
           where: {
             id,
           },
-          data: {
-            ...(dto.categoryId !== undefined
-              ? {
-                  categoryId: dto.categoryId,
-                }
-              : {}),
-              
-            ...(dto.slug !== undefined
-              ? {
-                  slug: dto.slug,
-                }
-              : {}),
-              
-            ...(dto.nameRu !== undefined
-              ? {
-                  nameRu: dto.nameRu,
-                }
-              : {}),
-              
-            ...(dto.nameEn !== undefined
-              ? {
-                  nameEn: dto.nameEn,
-                }
-              : {}),
-              
-            ...(dto.descriptionRu !== undefined
-              ? {
-                  descriptionRu:
-                    dto.descriptionRu,
-                }
-              : {}),
-              
-            ...(dto.descriptionEn !== undefined
-              ? {
-                  descriptionEn:
-                    dto.descriptionEn,
-                }
-              : {}),
-              
-            ...(dto.sortOrder !== undefined
-              ? {
-                  sortOrder: dto.sortOrder,
-                }
-              : {}),
-              
-            ...(dto.isPublished !== undefined
-              ? {
-                  isPublished:
-                    dto.isPublished,
-                }
-              : {}),
-          },
+          data: productData,
           select: ADMIN_PRODUCT_SELECT,
         });
+
+      const product =
+        dto.isPublished === true &&
+        defaultVariant &&
+        !defaultVariant.isPublished
+          ? await this.prisma.$transaction(
+              async (transaction) => {
+                await transaction.productVariant.update({
+                  where: {
+                    id: defaultVariant.id,
+                  },
+                  data: {
+                    isPublished: true,
+                  },
+                });
+
+                return updateProduct(transaction);
+              },
+            )
+          : await updateProduct(this.prisma);
       
       return this.toAdminResponse(product);
     } catch (error: unknown) {
@@ -691,9 +725,6 @@ export class ProductsService {
           slug: true,
           nameRu: true,
           nameEn: true,
-          descriptionRu: true,
-          descriptionEn: true,
-  
           category: {
             select: {
               slug: true,
@@ -735,6 +766,9 @@ export class ProductsService {
               depthMm: true,
               materialsRu: true,
               materialsEn: true,
+              priceType: true,
+              priceAmount: true,
+              priceCurrency: true,
               isDefault: true,
   
               images: {
@@ -793,16 +827,27 @@ export class ProductsService {
     const productName = isEnglish
       ? product.nameEn
       : product.nameRu;
-  
-    const productDescription = isEnglish
-      ? product.descriptionEn
-      : product.descriptionRu;
+
+    const defaultVariant = product.variants.find(
+      (variant) => variant.isDefault,
+    );
+
+    const defaultDescription = defaultVariant
+      ? isEnglish
+        ? defaultVariant.descriptionEn
+        : defaultVariant.descriptionRu
+      : null;
+
+    const defaultMaterials = defaultVariant
+      ? isEnglish
+        ? defaultVariant.materialsEn
+        : defaultVariant.materialsRu
+      : null;
   
     return {
       id: product.id,
       slug: product.slug,
       name: productName,
-      description: productDescription,
   
       category: {
         slug: product.category.slug,
@@ -816,16 +861,17 @@ export class ProductsService {
           ? variant.labelEn
           : variant.labelRu;
   
-        const description =
-          (
-            isEnglish
-              ? variant.descriptionEn
-              : variant.descriptionRu
-          ) ?? productDescription;
+        const description = isEnglish
+          ? variant.descriptionEn ??
+            defaultDescription
+          : variant.descriptionRu ??
+            defaultDescription;
   
-        const materials = isEnglish
-          ? variant.materialsEn
-          : variant.materialsRu;
+        const materials =
+          (isEnglish
+            ? variant.materialsEn
+            : variant.materialsRu) ??
+          defaultMaterials;
   
         const variantTitle = label
           ? `${productName} ${label}`
@@ -836,10 +882,24 @@ export class ProductsService {
           slug: variant.slug,
           label,
           description,
-          heightMm: variant.heightMm,
-          widthMm: variant.widthMm,
-          depthMm: variant.depthMm,
+          heightMm:
+            variant.heightMm ??
+            defaultVariant?.heightMm ??
+            null,
+          widthMm:
+            variant.widthMm ??
+            defaultVariant?.widthMm ??
+            null,
+          depthMm:
+            variant.depthMm ??
+            defaultVariant?.depthMm ??
+            null,
           materials,
+          priceType: variant.priceType,
+          priceAmount:
+            variant.priceAmount?.toString() ??
+            null,
+          priceCurrency: variant.priceCurrency,
           isDefault: variant.isDefault,
   
           images: variant.images.map((image) => ({
@@ -931,8 +991,6 @@ export class ProductsService {
       slug: product.slug,
       nameRu: product.nameRu,
       nameEn: product.nameEn,
-      descriptionRu: product.descriptionRu,
-      descriptionEn: product.descriptionEn,
       sortOrder: product.sortOrder,
       isPublished: product.isPublished,
 
@@ -946,6 +1004,8 @@ export class ProductsService {
       variantsCount: product._count.variants,
       defaultVariantId:
         product.variants[0]?.id ?? null,
+      defaultVariantImagesCount:
+        product.variants[0]?._count.images ?? 0,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
     };

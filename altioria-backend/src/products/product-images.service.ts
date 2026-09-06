@@ -37,6 +37,11 @@ type AdminProductImageRecord =
     select: typeof ADMIN_PRODUCT_IMAGE_SELECT;
   }>;
 
+export interface StoredProductImage {
+  imagePath: string;
+  sortOrder: number;
+}
+
 @Injectable()
 export class ProductImagesService {
   private readonly logger = new Logger(
@@ -146,38 +151,15 @@ export class ProductImagesService {
     const firstSortOrder =
       (variant.images[0]?.sortOrder ?? 0) + 10;
 
-    const uploadedImages: Array<{
-      imagePath: string;
-      sortOrder: number;
-    }> = [];
+    const uploadedImages =
+      await this.storeForNewVariant(
+        productId,
+        variantId,
+        files,
+        firstSortOrder,
+      );
 
     try {
-      for (
-        let index = 0;
-        index < files.length;
-        index += 1
-      ) {
-        const file = files[index];
-
-        const optimizedImage =
-          await this.optimizeImage(file);
-
-        const imagePath =
-          `products/${productId}/${variantId}/images/${randomUUID()}.webp`;
-
-        await this.storageService.upload(
-          imagePath,
-          optimizedImage,
-          'image/webp',
-        );
-
-        uploadedImages.push({
-          imagePath,
-          sortOrder:
-            firstSortOrder + index * 10,
-        });
-      }
-
       const createdImages =
         await this.prisma.$transaction(
           uploadedImages.map((image) =>
@@ -197,17 +179,81 @@ export class ProductImagesService {
         this.toAdminResponse(image),
       );
     } catch (error: unknown) {
-      await Promise.all(
-        uploadedImages.map((image) =>
-          this.deleteImageSafely(
-            image.imagePath,
-            'загрузка изображений завершилась ошибкой',
-          ),
-        ),
+      await this.deleteStoredImagesSafely(
+        uploadedImages,
+        'загрузка изображений завершилась ошибкой',
       );
 
       throw error;
     }
+  }
+
+  async storeForNewVariant(
+    productId: string,
+    variantId: string,
+    files: Express.Multer.File[],
+    firstSortOrder = 10,
+  ): Promise<StoredProductImage[]> {
+    if (
+      files.length >
+      MAX_PRODUCT_IMAGES_PER_VARIANT
+    ) {
+      throw new BadRequestException(
+        `У исполнения может быть не больше ${MAX_PRODUCT_IMAGES_PER_VARIANT} изображений`,
+      );
+    }
+
+    const storedImages: StoredProductImage[] = [];
+
+    try {
+      for (
+        let index = 0;
+        index < files.length;
+        index += 1
+      ) {
+        const file = files[index];
+        const optimizedImage =
+          await this.optimizeImage(file);
+
+        const imagePath =
+          `products/${productId}/${variantId}/images/${randomUUID()}.webp`;
+
+        await this.storageService.upload(
+          imagePath,
+          optimizedImage,
+          'image/webp',
+        );
+
+        storedImages.push({
+          imagePath,
+          sortOrder:
+            firstSortOrder + index * 10,
+        });
+      }
+
+      return storedImages;
+    } catch (error: unknown) {
+      await this.deleteStoredImagesSafely(
+        storedImages,
+        'подготовка изображений завершилась ошибкой',
+      );
+
+      throw error;
+    }
+  }
+
+  async deleteStoredImagesSafely(
+    images: StoredProductImage[],
+    reason: string,
+  ): Promise<void> {
+    await Promise.all(
+      images.map((image) =>
+        this.deleteImageSafely(
+          image.imagePath,
+          reason,
+        ),
+      ),
+    );
   }
 
   async reorder(

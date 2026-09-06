@@ -92,15 +92,24 @@ export class SearchService {
               },
             },
             {
-              descriptionRu: {
-                contains: searchText,
-                mode: 'insensitive',
-              },
-            },
-            {
-              descriptionEn: {
-                contains: searchText,
-                mode: 'insensitive',
+              variants: {
+                some: {
+                  isPublished: true,
+                  OR: [
+                    {
+                      descriptionRu: {
+                        contains: searchText,
+                        mode: 'insensitive',
+                      },
+                    },
+                    {
+                      descriptionEn: {
+                        contains: searchText,
+                        mode: 'insensitive',
+                      },
+                    },
+                  ],
+                },
               },
             },
           ],

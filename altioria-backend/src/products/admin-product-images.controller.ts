@@ -111,7 +111,7 @@ export class AdminProductImagesController {
         images: {
           type: 'array',
           description:
-            'До 5 изображений JPG, JPEG, PNG, WEBP или AVIF',
+            'До 20 изображений JPG, JPEG, PNG, WEBP или AVIF',
           items: {
             type: 'string',
             format: 'binary',
