@@ -106,6 +106,18 @@ export class AdminProductVariantsController {
     );
   }
 
+  @Patch('reorder')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: 'Изменить порядок вариантов товара',
+  })
+  async reorder(
+    @Param('productId', ParseUUIDPipe) productId: string,
+    @Body() dto: ReorderProductVariantsDto,
+  ): Promise<void> {
+    await this.productVariantsService.reorder(productId, dto);
+  }
+
   @Patch(':variantId')
   @ApiOperation({
     summary:
@@ -182,15 +194,4 @@ export class AdminProductVariantsController {
     );
   }
 
-  @Patch('reorder')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary: 'Изменить порядок вариантов товара',
-  })
-  async reorder(
-    @Param('productId', ParseUUIDPipe) productId: string,
-    @Body() dto: ReorderProductVariantsDto,
-  ): Promise<void> {
-    await this.productVariantsService.reorder(productId, dto);
-  }
 }

@@ -27,6 +27,8 @@ export class AdminProductResponseDto {
 
   variantsCount!: number;
 
+  defaultVariantId!: string | null;
+
   createdAt!: Date;
   updatedAt!: Date;
 }

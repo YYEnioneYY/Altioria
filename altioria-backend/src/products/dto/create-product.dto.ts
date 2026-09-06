@@ -1,5 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import {
+  IsDefined,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -10,7 +11,12 @@ import {
   Max,
   MaxLength,
   Min,
+  ValidateNested,
 } from 'class-validator';
+
+import { ApiProperty } from '@nestjs/swagger';
+
+import { CreateProductVariantDto } from './create-product-variant.dto';
 
 function trimString(value: unknown): unknown {
   return typeof value === 'string'
@@ -81,4 +87,14 @@ export class CreateProductDto {
   @Min(0)
   @Max(100_000)
   sortOrder?: number;
+
+  @IsDefined()
+  @ValidateNested()
+  @Type(() => CreateProductVariantDto)
+  @ApiProperty({
+    type: () => CreateProductVariantDto,
+    description:
+      'Первое и основное исполнение товара',
+  })
+  initialVariant!: CreateProductVariantDto;
 }

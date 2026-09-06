@@ -64,12 +64,24 @@ export class AdminProductsController {
 
   @Post()
   @ApiOperation({
-    summary: 'Создать товар-черновик',
+    summary:
+      'Создать товар-черновик с основным исполнением',
   })
   create(
     @Body() dto: CreateProductDto,
   ): Promise<AdminProductResponseDto> {
     return this.productsService.create(dto);
+  }
+
+  @Patch('reorder')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary: 'Изменить порядок товаров внутри категории',
+  })
+  async reorder(
+    @Body() dto: ReorderProductsDto,
+  ): Promise<void> {
+    await this.productsService.reorder(dto);
   }
 
   @Patch(':id')
@@ -108,14 +120,4 @@ export class AdminProductsController {
     await this.productsService.remove(id);
   }
 
-  @Patch('reorder')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({
-    summary: 'Изменить порядок товаров внутри категории',
-  })
-  async reorder(
-    @Body() dto: ReorderProductsDto,
-  ): Promise<void> {
-    await this.productsService.reorder(dto);
-  }
 }

@@ -18,8 +18,7 @@ import { AdminProductVariantResponseDto } from './dto/admin-product-variant-resp
 import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
 
 import { ReorderProductVariantsDto } from './dto/reorder-product-variants.dto';
-
-import { ProductPriceType } from '../generated/prisma/client';
+import { resolveProductVariantPrice } from './utils/resolve-product-variant-price';
 
 const ADMIN_PRODUCT_VARIANT_SELECT = {
   id: true,
@@ -194,7 +193,8 @@ export class ProductVariantsService {
               dto.sortOrder ??
               (lastVariant?.sortOrder ?? 0) + 10;
             
-            const price = this.resolvePrice(dto);
+            const price =
+              resolveProductVariantPrice(dto);
 
             return transaction.productVariant.create({
               data: {
@@ -326,7 +326,10 @@ export class ProductVariantsService {
       dto.priceCurrency !== undefined;
 
     const price = hasPriceChanges
-      ? this.resolvePrice(dto, existingVariant)
+      ? resolveProductVariantPrice(
+          dto,
+          existingVariant,
+        )
       : {};
   
     try {
@@ -556,6 +559,12 @@ export class ProductVariantsService {
                   product: {
                     select: {
                       isPublished: true,
+
+                      _count: {
+                        select: {
+                          variants: true,
+                        },
+                      },
                     },
                   },
   
@@ -576,6 +585,14 @@ export class ProductVariantsService {
             if (!variant) {
               throw new NotFoundException(
                 'Вариант товара не найден',
+              );
+            }
+
+            if (
+              variant.product._count.variants === 1
+            ) {
+              throw new BadRequestException(
+                'Нельзя удалить единственное исполнение товара',
               );
             }
   
@@ -740,69 +757,6 @@ export class ProductVariantsService {
         message,
       );
     }
-  }
-
-  private resolvePrice(
-    dto: {
-      priceType?: ProductPriceType;
-      priceAmount?: string;
-      priceCurrency?: string;
-    },
-    current?: {
-      priceType: ProductPriceType;
-      priceAmount: { toString(): string } | null;
-      priceCurrency: string | null;
-    },
-  ): {
-    priceType: ProductPriceType;
-    priceAmount: string | null;
-    priceCurrency: string | null;
-  } {
-    const priceType =
-      dto.priceType ??
-      current?.priceType ??
-      ProductPriceType.ON_REQUEST;
-  
-    if (priceType === ProductPriceType.ON_REQUEST) {
-      if (
-        dto.priceAmount !== undefined ||
-        dto.priceCurrency !== undefined
-      ) {
-        throw new BadRequestException(
-          'Для цены по запросу нельзя указывать стоимость и валюту',
-        );
-      }
-  
-      return {
-        priceType,
-        priceAmount: null,
-        priceCurrency: null,
-      };
-    }
-  
-    const priceAmount =
-      dto.priceAmount ?? current?.priceAmount?.toString();
-  
-    const priceCurrency =
-      dto.priceCurrency ?? current?.priceCurrency;
-  
-    if (!priceAmount || !priceCurrency) {
-      throw new BadRequestException(
-        'Для фиксированной цены необходимо указать priceAmount и priceCurrency',
-      );
-    }
-  
-    if (Number(priceAmount) <= 0) {
-      throw new BadRequestException(
-        'Стоимость товара должна быть больше нуля',
-      );
-    }
-  
-    return {
-      priceType,
-      priceAmount,
-      priceCurrency,
-    };
   }
 
   private toAdminResponse(

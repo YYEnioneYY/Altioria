@@ -25,6 +25,7 @@ import { ProductCardResponseDto } from './dto/product-card-response.dto';
 import { ProductDetailsResponseDto } from './dto/product-details-response.dto';
 
 import { ReorderProductsDto } from './dto/reorder-products.dto';
+import { resolveProductVariantPrice } from './utils/resolve-product-variant-price';
 
 const ADMIN_PRODUCT_SELECT = {
   id: true,
@@ -51,6 +52,16 @@ const ADMIN_PRODUCT_SELECT = {
   _count: {
     select: {
       variants: true,
+    },
+  },
+
+  variants: {
+    where: {
+      isDefault: true,
+    },
+    take: 1,
+    select: {
+      id: true,
     },
   },
 } satisfies Prisma.ProductSelect;
@@ -119,6 +130,11 @@ export class ProductsService {
   async create(
     dto: CreateProductDto,
   ): Promise<AdminProductResponseDto> {
+    const initialVariant = dto.initialVariant;
+    const price = resolveProductVariantPrice(
+      initialVariant,
+    );
+
     const category =
       await this.prisma.category.findUnique({
         where: {
@@ -165,6 +181,39 @@ export class ProductsService {
               dto.descriptionEn ?? null,
             sortOrder: dto.sortOrder ?? 0,
             isPublished: false,
+
+            variants: {
+              create: {
+                slug: initialVariant.slug,
+                labelRu:
+                  initialVariant.labelRu ?? null,
+                labelEn:
+                  initialVariant.labelEn ?? null,
+                descriptionRu:
+                  initialVariant.descriptionRu ??
+                  null,
+                descriptionEn:
+                  initialVariant.descriptionEn ??
+                  null,
+                heightMm:
+                  initialVariant.heightMm ?? null,
+                widthMm:
+                  initialVariant.widthMm ?? null,
+                depthMm:
+                  initialVariant.depthMm ?? null,
+                materialsRu:
+                  initialVariant.materialsRu ??
+                  null,
+                materialsEn:
+                  initialVariant.materialsEn ??
+                  null,
+                sortOrder:
+                  initialVariant.sortOrder ?? 10,
+                isDefault: true,
+                isPublished: false,
+                ...price,
+              },
+            },
           },
           select: ADMIN_PRODUCT_SELECT,
         });
@@ -895,6 +944,8 @@ export class ProductsService {
       },
 
       variantsCount: product._count.variants,
+      defaultVariantId:
+        product.variants[0]?.id ?? null,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
     };
