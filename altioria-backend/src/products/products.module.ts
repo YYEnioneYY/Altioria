@@ -11,6 +11,7 @@ import { ProductImagesService } from './product-images.service';
 
 import { AdminProductFilesController } from './admin-product-files.controller';
 import { ProductFilesService } from './product-files.service';
+import { ProductsController } from './products.controller';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProductFilesService } from './product-files.service';
     StorageModule,
   ],
   controllers: [
+    ProductsController,
     AdminProductsController,
     AdminProductImagesController,
     AdminProductFilesController,

@@ -33,6 +33,13 @@ import { AdminProductResponseDto } from './dto/admin-product-response.dto';
 
 import { UpdateProductDto } from './dto/update-product.dto';
 
+import {
+  GetProductsQueryDto,
+  ProductLocale,
+} from './dto/get-products-query.dto';
+import { ProductCardResponseDto } from './dto/product-card-response.dto';
+import { ProductDetailsResponseDto } from './dto/product-details-response.dto';
+
 const adminProductSelect = {
   id: true,
   categoryId: true,
@@ -151,6 +158,494 @@ export class ProductsService {
     private readonly prisma: PrismaService,
     private readonly storageService: StorageService,
   ) {}
+
+  async findAll(
+    query: GetProductsQueryDto,
+  ): Promise<ProductCardResponseDto[]> {
+    const locale =
+      query.locale ?? ProductLocale.RU;
+  
+    const isEnglish =
+      locale === ProductLocale.EN;
+  
+    const products =
+      await this.prisma.product.findMany({
+        where: {
+          isPublished: true,
+  
+          category: {
+            isPublished: true,
+  
+            ...(query.category
+              ? {
+                  slug: query.category,
+                }
+              : {}),
+          },
+  
+          images: {
+            some: {},
+          },
+        },
+  
+        orderBy: [
+          {
+            category: {
+              sortOrder: 'asc',
+            },
+          },
+          {
+            sortOrder: 'asc',
+          },
+          {
+            slug: 'asc',
+          },
+        ],
+  
+        select: {
+          id: true,
+          slug: true,
+          nameRu: true,
+          nameEn: true,
+  
+          priceType: true,
+          priceAmount: true,
+          priceCurrency: true,
+  
+          category: {
+            select: {
+              slug: true,
+              nameRu: true,
+              nameEn: true,
+            },
+          },
+  
+          images: {
+            orderBy: [
+              {
+                sortOrder: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
+            take: 1,
+            select: {
+              imageKey: true,
+            },
+          },
+        },
+      });
+  
+    return products.flatMap((product) => {
+      const cover =
+        product.images[0];
+  
+      if (!cover) {
+        return [];
+      }
+  
+      return [
+        {
+          id: product.id,
+          slug: product.slug,
+          name: isEnglish
+            ? product.nameEn
+            : product.nameRu,
+  
+          coverImageUrl:
+            this.storageService.getPublicUrl(
+              cover.imageKey,
+            ),
+  
+          priceType:
+            product.priceType,
+  
+          priceAmount:
+            product.priceAmount?.toString() ??
+            null,
+  
+          priceCurrency:
+            product.priceCurrency,
+  
+          category: {
+            slug: product.category.slug,
+            name: isEnglish
+              ? product.category.nameEn
+              : product.category.nameRu,
+          },
+        },
+      ];
+    });
+  }
+  
+  async findOne(
+    slug: string,
+    query: GetProductsQueryDto,
+  ): Promise<ProductDetailsResponseDto> {
+    const locale =
+      query.locale ?? ProductLocale.RU;
+  
+    const isEnglish =
+      locale === ProductLocale.EN;
+  
+    const product =
+      await this.prisma.product.findFirst({
+        where: {
+          slug,
+          isPublished: true,
+  
+          category: {
+            isPublished: true,
+          },
+  
+          images: {
+            some: {},
+          },
+        },
+  
+        select: {
+          id: true,
+          slug: true,
+          nameRu: true,
+          nameEn: true,
+          descriptionRu: true,
+          descriptionEn: true,
+          materialsRu: true,
+          materialsEn: true,
+          heightMm: true,
+          widthMm: true,
+          depthMm: true,
+          priceType: true,
+          priceAmount: true,
+          priceCurrency: true,
+  
+          category: {
+            select: {
+              slug: true,
+              nameRu: true,
+              nameEn: true,
+            },
+          },
+  
+          images: {
+            orderBy: [
+              {
+                sortOrder: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
+            select: {
+              id: true,
+              imageKey: true,
+              altRu: true,
+              altEn: true,
+            },
+          },
+  
+          files: {
+            orderBy: [
+              {
+                sortOrder: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
+            select: {
+              id: true,
+              type: true,
+              fileKey: true,
+              originalName: true,
+              labelRu: true,
+              labelEn: true,
+              sizeBytes: true,
+            },
+          },
+  
+          variants: {
+            where: {
+              isPublished: true,
+            },
+            orderBy: [
+              {
+                sortOrder: 'asc',
+              },
+              {
+                slug: 'asc',
+              },
+            ],
+            select: {
+              id: true,
+              slug: true,
+              nameRu: true,
+              nameEn: true,
+              descriptionRu: true,
+              descriptionEn: true,
+              materialsRu: true,
+              materialsEn: true,
+              heightMm: true,
+              widthMm: true,
+              depthMm: true,
+              priceType: true,
+              priceAmount: true,
+              priceCurrency: true,
+  
+              images: {
+                orderBy: [
+                  {
+                    sortOrder: 'asc',
+                  },
+                  {
+                    createdAt: 'asc',
+                  },
+                ],
+                select: {
+                  id: true,
+                  imageKey: true,
+                  altRu: true,
+                  altEn: true,
+                },
+              },
+  
+              files: {
+                orderBy: [
+                  {
+                    sortOrder: 'asc',
+                  },
+                  {
+                    createdAt: 'asc',
+                  },
+                ],
+                select: {
+                  id: true,
+                  type: true,
+                  fileKey: true,
+                  originalName: true,
+                  labelRu: true,
+                  labelEn: true,
+                  sizeBytes: true,
+                },
+              },
+            },
+          },
+        },
+      });
+  
+    if (!product) {
+      throw new NotFoundException(
+        'Товар не найден',
+      );
+    }
+  
+    const productName =
+      isEnglish
+        ? product.nameEn
+        : product.nameRu;
+  
+    const productDescription =
+      isEnglish
+        ? product.descriptionEn
+        : product.descriptionRu;
+  
+    const productMaterials =
+      isEnglish
+        ? product.materialsEn
+        : product.materialsRu;
+  
+    const productImages =
+      product.images.map((image) => ({
+        id: image.id,
+  
+        imageUrl:
+          this.storageService.getPublicUrl(
+            image.imageKey,
+          ),
+  
+        alt:
+          (
+            isEnglish
+              ? image.altEn
+              : image.altRu
+          ) ?? productName,
+      }));
+  
+    return {
+      id: product.id,
+      slug: product.slug,
+      name: productName,
+      description:
+        productDescription,
+      materials:
+        productMaterials,
+  
+      heightMm:
+        product.heightMm,
+      widthMm:
+        product.widthMm,
+      depthMm:
+        product.depthMm,
+  
+      priceType:
+        product.priceType,
+  
+      priceAmount:
+        product.priceAmount?.toString() ??
+        null,
+  
+      priceCurrency:
+        product.priceCurrency,
+  
+      category: {
+        slug: product.category.slug,
+        name: isEnglish
+          ? product.category.nameEn
+          : product.category.nameRu,
+      },
+  
+      images:
+        productImages,
+  
+      files:
+        product.files.map((file) => ({
+          id: file.id,
+          type: file.type,
+  
+          fileUrl:
+            this.storageService.getPublicUrl(
+              file.fileKey,
+            ),
+  
+          originalName:
+            file.originalName,
+  
+          label:
+            (
+              isEnglish
+                ? file.labelEn
+                : file.labelRu
+            ) ?? file.originalName,
+  
+          sizeBytes:
+            file.sizeBytes,
+        })),
+  
+      variants:
+        product.variants.map((variant) => {
+          const variantName =
+            isEnglish
+              ? variant.nameEn
+              : variant.nameRu;
+  
+          const ownImages =
+            variant.images.length > 0;
+  
+          const images = ownImages
+            ? variant.images.map(
+                (image) => ({
+                  id: image.id,
+  
+                  imageUrl:
+                    this.storageService
+                      .getPublicUrl(
+                        image.imageKey,
+                      ),
+  
+                  alt:
+                    (
+                      isEnglish
+                        ? image.altEn
+                        : image.altRu
+                    ) ?? variantName,
+                }),
+              )
+            : productImages;
+  
+          const usesProductPrice =
+            variant.priceType === null;
+  
+          return {
+            id: variant.id,
+            slug: variant.slug,
+            name: variantName,
+  
+            description:
+              (
+                isEnglish
+                  ? variant.descriptionEn
+                  : variant.descriptionRu
+              ) ?? productDescription,
+  
+            materials:
+              (
+                isEnglish
+                  ? variant.materialsEn
+                  : variant.materialsRu
+              ) ?? productMaterials,
+  
+            heightMm:
+              variant.heightMm ??
+              product.heightMm,
+  
+            widthMm:
+              variant.widthMm ??
+              product.widthMm,
+  
+            depthMm:
+              variant.depthMm ??
+              product.depthMm,
+  
+            priceType:
+              variant.priceType ??
+              product.priceType,
+  
+            priceAmount:
+              (
+                usesProductPrice
+                  ? product.priceAmount
+                  : variant.priceAmount
+              )?.toString() ?? null,
+  
+            priceCurrency:
+              usesProductPrice
+                ? product.priceCurrency
+                : variant.priceCurrency,
+  
+            usesProductImages:
+              !ownImages,
+  
+            images,
+  
+            files:
+              variant.files.map((file) => ({
+                id: file.id,
+                type: file.type,
+  
+                fileUrl:
+                  this.storageService
+                    .getPublicUrl(
+                      file.fileKey,
+                    ),
+  
+                originalName:
+                  file.originalName,
+  
+                label:
+                  (
+                    isEnglish
+                      ? file.labelEn
+                      : file.labelRu
+                  ) ?? file.originalName,
+  
+                sizeBytes:
+                  file.sizeBytes,
+              })),
+          };
+        }),
+    };
+  }
 
   async findAllForAdmin():
     Promise<AdminProductResponseDto[]> {
