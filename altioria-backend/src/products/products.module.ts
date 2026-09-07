@@ -13,6 +13,9 @@ import { AdminProductFilesController } from './admin-product-files.controller';
 import { ProductFilesService } from './product-files.service';
 import { ProductsController } from './products.controller';
 
+import { AdminProductVariantsController } from './admin-product-variants.controller';
+import { ProductVariantsService } from './product-variants.service';
+
 @Module({
   imports: [
     AuthModule,
@@ -23,11 +26,13 @@ import { ProductsController } from './products.controller';
     AdminProductsController,
     AdminProductImagesController,
     AdminProductFilesController,
+    AdminProductVariantsController,
   ],
   providers: [
     ProductsService,
     ProductImagesService,
     ProductFilesService,
+    ProductVariantsService,
   ],
 })
 export class ProductsModule {}
