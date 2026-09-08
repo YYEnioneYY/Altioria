@@ -39,6 +39,7 @@ import {
 } from './dto/get-products-query.dto';
 import { ProductCardResponseDto } from './dto/product-card-response.dto';
 import { ProductDetailsResponseDto } from './dto/product-details-response.dto';
+import { ProductDetailsImageDto, ProductDetailsFileDto } from './dto/product-details-response.dto';
 
 const adminProductSelect = {
   id: true,
@@ -283,156 +284,150 @@ export class ProductsService {
     slug: string,
     query: GetProductsQueryDto,
   ): Promise<ProductDetailsResponseDto> {
-    const locale =
-      query.locale ?? ProductLocale.RU;
+    const product = await this.prisma.product.findFirst({
+      where: {
+        slug,
+        isPublished: true,
   
-    const isEnglish =
-      locale === ProductLocale.EN;
-  
-    const product =
-      await this.prisma.product.findFirst({
-        where: {
-          slug,
+        category: {
           isPublished: true,
+        },
   
-          category: {
+        images: {
+          some: {},
+        },
+      },
+      select: {
+        id: true,
+        slug: true,
+        nameRu: true,
+        nameEn: true,
+        descriptionRu: true,
+        descriptionEn: true,
+        materialsRu: true,
+        materialsEn: true,
+        heightMm: true,
+        widthMm: true,
+        depthMm: true,
+        priceType: true,
+        priceAmount: true,
+        priceCurrency: true,
+  
+        category: {
+          select: {
+            slug: true,
+            nameRu: true,
+            nameEn: true,
+          },
+        },
+  
+        images: {
+          orderBy: [
+            {
+              sortOrder: 'asc',
+            },
+            {
+              createdAt: 'asc',
+            },
+          ],
+          select: {
+            id: true,
+            imageKey: true,
+            altRu: true,
+            altEn: true,
+            sortOrder: true,
+          },
+        },
+  
+        files: {
+          orderBy: [
+            {
+              sortOrder: 'asc',
+            },
+            {
+              createdAt: 'asc',
+            },
+          ],
+          select: {
+            id: true,
+            type: true,
+            fileKey: true,
+            originalName: true,
+            labelRu: true,
+            labelEn: true,
+            sortOrder: true,
+          },
+        },
+  
+        variants: {
+          where: {
             isPublished: true,
           },
-  
-          images: {
-            some: {},
-          },
-        },
-  
-        select: {
-          id: true,
-          slug: true,
-          nameRu: true,
-          nameEn: true,
-          descriptionRu: true,
-          descriptionEn: true,
-          materialsRu: true,
-          materialsEn: true,
-          heightMm: true,
-          widthMm: true,
-          depthMm: true,
-          priceType: true,
-          priceAmount: true,
-          priceCurrency: true,
-  
-          category: {
-            select: {
-              slug: true,
-              nameRu: true,
-              nameEn: true,
+          orderBy: [
+            {
+              sortOrder: 'asc',
             },
-          },
-  
-          images: {
-            orderBy: [
-              {
-                sortOrder: 'asc',
-              },
-              {
-                createdAt: 'asc',
-              },
-            ],
-            select: {
-              id: true,
-              imageKey: true,
-              altRu: true,
-              altEn: true,
+            {
+              createdAt: 'asc',
             },
-          },
+          ],
+          select: {
+            id: true,
+            slug: true,
+            nameRu: true,
+            nameEn: true,
+            descriptionRu: true,
+            descriptionEn: true,
+            materialsRu: true,
+            materialsEn: true,
+            heightMm: true,
+            widthMm: true,
+            depthMm: true,
+            priceType: true,
+            priceAmount: true,
+            priceCurrency: true,
   
-          files: {
-            orderBy: [
-              {
-                sortOrder: 'asc',
-              },
-              {
-                createdAt: 'asc',
-              },
-            ],
-            select: {
-              id: true,
-              type: true,
-              fileKey: true,
-              originalName: true,
-              labelRu: true,
-              labelEn: true,
-              sizeBytes: true,
-            },
-          },
-  
-          variants: {
-            where: {
-              isPublished: true,
-            },
-            orderBy: [
-              {
-                sortOrder: 'asc',
-              },
-              {
-                slug: 'asc',
-              },
-            ],
-            select: {
-              id: true,
-              slug: true,
-              nameRu: true,
-              nameEn: true,
-              descriptionRu: true,
-              descriptionEn: true,
-              materialsRu: true,
-              materialsEn: true,
-              heightMm: true,
-              widthMm: true,
-              depthMm: true,
-              priceType: true,
-              priceAmount: true,
-              priceCurrency: true,
-  
-              images: {
-                orderBy: [
-                  {
-                    sortOrder: 'asc',
-                  },
-                  {
-                    createdAt: 'asc',
-                  },
-                ],
-                select: {
-                  id: true,
-                  imageKey: true,
-                  altRu: true,
-                  altEn: true,
+            images: {
+              orderBy: [
+                {
+                  sortOrder: 'asc',
                 },
-              },
-  
-              files: {
-                orderBy: [
-                  {
-                    sortOrder: 'asc',
-                  },
-                  {
-                    createdAt: 'asc',
-                  },
-                ],
-                select: {
-                  id: true,
-                  type: true,
-                  fileKey: true,
-                  originalName: true,
-                  labelRu: true,
-                  labelEn: true,
-                  sizeBytes: true,
+                {
+                  createdAt: 'asc',
                 },
+              ],
+              select: {
+                id: true,
+                imageKey: true,
+                altRu: true,
+                altEn: true,
+                sortOrder: true,
+              },
+            },
+  
+            files: {
+              orderBy: [
+                {
+                  sortOrder: 'asc',
+                },
+                {
+                  createdAt: 'asc',
+                },
+              ],
+              select: {
+                id: true,
+                type: true,
+                fileKey: true,
+                originalName: true,
+                labelRu: true,
+                labelEn: true,
+                sortOrder: true,
               },
             },
           },
         },
-      });
+      },
+    });
   
     if (!product) {
       throw new NotFoundException(
@@ -440,210 +435,160 @@ export class ProductsService {
       );
     }
   
-    const productName =
-      isEnglish
-        ? product.nameEn
-        : product.nameRu;
+    const isEnglish =
+      query.locale === ProductLocale.EN;
   
-    const productDescription =
-      isEnglish
-        ? product.descriptionEn
-        : product.descriptionRu;
+    const mapImage = (
+      image: (typeof product.images)[number],
+    ): ProductDetailsImageDto => ({
+      id: image.id,
   
-    const productMaterials =
-      isEnglish
-        ? product.materialsEn
-        : product.materialsRu;
+      imageUrl:
+        this.storageService.getPublicUrl(
+          image.imageKey,
+        ),
   
-    const productImages =
-      product.images.map((image) => ({
-        id: image.id,
+      alt: isEnglish
+        ? image.altEn
+        : image.altRu,
   
-        imageUrl:
-          this.storageService.getPublicUrl(
-            image.imageKey,
-          ),
+      sortOrder: image.sortOrder,
+    });
   
-        alt:
-          (
-            isEnglish
-              ? image.altEn
-              : image.altRu
-          ) ?? productName,
-      }));
+    const mapFile = (
+      file: (typeof product.files)[number],
+    ): ProductDetailsFileDto => ({
+      id: file.id,
+      type: file.type,
+  
+      fileUrl:
+        this.storageService.getPublicUrl(
+          file.fileKey,
+        ),
+  
+      originalName: file.originalName,
+  
+      label: isEnglish
+        ? file.labelEn
+        : file.labelRu,
+  
+      sortOrder: file.sortOrder,
+    });
   
     return {
       id: product.id,
       slug: product.slug,
-      name: productName,
-      description:
-        productDescription,
-      materials:
-        productMaterials,
   
-      heightMm:
-        product.heightMm,
-      widthMm:
-        product.widthMm,
-      depthMm:
-        product.depthMm,
+      name: isEnglish
+        ? product.nameEn
+        : product.nameRu,
   
-      priceType:
-        product.priceType,
+      description: isEnglish
+        ? product.descriptionEn
+        : product.descriptionRu,
+  
+      materials: isEnglish
+        ? product.materialsEn
+        : product.materialsRu,
+  
+      heightMm: product.heightMm,
+      widthMm: product.widthMm,
+      depthMm: product.depthMm,
+      priceType: product.priceType,
   
       priceAmount:
-        product.priceAmount?.toString() ??
-        null,
+        product.priceAmount?.toString() ?? null,
   
-      priceCurrency:
-        product.priceCurrency,
+      priceCurrency: product.priceCurrency,
   
       category: {
         slug: product.category.slug,
+  
         name: isEnglish
           ? product.category.nameEn
           : product.category.nameRu,
       },
   
-      images:
-        productImages,
+      images: product.images.map(mapImage),
+      files: product.files.map(mapFile),
   
-      files:
-        product.files.map((file) => ({
-          id: file.id,
-          type: file.type,
+      variants: product.variants.map((variant) => {
+        const usesProductImages =
+          variant.images.length === 0;
   
-          fileUrl:
-            this.storageService.getPublicUrl(
-              file.fileKey,
-            ),
+        const resultingImages =
+          usesProductImages
+            ? product.images
+            : variant.images;
   
-          originalName:
-            file.originalName,
+        /*
+         * null в priceType означает,
+         * что цена наследуется от товара.
+         */
+        const usesProductPrice =
+          variant.priceType === null;
   
-          label:
-            (
-              isEnglish
-                ? file.labelEn
-                : file.labelRu
-            ) ?? file.originalName,
+        return {
+          id: variant.id,
+          slug: variant.slug,
   
-          sizeBytes:
-            file.sizeBytes,
-        })),
+          name: isEnglish
+            ? variant.nameEn
+            : variant.nameRu,
   
-      variants:
-        product.variants.map((variant) => {
-          const variantName =
-            isEnglish
-              ? variant.nameEn
-              : variant.nameRu;
+          description: isEnglish
+            ? variant.descriptionEn ??
+              product.descriptionEn
+            : variant.descriptionRu ??
+              product.descriptionRu,
   
-          const ownImages =
-            variant.images.length > 0;
+          materials: isEnglish
+            ? variant.materialsEn ??
+              product.materialsEn
+            : variant.materialsRu ??
+              product.materialsRu,
   
-          const images = ownImages
-            ? variant.images.map(
-                (image) => ({
-                  id: image.id,
+          heightMm:
+            variant.heightMm ??
+            product.heightMm,
   
-                  imageUrl:
-                    this.storageService
-                      .getPublicUrl(
-                        image.imageKey,
-                      ),
+          widthMm:
+            variant.widthMm ??
+            product.widthMm,
   
-                  alt:
-                    (
-                      isEnglish
-                        ? image.altEn
-                        : image.altRu
-                    ) ?? variantName,
-                }),
-              )
-            : productImages;
+          depthMm:
+            variant.depthMm ??
+            product.depthMm,
   
-          const usesProductPrice =
-            variant.priceType === null;
+          priceType: usesProductPrice
+            ? product.priceType
+            : variant.priceType!,
   
-          return {
-            id: variant.id,
-            slug: variant.slug,
-            name: variantName,
+          priceAmount: usesProductPrice
+            ? product.priceAmount?.toString() ??
+              null
+            : variant.priceAmount?.toString() ??
+              null,
   
-            description:
-              (
-                isEnglish
-                  ? variant.descriptionEn
-                  : variant.descriptionRu
-              ) ?? productDescription,
+          priceCurrency: usesProductPrice
+            ? product.priceCurrency
+            : variant.priceCurrency,
   
-            materials:
-              (
-                isEnglish
-                  ? variant.materialsEn
-                  : variant.materialsRu
-              ) ?? productMaterials,
+          usesProductImages,
   
-            heightMm:
-              variant.heightMm ??
-              product.heightMm,
+          images:
+            resultingImages.map(mapImage),
   
-            widthMm:
-              variant.widthMm ??
-              product.widthMm,
-  
-            depthMm:
-              variant.depthMm ??
-              product.depthMm,
-  
-            priceType:
-              variant.priceType ??
-              product.priceType,
-  
-            priceAmount:
-              (
-                usesProductPrice
-                  ? product.priceAmount
-                  : variant.priceAmount
-              )?.toString() ?? null,
-  
-            priceCurrency:
-              usesProductPrice
-                ? product.priceCurrency
-                : variant.priceCurrency,
-  
-            usesProductImages:
-              !ownImages,
-  
-            images,
-  
-            files:
-              variant.files.map((file) => ({
-                id: file.id,
-                type: file.type,
-  
-                fileUrl:
-                  this.storageService
-                    .getPublicUrl(
-                      file.fileKey,
-                    ),
-  
-                originalName:
-                  file.originalName,
-  
-                label:
-                  (
-                    isEnglish
-                      ? file.labelEn
-                      : file.labelRu
-                  ) ?? file.originalName,
-  
-                sizeBytes:
-                  file.sizeBytes,
-              })),
-          };
-        }),
+          /*
+           * Файлы товара являются общими.
+           * Файлы исполнения добавляются к ним.
+           */
+          files: [
+            ...product.files,
+            ...variant.files,
+          ].map(mapFile),
+        };
+      }),
     };
   }
 

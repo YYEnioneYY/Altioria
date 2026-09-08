@@ -7,6 +7,8 @@ import {
   Post,
   Get,
   Patch,
+  Delete,
+  HttpCode,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -25,6 +27,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
   ApiOkResponse,
+  ApiNoContentResponse,
 } from '@nestjs/swagger';
 
 import { AdminSessionGuard } from '../auth/guards/admin-session.guard';
@@ -33,6 +36,8 @@ import { AdminProductVariantResponseDto } from './dto/admin-product-variant-resp
 import { ProductVariantsService } from './product-variants.service';
 
 import { UpdateProductVariantMultipartDto } from './dto/update-product-variant-multipart.dto';
+
+import { ReorderProductVariantsDto } from './dto/reorder-product-variants.dto';
 
 interface ProductVariantUploadedFiles {
   images?: Express.Multer.File[];
@@ -188,6 +193,45 @@ export class AdminProductVariantsController {
     );
   }
 
+  @Patch('reorder')
+  @ApiOperation({
+    summary:
+      'Изменить порядок исполнений товара',
+  })
+  @ApiBody({
+    type: ReorderProductVariantsDto,
+  })
+  @ApiOkResponse({
+    type: AdminProductVariantResponseDto,
+    isArray: true,
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Переданы не все исполнения, дубликаты или посторонние ID',
+  })
+  @ApiNotFoundResponse({
+    description: 'Товар не найден',
+  })
+  async reorder(
+    @Param(
+      'productId',
+      new ParseUUIDPipe({
+        version: '4',
+        errorHttpStatusCode:
+          HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    productId: string,
+  
+    @Body()
+    dto: ReorderProductVariantsDto,
+  ): Promise<AdminProductVariantResponseDto[]> {
+    return this.productVariantsService.reorder(
+      productId,
+      dto,
+    );
+  }
+
   @Patch(':variantId')
   @ApiOperation({
     summary:
@@ -266,5 +310,46 @@ export class AdminProductVariantsController {
       uploadedFiles?.images ?? [],
       uploadedFiles?.files ?? [],
     );
-  } 
-}
+  }
+  
+  @Delete(':variantId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({
+    summary:
+      'Удалить дополнительное исполнение товара',
+  })
+  @ApiNoContentResponse({
+    description:
+      'Исполнение, его изображения и файлы удалены',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'Товар или исполнение не найдено',
+  })
+  async remove(
+    @Param(
+      'productId',
+      new ParseUUIDPipe({
+        version: '4',
+        errorHttpStatusCode:
+          HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    productId: string,
+  
+    @Param(
+      'variantId',
+      new ParseUUIDPipe({
+        version: '4',
+        errorHttpStatusCode:
+          HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    variantId: string,
+  ): Promise<void> {
+    await this.productVariantsService.remove(
+      productId,
+      variantId,
+    );
+  }
+}  

@@ -21,6 +21,8 @@ import { AdminProductVariantResponseDto } from './dto/admin-product-variant-resp
 
 import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
 
+import { ReorderProductVariantsDto } from './dto/reorder-product-variants.dto';
+
 const MAX_VARIANT_IMAGES = 15;
 const MAX_VARIANT_FILES = 10;
 
@@ -691,6 +693,153 @@ export class ProductVariantsService {
   
       throw error;
     }
+  }
+
+  async remove(
+    productId: string,
+    variantId: string,
+  ): Promise<void> {
+    const variant =
+      await this.prisma.productVariant.findFirst({
+        where: {
+          id: variantId,
+          productId,
+        },
+        select: {
+          id: true,
+  
+          images: {
+            select: {
+              imageKey: true,
+            },
+          },
+  
+          files: {
+            select: {
+              fileKey: true,
+            },
+          },
+        },
+      });
+  
+    if (!variant) {
+      throw new NotFoundException(
+        'Исполнение товара не найдено',
+      );
+    }
+  
+    const storageKeys = [
+      ...variant.images.map(
+        (image) => image.imageKey,
+      ),
+  
+      ...variant.files.map(
+        (file) => file.fileKey,
+      ),
+    ];
+  
+    try {
+      await this.prisma.productVariant.delete({
+        where: {
+          id: variant.id,
+        },
+      });
+    } catch (error: unknown) {
+      if (
+        error instanceof
+          Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new NotFoundException(
+          'Исполнение товара не найдено',
+        );
+      }
+  
+      throw error;
+    }
+
+    await this.deleteUploadedObjects(storageKeys);
+  }
+
+  async reorder(
+    productId: string,
+    dto: ReorderProductVariantsDto,
+  ): Promise<AdminProductVariantResponseDto[]> {
+    const variants = await this.prisma.$transaction(
+      async (transaction) => {
+        const product =
+          await transaction.product.findUnique({
+            where: {
+              id: productId,
+            },
+            select: {
+              variants: {
+                select: {
+                  id: true,
+                },
+              },
+            },
+          });
+  
+        if (!product) {
+          throw new NotFoundException(
+            'Товар не найден',
+          );
+        }
+  
+        const currentVariantIds = new Set(
+          product.variants.map(
+            (variant) => variant.id,
+          ),
+        );
+  
+        const containsEveryVariant =
+          dto.variantIds.length ===
+            currentVariantIds.size &&
+          dto.variantIds.every((variantId) =>
+            currentVariantIds.has(variantId),
+          );
+  
+        if (!containsEveryVariant) {
+          throw new BadRequestException(
+            'Необходимо передать ID всех исполнений этого товара без пропусков и посторонних ID',
+          );
+        }
+  
+        await Promise.all(
+          dto.variantIds.map(
+            (variantId, index) =>
+              transaction.productVariant.update({
+                where: {
+                  id: variantId,
+                },
+                data: {
+                  sortOrder: (index + 1) * 10,
+                },
+              }),
+          ),
+        );
+  
+        return transaction.productVariant.findMany({
+          where: {
+            productId,
+          },
+          orderBy: [
+            {
+              sortOrder: 'asc',
+            },
+            {
+              createdAt: 'asc',
+            },
+          ],
+          select: ADMIN_PRODUCT_VARIANT_SELECT,
+        });
+      },
+    );
+  
+    return variants.map((variant) =>
+      this.toAdminResponse(variant),
+    );
   }
 
   private resolveUpdatedPrice(

@@ -16,6 +16,12 @@ import { ProductsController } from './products.controller';
 import { AdminProductVariantsController } from './admin-product-variants.controller';
 import { ProductVariantsService } from './product-variants.service';
 
+import { AdminProductVariantImagesController } from './admin-product-variant-images.controller';
+import { ProductVariantImagesService } from './product-variant-images.service';
+
+import { AdminProductVariantFilesController } from './admin-product-variant-files.controller';
+import { ProductVariantFilesService } from './product-variant-files.service';
+
 @Module({
   imports: [
     AuthModule,
@@ -27,12 +33,16 @@ import { ProductVariantsService } from './product-variants.service';
     AdminProductImagesController,
     AdminProductFilesController,
     AdminProductVariantsController,
+    AdminProductVariantImagesController,
+    AdminProductVariantFilesController,
   ],
   providers: [
     ProductsService,
     ProductImagesService,
     ProductFilesService,
     ProductVariantsService,
+    ProductVariantImagesService,
+    ProductVariantFilesService,
   ],
 })
 export class ProductsModule {}

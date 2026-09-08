@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import {
   ProductFileType,
@@ -11,12 +11,24 @@ export class ProductDetailsCategoryDto {
 }
 
 export class ProductDetailsImageDto {
+  @ApiProperty()
   id!: string;
+
+  @ApiProperty()
   imageUrl!: string;
-  alt!: string;
+
+  @ApiPropertyOptional({
+    nullable: true,
+    example: 'Стол Altair',
+  })
+  alt!: string | null;
+
+  @ApiProperty()
+  sortOrder!: number;
 }
 
 export class ProductDetailsFileDto {
+  @ApiProperty()
   id!: string;
 
   @ApiProperty({
@@ -24,22 +36,53 @@ export class ProductDetailsFileDto {
   })
   type!: ProductFileType;
 
+  @ApiProperty()
   fileUrl!: string;
+
+  @ApiProperty()
   originalName!: string;
-  label!: string;
-  sizeBytes!: number;
+
+  @ApiPropertyOptional({
+    nullable: true,
+    example: 'Техническая документация',
+  })
+  label!: string | null;
+
+  @ApiProperty()
+  sortOrder!: number;
 }
 
 export class ProductDetailsVariantDto {
+  @ApiProperty()
   id!: string;
+
+  @ApiProperty()
   slug!: string;
+
+  @ApiProperty()
   name!: string;
 
+  @ApiProperty()
   description!: string;
+
+  @ApiPropertyOptional({
+    nullable: true,
+  })
   materials!: string | null;
 
+  @ApiPropertyOptional({
+    nullable: true,
+  })
   heightMm!: number | null;
+
+  @ApiPropertyOptional({
+    nullable: true,
+  })
   widthMm!: number | null;
+
+  @ApiPropertyOptional({
+    nullable: true,
+  })
   depthMm!: number | null;
 
   @ApiProperty({
@@ -47,20 +90,31 @@ export class ProductDetailsVariantDto {
   })
   priceType!: ProductPriceType;
 
+  @ApiPropertyOptional({
+    nullable: true,
+  })
   priceAmount!: string | null;
+
+  @ApiPropertyOptional({
+    nullable: true,
+  })
   priceCurrency!: string | null;
 
+  @ApiProperty({
+    description:
+      'Используются ли изображения основного товара',
+  })
   usesProductImages!: boolean;
 
   @ApiProperty({
-    type: ProductDetailsImageDto,
-    isArray: true,
+    type: [ProductDetailsImageDto],
   })
   images!: ProductDetailsImageDto[];
 
   @ApiProperty({
-    type: ProductDetailsFileDto,
-    isArray: true,
+    type: [ProductDetailsFileDto],
+    description:
+      'Общие файлы товара и собственные файлы исполнения',
   })
   files!: ProductDetailsFileDto[];
 }
