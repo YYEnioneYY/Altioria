@@ -87,75 +87,122 @@ export class EmailService {
   private createHtmlMessage(
     inquiry: ProductInquiryEmail,
   ): string {
-    const name = this.escapeHtml(
+    const customerName = this.escapeHtml(
       inquiry.customerName,
     );
-
-    const email = this.escapeHtml(
+  
+    const customerEmail = this.escapeHtml(
       inquiry.customerEmail,
     );
-
-    const phone = this.escapeHtml(
+  
+    const customerPhone = this.escapeHtml(
       inquiry.customerPhone,
     );
-
+  
     const questions = this.escapeHtml(
       inquiry.questions ?? 'Не указаны',
     ).replace(/\n/g, '<br>');
-
-    const productRu = this.escapeHtml(
+  
+    const productNameRu = this.escapeHtml(
       inquiry.productNameRu,
     );
-
-    const productEn = this.escapeHtml(
+  
+    const productNameEn = this.escapeHtml(
       inquiry.productNameEn,
     );
-
-    const variantBlock =
-      inquiry.variantId
-        ? `
-            <p>
-              <strong>Исполнение:</strong>
-              ${this.escapeHtml(
-                inquiry.variantNameRu ?? '',
-              )}
-              /
-              ${this.escapeHtml(
-                inquiry.variantNameEn ?? '',
-              )}
-            </p>
-            <p>
-              <strong>Variant ID:</strong>
-              ${this.escapeHtml(
-                inquiry.variantId,
-              )}
-            </p>
-          `
-        : `
-            <p>
-              <strong>Исполнение:</strong>
-              основной товар
-            </p>
-          `;
-
+  
+    const productId = this.escapeHtml(
+      inquiry.productId,
+    );
+  
+    const variantBlock = inquiry.variantId
+      ? `
+          <p>
+            <strong>Исполнение:</strong>
+            ${this.escapeHtml(
+              inquiry.variantNameRu ?? 'Не указано',
+            )}
+            /
+            ${this.escapeHtml(
+              inquiry.variantNameEn ?? 'Not specified',
+            )}
+          </p>
+  
+          <p>
+            <strong>Variant ID:</strong>
+            ${this.escapeHtml(inquiry.variantId)}
+          </p>
+        `
+      : `
+          <p>
+            <strong>Исполнение:</strong>
+            Основной товар
+          </p>
+        `;
+  
     return `
-      <div style="font-family: Arial, sans-serif; color: #1a1a1a;">
-        <h2>Новая заявка с сайта Altioria</h2>
-
-        <h3>Контактные данные</h3>
-        <p><strong>Имя:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Телефон:</strong> ${phone}</p>
-
-        <h3>Товар</h3>
-        <p><strong>Название:</strong> ${productRu} / ${productEn}</p>
-        <p><strong>Вариант:</strong> ${variantBlock}</p>
-        <p><strong>Product ID:</strong> ${inquiry.productId}</p>
-        <p><strong>Variant ID:</strong> ${inquiry.variantId}</p>
-
-        <h3>Вопрос</h3>
-        <p>${questions}</p>
-      </div>
+      <!doctype html>
+      <html lang="ru">
+        <head>
+          <meta charset="utf-8">
+          <title>Новая заявка с сайта Altioria</title>
+        </head>
+  
+        <body style="margin: 0; padding: 24px; background-color: #f5f5f5;">
+          <div
+            style="
+              max-width: 640px;
+              margin: 0 auto;
+              padding: 32px;
+              background-color: #ffffff;
+              color: #1a1a1a;
+              font-family: Arial, sans-serif;
+              line-height: 1.5;
+            "
+          >
+            <h2 style="margin-top: 0;">
+              Новая заявка с сайта Altioria
+            </h2>
+  
+            <h3>Контактные данные</h3>
+  
+            <p>
+              <strong>Имя:</strong>
+              ${customerName}
+            </p>
+  
+            <p>
+              <strong>Email:</strong>
+              ${customerEmail}
+            </p>
+  
+            <p>
+              <strong>Телефон:</strong>
+              ${customerPhone}
+            </p>
+  
+            <h3>Товар</h3>
+  
+            <p>
+              <strong>Название:</strong>
+              ${productNameRu} / ${productNameEn}
+            </p>
+  
+            <p>
+              <strong>Product ID:</strong>
+              ${productId}
+            </p>
+  
+            ${variantBlock}
+  
+            <h3>Вопрос</h3>
+  
+            <p>
+              ${questions}
+            </p>
+          </div>
+        </body>
+      </html>
     `;
   }
 

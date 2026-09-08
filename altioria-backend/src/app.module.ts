@@ -11,6 +11,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { EmailModule } from './email/email.module';
 import { ProductInquiriesModule } from './product-inquiries/product-inquiries.module';
 import { ProductsModule } from './products/products.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ProductsModule } from './products/products.module';
     EmailModule,
     ProductInquiriesModule,
     ProductsModule,
+    SearchModule,
   ],
   providers: [
     {
