@@ -19,6 +19,8 @@ import { StorageService } from '../storage/storage.service';
 import { CreateProductVariantDto } from './dto/create-product-variant.dto';
 import { AdminProductVariantResponseDto } from './dto/admin-product-variant-response.dto';
 
+import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
+
 const MAX_VARIANT_IMAGES = 15;
 const MAX_VARIANT_FILES = 10;
 
@@ -371,6 +373,432 @@ export class ProductVariantsService {
 
       throw error;
     }
+  }
+
+  async update(
+    productId: string,
+    variantId: string,
+    dto: UpdateProductVariantDto,
+    images: Express.Multer.File[],
+    files: Express.Multer.File[],
+  ): Promise<AdminProductVariantResponseDto> {
+    const existingVariant =
+      await this.prisma.productVariant.findFirst({
+        where: {
+          id: variantId,
+          productId,
+        },
+        select: {
+          id: true,
+          priceType: true,
+          priceAmount: true,
+          priceCurrency: true,
+          isPublished: true,
+  
+          _count: {
+            select: {
+              images: true,
+              files: true,
+            },
+          },
+  
+          images: {
+            orderBy: {
+              sortOrder: 'desc',
+            },
+            take: 1,
+            select: {
+              sortOrder: true,
+            },
+          },
+  
+          files: {
+            orderBy: {
+              sortOrder: 'desc',
+            },
+            take: 1,
+            select: {
+              sortOrder: true,
+            },
+          },
+  
+          product: {
+            select: {
+              _count: {
+                select: {
+                  images: true,
+                },
+              },
+            },
+          },
+        },
+      });
+  
+    if (!existingVariant) {
+      throw new NotFoundException(
+        'Исполнение товара не найдено',
+      );
+    }
+  
+    const hasFieldChanges = Object.values(dto).some(
+      (value) => value !== undefined,
+    );
+  
+    if (
+      !hasFieldChanges &&
+      images.length === 0 &&
+      files.length === 0
+    ) {
+      throw new BadRequestException(
+        'Не передано ни одного изменения',
+      );
+    }
+  
+    this.validateImages(images);
+    this.validateFilesCount(files);
+  
+    if (
+      existingVariant._count.images +
+        images.length >
+      MAX_VARIANT_IMAGES
+    ) {
+      throw new BadRequestException(
+        `У исполнения может быть не более ${MAX_VARIANT_IMAGES} изображений`,
+      );
+    }
+  
+    if (
+      existingVariant._count.files +
+        files.length >
+      MAX_VARIANT_FILES
+    ) {
+      throw new BadRequestException(
+        `У исполнения может быть не более ${MAX_VARIANT_FILES} файлов`,
+      );
+    }
+  
+    const resultingIsPublished =
+      dto.isPublished ??
+      existingVariant.isPublished;
+  
+    if (
+      resultingIsPublished &&
+      existingVariant._count.images === 0 &&
+      images.length === 0 &&
+      existingVariant.product._count.images === 0
+    ) {
+      throw new BadRequestException(
+        'Нельзя опубликовать исполнение без изображений',
+      );
+    }
+  
+    const price = this.resolveUpdatedPrice(
+      dto,
+      existingVariant,
+    );
+  
+    const preparedFiles = files.map((file) =>
+      this.prepareFile(file),
+    );
+  
+    const uploadedKeys: string[] = [];
+  
+    const newImages: Prisma.ProductVariantImageCreateWithoutVariantInput[] =
+      [];
+  
+    const newFiles: Prisma.ProductVariantFileCreateWithoutVariantInput[] =
+      [];
+  
+    const lastImageSortOrder =
+      existingVariant.images[0]?.sortOrder ?? 0;
+  
+    const lastFileSortOrder =
+      existingVariant.files[0]?.sortOrder ?? 0;
+  
+    try {
+      for (const [index, image] of images.entries()) {
+        const optimizedImage =
+          await this.optimizeImage(image);
+  
+        const imageKey =
+          `products/${productId}/variants/` +
+          `${variantId}/images/${randomUUID()}.webp`;
+  
+        await this.storageService.upload(
+          imageKey,
+          optimizedImage,
+          'image/webp',
+        );
+  
+        uploadedKeys.push(imageKey);
+  
+        newImages.push({
+          imageKey,
+          altRu: null,
+          altEn: null,
+          sortOrder:
+            lastImageSortOrder +
+            (index + 1) * 10,
+        });
+      }
+  
+      for (const [
+        index,
+        prepared,
+      ] of preparedFiles.entries()) {
+        const fileKey =
+          `products/${productId}/variants/` +
+          `${variantId}/files/${randomUUID()}` +
+          `${prepared.extension}`;
+  
+        await this.storageService.upload(
+          fileKey,
+          prepared.file.buffer,
+          prepared.contentType,
+        );
+  
+        uploadedKeys.push(fileKey);
+  
+        newFiles.push({
+          type: prepared.type,
+          fileKey,
+          originalName:
+            prepared.file.originalname,
+          mimeType: prepared.contentType,
+          sizeBytes: prepared.file.size,
+          labelRu: null,
+          labelEn: null,
+          sortOrder:
+            lastFileSortOrder +
+            (index + 1) * 10,
+        });
+      }
+  
+      const variant =
+        await this.prisma.productVariant.update({
+          where: {
+            id: variantId,
+          },
+          data: {
+            ...(dto.slug !== undefined
+              ? { slug: dto.slug }
+              : {}),
+  
+            ...(dto.nameRu !== undefined
+              ? { nameRu: dto.nameRu }
+              : {}),
+  
+            ...(dto.nameEn !== undefined
+              ? { nameEn: dto.nameEn }
+              : {}),
+  
+            ...(dto.descriptionRu !== undefined
+              ? {
+                  descriptionRu:
+                    dto.descriptionRu,
+                }
+              : {}),
+  
+            ...(dto.descriptionEn !== undefined
+              ? {
+                  descriptionEn:
+                    dto.descriptionEn,
+                }
+              : {}),
+  
+            ...(dto.materialsRu !== undefined
+              ? {
+                  materialsRu:
+                    dto.materialsRu,
+                }
+              : {}),
+  
+            ...(dto.materialsEn !== undefined
+              ? {
+                  materialsEn:
+                    dto.materialsEn,
+                }
+              : {}),
+  
+            ...(dto.heightMm !== undefined
+              ? { heightMm: dto.heightMm }
+              : {}),
+  
+            ...(dto.widthMm !== undefined
+              ? { widthMm: dto.widthMm }
+              : {}),
+  
+            ...(dto.depthMm !== undefined
+              ? { depthMm: dto.depthMm }
+              : {}),
+  
+            ...(dto.sortOrder !== undefined
+              ? {
+                  sortOrder: dto.sortOrder,
+                }
+              : {}),
+  
+            ...(dto.isPublished !== undefined
+              ? {
+                  isPublished:
+                    dto.isPublished,
+                }
+              : {}),
+  
+            ...price,
+  
+            ...(newImages.length > 0
+              ? {
+                  images: {
+                    create: newImages,
+                  },
+                }
+              : {}),
+  
+            ...(newFiles.length > 0
+              ? {
+                  files: {
+                    create: newFiles,
+                  },
+                }
+              : {}),
+          },
+          select: ADMIN_PRODUCT_VARIANT_SELECT,
+        });
+  
+      return this.toAdminResponse(variant);
+    } catch (error: unknown) {
+      await this.deleteUploadedObjects(
+        uploadedKeys,
+      );
+  
+      if (
+        error instanceof
+        Prisma.PrismaClientKnownRequestError
+      ) {
+        if (error.code === 'P2002') {
+          throw new ConflictException(
+            `Исполнение со slug "${dto.slug}" уже существует у этого товара`,
+          );
+        }
+  
+        if (error.code === 'P2025') {
+          throw new NotFoundException(
+            'Исполнение товара не найдено',
+          );
+        }
+      }
+  
+      throw error;
+    }
+  }
+
+  private resolveUpdatedPrice(
+    dto: UpdateProductVariantDto,
+    current: {
+      priceType: ProductPriceType | null;
+      priceAmount: {
+        toString(): string;
+      } | null;
+      priceCurrency: string | null;
+    },
+  ): {
+    priceType?: ProductPriceType | null;
+    priceAmount?: number | string | null;
+    priceCurrency?: string | null;
+  } {
+    const hasPriceChanges =
+      dto.priceType !== undefined ||
+      dto.priceAmount !== undefined ||
+      dto.priceCurrency !== undefined;
+  
+    if (!hasPriceChanges) {
+      return {};
+    }
+  
+    const resultingType =
+      dto.priceType !== undefined
+        ? dto.priceType
+        : current.priceType;
+  
+    if (resultingType === null) {
+      if (
+        dto.priceAmount !== undefined &&
+        dto.priceAmount !== null
+      ) {
+        throw new BadRequestException(
+          'Для наследования цены нельзя указывать priceAmount',
+        );
+      }
+  
+      if (
+        dto.priceCurrency !== undefined &&
+        dto.priceCurrency !== null
+      ) {
+        throw new BadRequestException(
+          'Для наследования цены нельзя указывать priceCurrency',
+        );
+      }
+  
+      return {
+        priceType: null,
+        priceAmount: null,
+        priceCurrency: null,
+      };
+    }
+  
+    if (
+      resultingType === ProductPriceType.ON_REQUEST
+    ) {
+      if (
+        dto.priceAmount !== undefined &&
+        dto.priceAmount !== null
+      ) {
+        throw new BadRequestException(
+          'Для цены по запросу нельзя указывать priceAmount',
+        );
+      }
+  
+      if (
+        dto.priceCurrency !== undefined &&
+        dto.priceCurrency !== null
+      ) {
+        throw new BadRequestException(
+          'Для цены по запросу нельзя указывать priceCurrency',
+        );
+      }
+  
+      return {
+        priceType: ProductPriceType.ON_REQUEST,
+        priceAmount: null,
+        priceCurrency: null,
+      };
+    }
+  
+    const resultingAmount =
+      dto.priceAmount !== undefined
+        ? dto.priceAmount
+        : current.priceAmount?.toString() ?? null;
+  
+    const resultingCurrency =
+      dto.priceCurrency !== undefined
+        ? dto.priceCurrency
+        : current.priceCurrency;
+  
+    if (
+      resultingAmount === null ||
+      resultingCurrency === null
+    ) {
+      throw new BadRequestException(
+        'Для фиксированной цены обязательны priceAmount и priceCurrency',
+      );
+    }
+  
+    return {
+      priceType: ProductPriceType.FIXED,
+      priceAmount: resultingAmount,
+      priceCurrency: resultingCurrency,
+    };
   }
 
   private validateImages(

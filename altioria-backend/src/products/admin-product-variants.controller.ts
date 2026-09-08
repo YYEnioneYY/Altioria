@@ -6,6 +6,7 @@ import {
   ParseUUIDPipe,
   Post,
   Get,
+  Patch,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -30,6 +31,8 @@ import { AdminSessionGuard } from '../auth/guards/admin-session.guard';
 import { CreateProductVariantMultipartDto } from './dto/create-product-variant-multipart.dto';
 import { AdminProductVariantResponseDto } from './dto/admin-product-variant-response.dto';
 import { ProductVariantsService } from './product-variants.service';
+
+import { UpdateProductVariantMultipartDto } from './dto/update-product-variant-multipart.dto';
 
 interface ProductVariantUploadedFiles {
   images?: Express.Multer.File[];
@@ -184,4 +187,84 @@ export class AdminProductVariantsController {
       uploadedFiles?.files ?? [],
     );
   }
+
+  @Patch(':variantId')
+  @ApiOperation({
+    summary:
+      'Изменить исполнение и добавить изображения или файлы',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: UpdateProductVariantMultipartDto,
+  })
+  @ApiOkResponse({
+    type: AdminProductVariantResponseDto,
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Некорректные данные или превышен лимит файлов',
+  })
+  @ApiNotFoundResponse({
+    description:
+      'Товар или исполнение не найдено',
+  })
+  @ApiConflictResponse({
+    description:
+      'Исполнение с таким slug уже существует',
+  })
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        {
+          name: 'images',
+          maxCount: 15,
+        },
+        {
+          name: 'files',
+          maxCount: 10,
+        },
+      ],
+      {
+        limits: {
+          files: 25,
+          fileSize: 50 * 1024 * 1024,
+        },
+      },
+    ),
+  )
+  async update(
+    @Param(
+      'productId',
+      new ParseUUIDPipe({
+        version: '4',
+        errorHttpStatusCode:
+          HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    productId: string,
+  
+    @Param(
+      'variantId',
+      new ParseUUIDPipe({
+        version: '4',
+        errorHttpStatusCode:
+          HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    variantId: string,
+  
+    @Body()
+    dto: UpdateProductVariantMultipartDto,
+  
+    @UploadedFiles()
+    uploadedFiles?: ProductVariantUploadedFiles,
+  ): Promise<AdminProductVariantResponseDto> {
+    return this.productVariantsService.update(
+      productId,
+      variantId,
+      dto,
+      uploadedFiles?.images ?? [],
+      uploadedFiles?.files ?? [],
+    );
+  } 
 }
