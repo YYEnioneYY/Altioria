@@ -6,6 +6,13 @@ import { NotFoundPage } from '../pages/not-found';
 import { SiteLayout } from './layouts/SiteLayout';
 import { LocaleProvider } from '../shared/lib/i18n';
 
+import { AboutPage } from '../pages/about';
+import { ContactsPage } from '../pages/contacts';
+
+import { AdminLoginPage } from '../pages/admin-login';
+import { AdminDashboardPage } from '../pages/admin-dashboard';
+import { AdminLayout } from './layouts/AdminLayout';
+
 function App() {
   return (
     <LocaleProvider>
@@ -13,6 +20,20 @@ function App() {
         <Routes>
           <Route element={<SiteLayout />}>
             <Route index element={<HomePage />} />
+            <Route path="about" element={<AboutPage />} />
+            <Route path="contacts" element={<ContactsPage />}/>
+          </Route>
+
+          <Route
+            path="admin/login"
+            element={<AdminLoginPage />}
+          />
+            
+          <Route element={<AdminLayout />}>
+            <Route
+              path="admin-dashboard"
+              element={<AdminDashboardPage />}
+            />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

@@ -1,4 +1,4 @@
-import type { Locale } from '../../../shared/lib/i18n';
+import type { Locale } from '../lib/i18n';
 
 interface StoryParagraph {
   beforeBrand: string;
@@ -22,7 +22,7 @@ interface HomeContent {
   closing: string;
 }
 
-export const homeContent = {
+export const siteContent = {
   ru: {
     productsLinkLabel: 'Перейти к продукции Altioria',
     logoAlt: 'Altioria',

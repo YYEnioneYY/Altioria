@@ -52,7 +52,11 @@ export function LanguageSwitcher({
             key={language.value}
             type="button"
             tabIndex={tabIndex}
-            aria-label={language.ariaLabel}
+            aria-label={
+              locale === 'ru'
+                ? 'Выбор языка'
+                : 'Choose language'
+            }
             aria-pressed={isActive}
             className={`relative z-10 flex h-6 w-9 items-center justify-center rounded-full text-[10px] font-medium transition-colors duration-300 ${
               isActive
