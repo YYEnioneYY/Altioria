@@ -3,8 +3,12 @@ import { Link } from 'react-router';
 
 import { headerNavigation } from '../config/navigation';
 
+import { LanguageSwitcher } from '../../../features/language-switcher';
+import { useLocale } from '../../../shared/lib/i18n';
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { locale } = useLocale();
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -35,17 +39,19 @@ export function Header() {
 
   return (
     <>
-      <header className="header-enter fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-[15px] text-white min-[1201px]:px-[60px] min-[1201px]:py-[25px] min-[1201px]:backdrop-blur-[6px]">
+      <header className="header-enter fixed select-none inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-[15px] text-white min-[1201px]:px-[60px] min-[1201px]:py-[25px] min-[1201px]:backdrop-blur-[6px]">
         <Link
           to="/"
           className="relative z-50 block"
           aria-label="Altioria — главная страница"
+          draggable={false}
           onClick={closeMenu}
         >
           <img
             src="/images/altioria-logo.svg"
             alt="Altioria"
             className="block w-[100px]"
+            draggable={false}
           />
         </Link>
 
@@ -57,37 +63,48 @@ export function Header() {
             <Link
               key={item.path}
               to={item.path}
+              draggable={false}
               className="text-[17px] transition-colors duration-300 hover:text-[#8f8f8f]"
             >
-              {item.label}
+              {item.label[locale]}
             </Link>
           ))}
         </nav>
 
-        <form
-          role="search"
-          className="hidden items-center rounded-[20px] bg-white/10 px-[15px] py-[5px] transition-transform duration-300 hover:scale-[1.02] min-[1201px]:flex"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <input
-            type="search"
-            placeholder="Search..."
-            aria-label="Поиск по сайту"
-            className="w-40 border-0 bg-transparent text-sm text-white outline-none placeholder:text-white/50"
-          />
+        <div className="hidden items-center gap-3 min-[1201px]:flex">
+          <LanguageSwitcher />
 
-          <button
-            type="submit"
-            className="ml-2 mt-1 border-0 bg-transparent"
-            aria-label="Найти"
+          <form
+            role="search"
+            className="flex items-center rounded-[20px] bg-white/10 px-[15px] py-[5px] transition-transform duration-300 hover:scale-[1.02]"
+            onSubmit={(event) => event.preventDefault()}
           >
-            <img
-              src="/images/search-icon.svg"
-              alt=""
-              className="h-[15px] w-[15px] opacity-70"
+            <input
+              type="search"
+              placeholder={locale === 'ru' ? 'Поиск...' : 'Search...'}
+              aria-label={
+                locale === 'ru'
+                  ? 'Поиск по сайту'
+                  : 'Search the website'
+              }
+              draggable={false}
+              className="w-40 select-text border-0 bg-transparent px-1 py-0.5 text-sm text-white outline-none placeholder:text-white/50"
             />
-          </button>
-        </form>
+
+            <button
+              type="submit"
+              className="ml-2 mt-1 border-0 bg-transparent"
+              aria-label={locale === 'ru' ? 'Найти' : 'Search'}
+            >
+              <img
+                src="/images/search-icon.svg"
+                alt=""
+                draggable={false}
+                className="pointer-events-none h-[15px] w-[15px] opacity-70"
+              />
+            </button>
+          </form>
+        </div>
 
         <button
           type="button"
@@ -135,25 +152,36 @@ export function Header() {
       <div
         id="mobile-navigation"
         aria-hidden={!isMenuOpen}
-        className={`fixed inset-0 z-40 flex flex-col bg-[#0c0c0c] px-5 pb-8 pt-20 transition-transform duration-[400ms] min-[1201px]:hidden ${
+        className={`fixed inset-0 select-none z-40 flex flex-col bg-[#0c0c0c] px-5 pb-8 pt-20 transition-transform duration-[400ms] min-[1201px]:hidden ${
           isMenuOpen
             ? 'pointer-events-auto translate-y-0'
             : 'pointer-events-none -translate-y-full'
         }`}
       >
-        <form
-          role="search"
-          className="mb-[30px] flex items-center rounded-[20px] bg-white/10 px-[15px] py-2"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <input
-            type="search"
-            placeholder="Search..."
-            aria-label="Поиск по сайту"
+        <div className="mb-[30px] flex items-center gap-3">
+          <LanguageSwitcher
             tabIndex={isMenuOpen ? 0 : -1}
-            className="w-full border-0 bg-transparent text-base text-white outline-none placeholder:text-white/50"
           />
-        </form>
+        
+          <form
+            role="search"
+            className="flex min-w-0 flex-1 items-center rounded-[20px] bg-white/10 px-[15px] py-2"
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <input
+              type="search"
+              placeholder={locale === 'ru' ? 'Поиск...' : 'Search...'}
+              aria-label={
+                locale === 'ru'
+                  ? 'Поиск по сайту'
+                  : 'Search the website'
+              }
+              draggable={false}
+              tabIndex={isMenuOpen ? 0 : -1}
+              className="min-w-0 flex-1 select-text border-0 bg-transparent text-base text-white outline-none placeholder:text-white/50"
+            />
+          </form>
+        </div>
 
         <nav
           className="flex flex-col gap-[5px]"
@@ -164,10 +192,11 @@ export function Header() {
               key={item.path}
               to={item.path}
               tabIndex={isMenuOpen ? 0 : -1}
-              className="py-[10px] text-center text-xl transition-colors duration-300 hover:text-[#8f8f8f]"
+              draggable={false}
+              className="py-[10px] text-center text-white text-xl transition-colors duration-300 hover:text-[#8f8f8f]"
               onClick={closeMenu}
             >
-              {item.label}
+              {item.label[locale]}
             </Link>
           ))}
         </nav>

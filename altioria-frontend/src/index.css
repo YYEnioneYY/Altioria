@@ -39,3 +39,27 @@ body {
     animation: none;
   }
 }
+
+@keyframes language-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(3px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.language-content-in {
+  animation: language-content-in 350ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .language-content-in {
+    animation: none;
+  }
+}
