@@ -1,0 +1,41 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+@import 'tailwindcss';
+
+html {
+  background: #0c0c0c;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'SF Pro Display', sans-serif;
+  background: #0c0c0c;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes header-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-enter {
+  animation: header-enter 1s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-enter {
+    animation: none;
+  }
+}
