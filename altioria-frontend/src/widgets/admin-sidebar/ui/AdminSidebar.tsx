@@ -26,8 +26,7 @@ function SidebarTooltip({
   children,
 }: SidebarTooltipProps) {
   return (
-    <span className="pointer-events-none absolute left-[calc(100%+0.75rem)] top-1/2 z-[70] -translate-y-1/2 translate-x-1 whitespace-nowrap rounded-lg border border-white/10 bg-[#191919] px-3 py-2 text-xs font-medium text-white/75 opacity-0 shadow-[0_0.75rem_2rem_rgba(0,0,0,0.45)] transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100"
-    >
+    <span className="pointer-events-none absolute left-[calc(100%+0.75rem)] top-1/2 z-[70] -translate-y-1/2 translate-x-1 whitespace-nowrap rounded-lg border border-white/10 bg-[#191919] px-3 py-2 text-xs font-medium tracking-normal text-white/75 opacity-0 shadow-[0_0.75rem_2rem_rgba(0,0,0,0.45)] transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100">
       {children}
     </span>
   );
@@ -179,16 +178,30 @@ export function AdminSidebar({
         <div className="relative flex h-full flex-col">
           <header className="flex h-20 shrink-0 items-center justify-center border-b border-white/[0.07]">
             <Link
-              to="/admin-dashboard"
-              aria-label="Панель управления"
+              to="/products"
+              aria-label="Вернуться к товарам"
+              title="Вернуться к товарам"
               draggable={false}
               onClick={onClose}
-              className="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white text-xl font-semibold tracking-[-0.06em] text-black transition-transform duration-300 hover:scale-105 focus-visible:outline-none"
+              className="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/55 transition-[background-color,color,transform] duration-300 hover:scale-105 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/30"
             >
-              A
-
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="h-5 w-5"
+              >
+                <path
+                  d="M19 12H5M11 6l-6 6 6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
+              
               <SidebarTooltip>
-                Панель управления
+                Вернуться к товарам
               </SidebarTooltip>
             </Link>
           </header>

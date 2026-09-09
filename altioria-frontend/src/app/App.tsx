@@ -13,6 +13,8 @@ import { AdminLoginPage } from '../pages/admin-login';
 import { AdminDashboardPage } from '../pages/admin-dashboard';
 import { AdminLayout } from './layouts/AdminLayout';
 
+import { AdminCategoriesPage } from '../pages/admin-categories';
+
 function App() {
   return (
     <LocaleProvider>
@@ -28,11 +30,16 @@ function App() {
             path="admin/login"
             element={<AdminLoginPage />}
           />
-            
+
           <Route element={<AdminLayout />}>
             <Route
               path="admin-dashboard"
               element={<AdminDashboardPage />}
+            />
+          
+            <Route
+              path="admin/categories"
+              element={<AdminCategoriesPage />}
             />
           </Route>
 

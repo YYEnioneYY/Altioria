@@ -17,4 +17,9 @@ export const adminNavigation: AdminNavigationItem[] = [
     icon: 'dashboard',
     end: true,
   },
+  {
+    label: 'Категории',
+    path: '/admin/categories',
+    icon: 'categories',
+  },
 ];
