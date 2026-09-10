@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 
 import {
   AdminCategoriesApiError,
+  CreateAdminCategoryModal,
   getAdminCategories,
   type AdminCategory,
 } from '../../../features/admin-categories';
@@ -127,6 +128,11 @@ export function AdminCategoriesPage() {
     null,
   );
 
+  const [
+    isCreateModalOpen,
+    setIsCreateModalOpen,
+  ] = useState(false);
+
   const loadCategories =
     useCallback(async (): Promise<void> => {
       setIsLoading(true);
@@ -157,6 +163,21 @@ export function AdminCategoriesPage() {
         setIsLoading(false);
       }
     }, [navigate]);
+
+  function handleCategoryCreated(
+    category: AdminCategory,
+  ): void {
+    setCategories((currentCategories) => {
+      if (!currentCategories) {
+        return [category];
+      }
+  
+      return [
+        ...currentCategories,
+        category,
+      ];
+    });
+  }
 
   useEffect(() => {
     document.title = 'Категории — Altioria';
@@ -205,31 +226,55 @@ export function AdminCategoriesPage() {
           </p>
         </div>
 
-        <button
-          type="button"
-          disabled={isLoading}
-          onClick={() => void loadCategories()}
-          className="inline-flex h-11 shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white/55 transition-[background-color,color] duration-300 hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:self-auto"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            className={`h-4 w-4 ${
-              isLoading ? 'animate-spin' : ''
-            }`}
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => void loadCategories()}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white/55 transition-[background-color,color] duration-300 hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
           >
-            <path
-              d="M20 7v5h-5M4 17v-5h5M18.4 9A7 7 0 006.7 6.6L4 9M5.6 15A7 7 0 0017.3 17.4L20 15"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.6"
-            />
-          </svg>
-
-          Обновить
-        </button>
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className={`h-4 w-4 ${
+                isLoading ? 'animate-spin' : ''
+              }`}
+            >
+              <path
+                d="M20 7v5h-5M4 17v-5h5M18.4 9A7 7 0 006.7 6.6L4 9M5.6 15A7 7 0 0017.3 17.4L20 15"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.6"
+              />
+            </svg>
+        
+            Обновить
+          </button>
+        
+          <button
+            type="button"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-medium text-black transition-[background-color,transform] duration-300 hover:bg-[#d5d5d5] active:scale-[0.98]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-4 w-4"
+            >
+              <path
+                d="M12 5v14M5 12h14"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="1.7"
+              />
+            </svg>
+        
+            Добавить категорию
+          </button>
+        </div>
       </header>
 
       {error && categories !== null && (
@@ -392,6 +437,13 @@ export function AdminCategoriesPage() {
             </article>
           ))}
         </div>
+      )}
+
+      {isCreateModalOpen && (
+        <CreateAdminCategoryModal
+          onClose={() => setIsCreateModalOpen(false)}
+          onCreated={handleCategoryCreated}
+        />
       )}
     </section>
   );
