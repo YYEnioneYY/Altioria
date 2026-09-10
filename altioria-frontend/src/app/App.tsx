@@ -15,6 +15,8 @@ import { AdminLayout } from './layouts/AdminLayout';
 
 import { AdminCategoriesPage } from '../pages/admin-categories';
 
+import { ProductsPage } from '../pages/products';
+
 function App() {
   return (
     <LocaleProvider>
@@ -23,6 +25,7 @@ function App() {
           <Route element={<SiteLayout />}>
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
+            <Route path="products" element={<ProductsPage />} />
             <Route path="contacts" element={<ContactsPage />}/>
           </Route>
 
@@ -36,7 +39,7 @@ function App() {
               path="admin-dashboard"
               element={<AdminDashboardPage />}
             />
-          
+
             <Route
               path="admin/categories"
               element={<AdminCategoriesPage />}
