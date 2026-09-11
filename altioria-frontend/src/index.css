@@ -63,3 +63,214 @@ body {
     animation: none;
   }
 }
+
+.admin-login-grid {
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    );
+
+  background-size: 72px 72px;
+  mask-image: radial-gradient(
+    circle at center,
+    black,
+    transparent 82%
+  );
+}
+
+@keyframes admin-login-brand-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.admin-login-brand-enter {
+  animation:
+    admin-login-brand-enter
+    1100ms
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
+}
+
+@keyframes admin-login-form-enter {
+  from {
+    opacity: 0;
+    transform: translateX(55px);
+    filter: blur(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+.admin-login-form-enter {
+  animation:
+    admin-login-form-enter
+    950ms
+    180ms
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
+}
+
+@keyframes admin-login-copy-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-login-copy-enter {
+  animation:
+    admin-login-copy-enter
+    900ms
+    450ms
+    cubic-bezier(0.16, 1, 0.3, 1)
+    both;
+}
+
+@keyframes admin-login-orb-one {
+  0% {
+    transform: translate3d(-5%, -5%, 0)
+      scale(0.92);
+  }
+
+  50% {
+    transform: translate3d(15%, 8%, 0)
+      scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(5%, 18%, 0)
+      scale(0.98);
+  }
+}
+
+.admin-login-orb-one {
+  animation:
+    admin-login-orb-one
+    18s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+@keyframes admin-login-orb-two {
+  0% {
+    transform: translate3d(0, 0, 0)
+      scale(1);
+  }
+
+  50% {
+    transform: translate3d(-12%, -8%, 0)
+      scale(1.12);
+  }
+
+  100% {
+    transform: translate3d(-4%, -18%, 0)
+      scale(0.94);
+  }
+}
+
+.admin-login-orb-two {
+  animation:
+    admin-login-orb-two
+    22s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+@keyframes admin-login-ring {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.admin-login-ring {
+  animation:
+    admin-login-ring
+    45s
+    linear
+    infinite;
+}
+
+.admin-login-ring-reverse {
+  animation:
+    admin-login-ring
+    35s
+    linear
+    infinite
+    reverse;
+}
+
+@keyframes admin-login-light-sweep {
+  0%,
+  15% {
+    opacity: 0;
+    transform: translateX(-150%);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: translateX(450%);
+  }
+}
+
+.admin-login-light-sweep {
+  animation:
+    admin-login-light-sweep
+    9s
+    ease-in-out
+    infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-login-brand-enter,
+  .admin-login-form-enter,
+  .admin-login-copy-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    filter: none;
+  }
+
+  .admin-login-orb-one,
+  .admin-login-orb-two,
+  .admin-login-ring,
+  .admin-login-ring-reverse,
+  .admin-login-light-sweep {
+    animation: none;
+  }
+}

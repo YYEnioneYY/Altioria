@@ -17,6 +17,10 @@ import { AdminCategoriesPage } from '../pages/admin-categories';
 
 import { ProductsPage } from '../pages/products';
 
+import { PrivacyPolicyPage } from '../pages/privacy-policy';
+
+import { AdminProductsPage } from '../pages/admin-products';
+
 function App() {
   return (
     <LocaleProvider>
@@ -27,6 +31,7 @@ function App() {
             <Route path="about" element={<AboutPage />} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="contacts" element={<ContactsPage />}/>
+            <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           </Route>
 
           <Route
@@ -43,6 +48,11 @@ function App() {
             <Route
               path="admin/categories"
               element={<AdminCategoriesPage />}
+            />
+
+            <Route
+              path="admin/products"
+              element={<AdminProductsPage />}
             />
           </Route>
 

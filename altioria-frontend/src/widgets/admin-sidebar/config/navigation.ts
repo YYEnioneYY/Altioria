@@ -22,4 +22,9 @@ export const adminNavigation: AdminNavigationItem[] = [
     path: '/admin/categories',
     icon: 'categories',
   },
+  {
+    label: 'Товары',
+    path: '/admin/products',
+    icon: 'products',
+  },
 ];
