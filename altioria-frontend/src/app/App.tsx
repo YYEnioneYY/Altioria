@@ -22,6 +22,8 @@ import { PrivacyPolicyPage } from '../pages/privacy-policy';
 import { AdminProductsPage } from '../pages/admin-products';
 import { AdminCreateProductPage } from '../pages/admin-create-product';
 import { AdminProductDetailsPage } from '../pages/admin-product-details';
+import { AdminCreateProductVariantPage } from '../pages/admin-create-product-variant';
+import { AdminProductVariantDetailsPage } from '../pages/admin-product-variant-details';
 
 function App() {
   return (
@@ -70,6 +72,21 @@ function App() {
             <Route
               path="admin/products/:id/edit"
               element={<AdminCreateProductPage />}
+            />
+
+            <Route
+              path="admin/products/:productId/variants/new"
+              element={<AdminCreateProductVariantPage />}
+            />
+
+            <Route
+              path="admin/products/:productId/variants/:variantId"
+              element={<AdminProductVariantDetailsPage />}
+            />
+
+            <Route
+              path="admin/products/:productId/variants/:variantId/edit"
+              element={<AdminCreateProductVariantPage />}
             />
           </Route>
 

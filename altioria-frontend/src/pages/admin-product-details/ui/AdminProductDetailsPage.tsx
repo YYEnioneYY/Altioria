@@ -17,6 +17,10 @@ import {
   type AdminProductImage,
 } from '../../../features/admin-products';
 
+import {
+  AdminProductVariantsSection,
+} from '../../../widgets/admin-product-variants';
+
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat('ru-RU', {
     dateStyle: 'long',
@@ -583,6 +587,13 @@ export function AdminProductDetailsPage() {
           </section>
         </aside>
       </div>
+
+      <AdminProductVariantsSection
+        productId={product.id}
+        productCoverImageUrl={
+          product.images[0]?.imageUrl ?? null
+        }
+      />
 
       {isDeleteModalOpen && (
         <DeleteAdminProductModal
