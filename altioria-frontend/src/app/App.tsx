@@ -20,6 +20,8 @@ import { ProductsPage } from '../pages/products';
 import { PrivacyPolicyPage } from '../pages/privacy-policy';
 
 import { AdminProductsPage } from '../pages/admin-products';
+import { AdminCreateProductPage } from '../pages/admin-create-product';
+import { AdminProductDetailsPage } from '../pages/admin-product-details';
 
 function App() {
   return (
@@ -53,6 +55,21 @@ function App() {
             <Route
               path="admin/products"
               element={<AdminProductsPage />}
+            />
+
+            <Route
+              path="admin/products/new"
+              element={<AdminCreateProductPage />}
+            />
+
+            <Route
+              path="admin/products/:id"
+              element={<AdminProductDetailsPage />}
+            />
+
+            <Route
+              path="admin/products/:id/edit"
+              element={<AdminCreateProductPage />}
             />
           </Route>
 

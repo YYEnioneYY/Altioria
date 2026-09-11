@@ -1,0 +1,1 @@
+export { AdminCreateProductPage } from './ui/AdminCreateProductPage';

@@ -128,6 +128,25 @@ function NavigationIcon({
   );
 }
 
+function HomeIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className="h-5 w-5"
+    >
+      <path
+        d="M3.5 10.5L12 3.5l8.5 7M5.5 9v11h13V9M9.5 20v-6h5v6"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
 function LogoutIcon() {
   return (
     <svg
@@ -177,33 +196,19 @@ export function AdminSidebar({
 
         <div className="relative flex h-full flex-col">
           <header className="flex h-20 shrink-0 items-center justify-center border-b border-white/[0.07]">
-            <Link
-              to="/products"
-              aria-label="Вернуться к товарам"
-              title="Вернуться к товарам"
-              draggable={false}
-              onClick={onClose}
-              className="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white/55 transition-[background-color,color,transform] duration-300 hover:scale-105 hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/30"
+            <div
+              tabIndex={0}
+              aria-label={`Администратор ${username}`}
+              className="group relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.045] text-sm font-medium uppercase text-white/60 outline-none transition-[background-color,color] duration-300 hover:bg-white/[0.08] hover:text-white focus-visible:bg-white/[0.08] focus-visible:text-white focus-visible:ring-1 focus-visible:ring-white/25"
             >
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                className="h-5 w-5"
-              >
-                <path
-                  d="M19 12H5M11 6l-6 6 6 6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                />
-              </svg>
+              {usernameInitial}
+              
+              <span className="absolute bottom-1.5 right-1.5 h-2 w-2 rounded-full border-2 border-[#101010] bg-[#91c89a]" />
               
               <SidebarTooltip>
-                Вернуться к товарам
+                Администратор: {username}
               </SidebarTooltip>
-            </Link>
+            </div>
           </header>
 
           <nav
@@ -235,37 +240,42 @@ export function AdminSidebar({
             ))}
           </nav>
 
-          <footer className="flex shrink-0 flex-col items-center gap-3 border-t border-white/[0.07] py-4">
-            <div
-              tabIndex={0}
-              aria-label={`Администратор ${username}`}
-              className="group relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-sm font-medium uppercase text-white/50 outline-none transition-colors hover:bg-white/[0.07] hover:text-white focus-visible:bg-white/[0.07] focus-visible:text-white"
+          <footer className="flex shrink-0 flex-col items-center gap-2 border-t border-white/[0.07] py-4">
+            <Link
+              to="/products"
+              aria-label="Перейти на сайт"
+              title="Перейти на сайт"
+              draggable={false}
+              onClick={onClose}
+              className="group relative flex h-12 w-12 items-center justify-center rounded-xl text-white/35 transition-[background-color,color,transform] duration-300 hover:scale-105 hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/25"
             >
-              {usernameInitial}
-
+              <HomeIcon />
+                  
               <SidebarTooltip>
-                {username}
+                Перейти на сайт
               </SidebarTooltip>
-            </div>
-
+            </Link>
+                  
+            <div className="h-px w-8 bg-white/[0.07]" />
+                  
             <button
               type="button"
               aria-label="Выйти"
               title="Выйти"
               disabled={isLoggingOut}
               onClick={onLogout}
-              className="group relative flex h-12 w-12 items-center justify-center rounded-xl text-white/30 transition-[background-color,color,transform] duration-250 hover:scale-105 hover:bg-[#d99595]/10 hover:text-[#e4aaaa] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/25 disabled:cursor-not-allowed disabled:opacity-35"
+              className="group relative flex h-12 w-12 items-center justify-center rounded-xl text-white/30 transition-[background-color,color,transform] duration-300 hover:scale-105 hover:bg-[#d99595]/10 hover:text-[#e4aaaa] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/25 disabled:cursor-not-allowed disabled:opacity-35"
             >
               {isLoggingOut ? (
                 <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/15 border-t-current" />
               ) : (
                 <LogoutIcon />
               )}
-
+          
               <SidebarTooltip>
                 {isLoggingOut
                   ? 'Завершение сессии'
-                  : 'Выйти'}
+                  : 'Выйти из аккаунта'}
               </SidebarTooltip>
             </button>
           </footer>

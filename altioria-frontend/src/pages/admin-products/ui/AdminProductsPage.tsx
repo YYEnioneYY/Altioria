@@ -4,7 +4,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import {
   AdminProductsApiError,
@@ -161,7 +161,12 @@ function ProductCard({
     product.images[0] ?? null;
 
   return (
-    <article className="group overflow-hidden rounded-[1.5rem] border border-white/[0.07] bg-white/[0.025] transition-[border-color,background-color,box-shadow] duration-500 hover:border-white/[0.14] hover:bg-white/[0.035] hover:shadow-[0_1.5rem_4rem_rgba(0,0,0,0.25)]">
+    <Link
+      to={`/admin/products/${product.id}`}
+      aria-label={`Открыть товар ${product.nameRu}`}
+      draggable={false}
+      className="group block overflow-hidden rounded-[1.5rem] border border-white/[0.07] bg-white/[0.025] text-white transition-[border-color,background-color,box-shadow,transform] duration-500 hover:-translate-y-1 hover:border-white/[0.14] hover:bg-white/[0.035] hover:shadow-[0_1.5rem_4rem_rgba(0,0,0,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+    >
       <div className="relative overflow-hidden">
         <ProductImage
           src={coverImage?.imageUrl ?? null}
@@ -298,17 +303,32 @@ function ProductCard({
           </div>
         </div>
 
-        <div className="mt-4 flex items-end justify-between gap-4">
+        <div className="mt-4 flex items-center justify-between gap-4">
           <code className="min-w-0 truncate text-xs text-white/25">
             /{product.slug}
           </code>
 
-          <span className="shrink-0 text-[0.67rem] text-white/20">
+          <span className="inline-flex shrink-0 items-center gap-2 text-[0.67rem] text-white/25 transition-colors duration-300 group-hover:text-white/60">
             {formatDate(product.updatedAt)}
+
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              <path
+                d="M5 12h14M14 7l5 5-5 5"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+              />
+            </svg>
           </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -494,31 +514,54 @@ export function AdminProductsPage() {
           </p>
         </div>
 
-        <button
-          type="button"
-          disabled={isLoading}
-          onClick={() => void loadProducts()}
-          className="inline-flex h-11 items-center justify-center gap-2 self-start rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white/55 transition-colors hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:self-auto"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            className={`h-4 w-4 ${
-              isLoading ? 'animate-spin' : ''
-            }`}
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => void loadProducts()}
+            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white/55 transition-colors hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
           >
-            <path
-              d="M20 7v5h-5M4 17v-5h5M18.4 9A7 7 0 006.7 6.6L4 9M5.6 15A7 7 0 0017.3 17.4L20 15"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.6"
-            />
-          </svg>
-
-          Обновить
-        </button>
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className={`h-4 w-4 ${
+                isLoading ? 'animate-spin' : ''
+              }`}
+            >
+              <path
+                d="M20 7v5h-5M4 17v-5h5M18.4 9A7 7 0 006.7 6.6L4 9M5.6 15A7 7 0 0017.3 17.4L20 15"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.6"
+              />
+            </svg>
+          
+            Обновить
+          </button>
+          
+          <Link
+            to="/admin/products/new"
+            className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-white px-5 text-sm font-medium text-black transition-colors hover:bg-[#d5d5d5] sm:w-auto"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-4 w-4"
+            >
+              <path
+                d="M12 5v14M5 12h14"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="1.7"
+              />
+            </svg>
+          
+            Добавить товар
+          </Link>
+        </div>
       </header>
 
       {error && products !== null && (
