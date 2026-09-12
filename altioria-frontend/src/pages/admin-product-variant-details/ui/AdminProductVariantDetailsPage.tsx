@@ -17,6 +17,10 @@ import {
   type AdminProductVariant,
 } from '../../../features/admin-product-variants';
 
+import {
+  DeleteAdminProductVariantButton,
+} from '../../../features/admin-product-variants/ui/DeleteAdminProductVariantButton';
+
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat('ru-RU', {
     dateStyle: 'long',
@@ -324,6 +328,12 @@ export function AdminProductVariantDetailsPage() {
                 #{variant.sortOrder}
               </span>
             </div>
+
+            <DeleteAdminProductVariantButton
+              productId={productId}
+              variantId={variant.id}
+              variantName={variant.nameRu}
+            />
                           
             <Link
               to={`/admin/products/${productId}/variants/${variant.id}/edit`}
