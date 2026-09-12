@@ -11,6 +11,8 @@ import {
   useParams,
 } from 'react-router';
 
+import { Seo } from '../../../shared/ui/seo';
+
 import {
   getCategories,
 } from '../../../entities/category';
@@ -276,18 +278,10 @@ export function CategoryProductsPage() {
     };
   }, [loadProducts]);
 
-  useEffect(() => {
-    if (!categoryTitle) {
-      return;
-    }
-
-    document.title =
-      `${categoryTitle} — Altioria`;
-
-    return () => {
-      document.title = 'Altioria';
-    };
-  }, [categoryTitle]);
+  const categoryDescription =
+    locale === 'ru'
+      ? `${categoryTitle} — авторские предметы коллекции Altioria. Мебель и предметный дизайн Олега Клодта.`
+      : `${categoryTitle} from the Altioria collection — designer furniture and objects by Oleg Klodt.`;
 
   if (!categorySlug) {
     return (
@@ -304,89 +298,97 @@ export function CategoryProductsPage() {
       : 'No image';
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0c0c0c] text-white">
-      <section className="relative mt-[10%] flex min-h-screen flex-col items-center bg-[#0c0c0c] px-5 pb-20 pt-5 max-[1200px]:py-[50px]">
-        <h1
-          key={`category-title-${locale}-${categoryTitle}`}
-          className="language-content-in pointer-events-none relative z-[2] select-none whitespace-nowrap text-[15vw] font-normal leading-[0.5] text-[#a0a0a0] min-[1201px]:text-[14vw]"
-        >
-          {categoryTitle}
-        </h1>
-
-        {isLoading &&
-          products === null && (
-            <ProductsSkeleton />
-          )}
-
-        {!isLoading && error && (
-          <div className="relative z-[2] flex min-h-[28rem] w-full max-w-[1200px] flex-col items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.02] px-5 text-center">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-lg text-white/35">
-              !
-            </span>
-
-            <h2 className="mt-5 text-xl font-normal">
-              {locale === 'ru'
-                ? 'Не удалось загрузить товары'
-                : 'Failed to load products'}
-            </h2>
-
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-white/35">
-              {error}
-            </p>
-
-            <button
-              type="button"
-              onClick={() =>
-                void loadProducts()
-              }
-              className="mt-6 h-11 rounded-xl border border-white/10 bg-white px-5 text-sm font-medium text-black transition-colors hover:bg-[#d6d6d6]"
-            >
-              {locale === 'ru'
-                ? 'Попробовать снова'
-                : 'Try again'}
-            </button>
-          </div>
-        )}
-
-        {!isLoading &&
-          !error &&
-          products?.length === 0 && (
-            <div className="relative z-[2] flex min-h-[28rem] w-full max-w-[1200px] flex-col items-center justify-center px-5 text-center">
-              <p className="text-lg text-white/55">
+    <>
+      <Seo
+        locale={locale}
+        title={categoryTitle}
+        description={categoryDescription}
+        path={`/products/${categorySlug}`}
+      />
+      <main className="min-h-screen overflow-hidden bg-[#0c0c0c] text-white">
+        <section className="relative mt-[10%] flex min-h-screen flex-col items-center bg-[#0c0c0c] px-5 pb-20 pt-5 max-[1200px]:py-[50px]">
+          <h1
+            key={`category-title-${locale}-${categoryTitle}`}
+            className="language-content-in pointer-events-none relative z-[2] select-none whitespace-nowrap text-[15vw] font-normal leading-[0.5] text-[#a0a0a0] min-[1201px]:text-[11vw]"
+          >
+            {categoryTitle}
+          </h1>
+  
+          {isLoading &&
+            products === null && (
+              <ProductsSkeleton />
+            )}
+  
+          {!isLoading && error && (
+            <div className="relative z-[2] flex min-h-[28rem] w-full max-w-[1200px] flex-col items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.02] px-5 text-center">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-lg text-white/35">
+                !
+              </span>
+          
+              <h2 className="mt-5 text-xl font-normal">
                 {locale === 'ru'
-                  ? 'В этой категории пока нет товаров'
-                  : 'There are no products in this category yet'}
+                  ? 'Не удалось загрузить товары'
+                  : 'Failed to load products'}
+              </h2>
+              
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-white/35">
+                {error}
               </p>
-
-              <p className="mt-2 text-sm text-white/25">
+              
+              <button
+                type="button"
+                onClick={() =>
+                  void loadProducts()
+                }
+                className="mt-6 h-11 rounded-xl border border-white/10 bg-white px-5 text-sm font-medium text-black transition-colors hover:bg-[#d6d6d6]"
+              >
                 {locale === 'ru'
-                  ? 'Загляните сюда немного позже'
-                  : 'Please check again later'}
-              </p>
+                  ? 'Попробовать снова'
+                  : 'Try again'}
+              </button>
             </div>
           )}
-
-        {!error &&
-          products &&
-          products.length > 0 && (
-            <div
-              key={`products-${locale}`}
-              className="language-content-in relative z-[2] grid w-full max-w-[1200px] grid-cols-2 gap-[15px] min-[1201px]:grid-cols-4 min-[1201px]:gap-[30px]"
-            >
-              {products.map(
-                (product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    fallbackText={
-                      fallbackImageText
-                    }
-                  />
-                ),
-              )}
-            </div>
-          )}
-      </section>
-    </main>
+  
+          {!isLoading &&
+            !error &&
+            products?.length === 0 && (
+              <div className="relative z-[2] flex min-h-[28rem] w-full max-w-[1200px] flex-col items-center justify-center px-5 text-center">
+                <p className="text-lg text-white/55">
+                  {locale === 'ru'
+                    ? 'В этой категории пока нет товаров'
+                    : 'There are no products in this category yet'}
+                </p>
+                  
+                <p className="mt-2 text-sm text-white/25">
+                  {locale === 'ru'
+                    ? 'Загляните сюда немного позже'
+                    : 'Please check again later'}
+                </p>
+              </div>
+            )}
+  
+          {!error &&
+            products &&
+            products.length > 0 && (
+              <div
+                key={`products-${locale}`}
+                className="language-content-in relative z-[2] grid w-full max-w-[1200px] grid-cols-2 gap-[15px] min-[1201px]:grid-cols-4 min-[1201px]:gap-[30px]"
+              >
+                {products.map(
+                  (product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      fallbackText={
+                        fallbackImageText
+                      }
+                    />
+                  ),
+                )}
+              </div>
+            )}
+        </section>
+      </main>
+    </>
   );
 }

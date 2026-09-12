@@ -2,6 +2,8 @@ import type {
   FormEvent,
 } from 'react';
 
+import { NoIndex } from '../../../shared/ui/seo';
+
 import {
   useEffect,
   useMemo,
@@ -392,280 +394,285 @@ export function ProductInquiryPage() {
   }
 
   return (
-    <main className="min-h-[100dvh] overflow-x-hidden bg-[#0c0c0c] text-white">
-      <section className="flex min-h-[100dvh] justify-center px-5 pb-10 pt-32 min-[1201px]:pt-[130px]">
-        <div className="w-full max-w-[460px]">
-          {isProductLoading && (
-            <LoadingState
-              text={content.loading}
-            />
-          )}
-
-          {!isProductLoading &&
-            loadError && (
-              <div className="flex min-h-[32rem] flex-col items-center justify-center text-center">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-xl text-white/40">
-                  !
-                </span>
-
-                <h1 className="mt-6 text-3xl font-medium tracking-[-0.04em]">
-                  {content.loadError}
-                </h1>
-
-                <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/40">
-                  {loadError}
-                </p>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setReloadVersion(
-                      (current) =>
-                        current + 1,
-                    )
-                  }
-                  className="mt-7 h-[51px] rounded-full bg-white px-7 text-sm font-medium text-black transition-colors hover:bg-[#d8d8d8]"
-                >
-                  {content.retry}
-                </button>
-
-                <Link
-                  to={`/products/${categorySlug}/${productSlug}`}
-                  className="mt-4 text-sm text-white/35 transition-colors hover:text-white"
-                >
-                  {content.back}
-                </Link>
-              </div>
+    <>
+      <NoIndex
+        title={`${content.title} | Altioria`}
+      />
+      <main className="min-h-[100dvh] overflow-x-hidden bg-[#0c0c0c] text-white">
+        <section className="flex min-h-[100dvh] justify-center px-5 pb-10 pt-32 min-[1201px]:pt-[130px]">
+          <div className="w-full max-w-[460px]">
+            {isProductLoading && (
+              <LoadingState
+                text={content.loading}
+              />
             )}
-
-          {!isProductLoading &&
-            !loadError &&
-            productContext &&
-            isSuccess && (
-              <div className="flex min-h-[32rem] flex-col items-center justify-center text-center">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white text-black">
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      d="M5 12.5l4.2 4L19 7"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.8"
-                    />
-                  </svg>
-                </span>
-
-                <h1 className="mt-7 text-[clamp(3rem,8vw,5rem)] font-bold leading-none tracking-[-0.055em] text-[#a0a0a0]">
-                  {content.successTitle}
-                </h1>
-
-                <p className="mt-6 max-w-sm text-base leading-relaxed text-white/45">
-                  {content.successText}
-                </p>
-
-                <Link
-                  to={productContext.productPath}
-                  className="mt-8 inline-flex h-[51px] items-center justify-center rounded-full bg-white px-7 text-sm font-medium text-black transition-colors hover:bg-[#d8d8d8]"
-                >
-                  {content.back}
-                </Link>
-              </div>
-            )}
-
-          {!isProductLoading &&
-            !loadError &&
-            productContext &&
-            !isSuccess && (
-              <form
-                onSubmit={handleSubmit}
-                className="flex w-full flex-col gap-5"
-              >
-                <h1 className="mb-2 pl-[0.18em] text-center text-[42px] font-semibold leading-none tracking-[0.18em] text-[#a0a0a0] sm:text-[56px]">
-                  {content.title}
-                </h1>
-
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(event) =>
-                    setName(
-                      event.target.value,
-                    )
-                  }
-                  placeholder={
-                    content.namePlaceholder
-                  }
-                  aria-label={
-                    content.namePlaceholder
-                  }
-                  autoComplete="name"
-                  minLength={2}
-                  maxLength={100}
-                  required
-                  className="h-[51px] w-full rounded-full border-0 bg-[#363636] px-5 text-base text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
-                />
-
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) =>
-                    setEmail(
-                      event.target.value,
-                    )
-                  }
-                  placeholder={
-                    content.emailPlaceholder
-                  }
-                  aria-label={
-                    content.emailPlaceholder
-                  }
-                  autoComplete="email"
-                  maxLength={254}
-                  required
-                  className="h-[51px] w-full rounded-full border-0 bg-[#363636] px-5 text-base text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
-                />
-
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(event) =>
-                    setPhone(
-                      formatRussianPhone(
-                        event.target.value,
-                      ),
-                    )
-                  }
-                  placeholder={
-                    content.phonePlaceholder
-                  }
-                  aria-label={
-                    content.phonePlaceholder
-                  }
-                  autoComplete="tel"
-                  inputMode="tel"
-                  required
-                  className="h-[51px] w-full rounded-full border-0 bg-[#363636] px-5 text-base text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
-                />
-
-                <input
-                  type="text"
-                  value={
-                    productContext.productName
-                  }
-                  placeholder={
-                    content.productPlaceholder
-                  }
-                  aria-label={
-                    content.productPlaceholder
-                  }
-                  readOnly
-                  className="h-[51px] w-full cursor-default rounded-full border-0 bg-[#2a2a2a] px-5 text-base text-white/75 outline-none"
-                />
-
-                <textarea
-                  value={questions}
-                  onChange={(event) =>
-                    setQuestions(
-                      event.target.value,
-                    )
-                  }
-                  placeholder={
-                    content.questionsPlaceholder
-                  }
-                  aria-label={
-                    content.questionsPlaceholder
-                  }
-                  maxLength={2000}
-                  className="h-[120px] w-full resize-none rounded-[30px] border-0 bg-[#363636] px-5 py-4 text-base leading-relaxed text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
-                />
-
-                <div className="flex items-start gap-3 px-1">
-                  <input
-                    id="privacyAccepted"
-                    type="checkbox"
-                    checked={
-                      privacyAccepted
-                    }
-                    onChange={(event) =>
-                      setPrivacyAccepted(
-                        event.target.checked,
+  
+            {!isProductLoading &&
+              loadError && (
+                <div className="flex min-h-[32rem] flex-col items-center justify-center text-center">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-xl text-white/40">
+                    !
+                  </span>
+              
+                  <h1 className="mt-6 text-3xl font-medium tracking-[-0.04em]">
+                    {content.loadError}
+                  </h1>
+              
+                  <p className="mt-3 max-w-sm text-sm leading-relaxed text-white/40">
+                    {loadError}
+                  </p>
+              
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setReloadVersion(
+                        (current) =>
+                          current + 1,
                       )
                     }
-                    required
-                    className="peer sr-only"
-                  />
-
-                  <label
-                    htmlFor="privacyAccepted"
-                    className="mt-0.5 flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-[5px] border border-white/25 bg-transparent text-black transition-colors peer-checked:border-white peer-checked:bg-white peer-focus-visible:ring-2 peer-focus-visible:ring-white/30"
+                    className="mt-7 h-[51px] rounded-full bg-white px-7 text-sm font-medium text-black transition-colors hover:bg-[#d8d8d8]"
                   >
-                    {privacyAccepted && (
-                      <svg
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                        className="h-3.5 w-3.5"
-                      >
-                        <path
-                          d="M4 10.5l3.5 3.5L16 6"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                        />
-                      </svg>
-                    )}
-                  </label>
-
-                  <p className="text-sm leading-[1.5] text-[#a0a0a0]">
+                    {content.retry}
+                  </button>
+                  
+                  <Link
+                    to={`/products/${categorySlug}/${productSlug}`}
+                    className="mt-4 text-sm text-white/35 transition-colors hover:text-white"
+                  >
+                    {content.back}
+                  </Link>
+                </div>
+              )}
+  
+            {!isProductLoading &&
+              !loadError &&
+              productContext &&
+              isSuccess && (
+                <div className="flex min-h-[32rem] flex-col items-center justify-center text-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white text-black">
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      className="h-6 w-6"
+                    >
+                      <path
+                        d="M5 12.5l4.2 4L19 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  </span>
+              
+                  <h1 className="mt-7 text-[clamp(3rem,8vw,5rem)] font-bold leading-none tracking-[-0.055em] text-[#a0a0a0]">
+                    {content.successTitle}
+                  </h1>
+              
+                  <p className="mt-6 max-w-sm text-base leading-relaxed text-white/45">
+                    {content.successText}
+                  </p>
+              
+                  <Link
+                    to={productContext.productPath}
+                    className="mt-8 inline-flex h-[51px] items-center justify-center rounded-full bg-white px-7 text-sm font-medium text-black transition-colors hover:bg-[#d8d8d8]"
+                  >
+                    {content.back}
+                  </Link>
+                </div>
+              )}
+  
+            {!isProductLoading &&
+              !loadError &&
+              productContext &&
+              !isSuccess && (
+                <form
+                  onSubmit={handleSubmit}
+                  className="flex w-full flex-col gap-5"
+                >
+                  <h1 className="mb-2 pl-[0.18em] text-center text-[42px] font-semibold leading-none tracking-[0.18em] text-[#a0a0a0] sm:text-[56px]">
+                    {content.title}
+                  </h1>
+              
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(event) =>
+                      setName(
+                        event.target.value,
+                      )
+                    }
+                    placeholder={
+                      content.namePlaceholder
+                    }
+                    aria-label={
+                      content.namePlaceholder
+                    }
+                    autoComplete="name"
+                    minLength={2}
+                    maxLength={100}
+                    required
+                    className="h-[51px] w-full rounded-full border-0 bg-[#363636] px-5 text-base text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
+                  />
+  
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) =>
+                      setEmail(
+                        event.target.value,
+                      )
+                    }
+                    placeholder={
+                      content.emailPlaceholder
+                    }
+                    aria-label={
+                      content.emailPlaceholder
+                    }
+                    autoComplete="email"
+                    maxLength={254}
+                    required
+                    className="h-[51px] w-full rounded-full border-0 bg-[#363636] px-5 text-base text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
+                  />
+  
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(event) =>
+                      setPhone(
+                        formatRussianPhone(
+                          event.target.value,
+                        ),
+                      )
+                    }
+                    placeholder={
+                      content.phonePlaceholder
+                    }
+                    aria-label={
+                      content.phonePlaceholder
+                    }
+                    autoComplete="tel"
+                    inputMode="tel"
+                    required
+                    className="h-[51px] w-full rounded-full border-0 bg-[#363636] px-5 text-base text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
+                  />
+  
+                  <input
+                    type="text"
+                    value={
+                      productContext.productName
+                    }
+                    placeholder={
+                      content.productPlaceholder
+                    }
+                    aria-label={
+                      content.productPlaceholder
+                    }
+                    readOnly
+                    className="h-[51px] w-full cursor-default rounded-full border-0 bg-[#2a2a2a] px-5 text-base text-white/75 outline-none"
+                  />
+  
+                  <textarea
+                    value={questions}
+                    onChange={(event) =>
+                      setQuestions(
+                        event.target.value,
+                      )
+                    }
+                    placeholder={
+                      content.questionsPlaceholder
+                    }
+                    aria-label={
+                      content.questionsPlaceholder
+                    }
+                    maxLength={2000}
+                    className="h-[120px] w-full resize-none rounded-[30px] border-0 bg-[#363636] px-5 py-4 text-base leading-relaxed text-white outline-none transition-[background-color,box-shadow] placeholder:text-white/40 focus:bg-[#404040] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.3)]"
+                  />
+  
+                  <div className="flex items-start gap-3 px-1">
+                    <input
+                      id="privacyAccepted"
+                      type="checkbox"
+                      checked={
+                        privacyAccepted
+                      }
+                      onChange={(event) =>
+                        setPrivacyAccepted(
+                          event.target.checked,
+                        )
+                      }
+                      required
+                      className="peer sr-only"
+                    />
+  
                     <label
                       htmlFor="privacyAccepted"
-                      className="cursor-pointer"
+                      className="mt-0.5 flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-[5px] border border-white/25 bg-transparent text-black transition-colors peer-checked:border-white peer-checked:bg-white peer-focus-visible:ring-2 peer-focus-visible:ring-white/30"
                     >
-                      {content.privacyPrefix}
+                      {privacyAccepted && (
+                        <svg
+                          viewBox="0 0 20 20"
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5"
+                        >
+                          <path
+                            d="M4 10.5l3.5 3.5L16 6"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                          />
+                        </svg>
+                      )}
                     </label>
-
-                    <Link
-                      to="/privacy-policy"
-                      className="text-[#e8e8e8] underline decoration-white/30 underline-offset-4 transition-colors hover:text-white hover:decoration-white"
+                  
+                    <p className="text-sm leading-[1.5] text-[#a0a0a0]">
+                      <label
+                        htmlFor="privacyAccepted"
+                        className="cursor-pointer"
+                      >
+                        {content.privacyPrefix}
+                      </label>
+                  
+                      <Link
+                        to="/privacy-policy"
+                        className="text-[#e8e8e8] underline decoration-white/30 underline-offset-4 transition-colors hover:text-white hover:decoration-white"
+                      >
+                        {content.privacyLink}
+                      </Link>
+                  
+                      .
+                    </p>
+                  </div>
+                  
+                  {submitError && (
+                    <p
+                      role="alert"
+                      className="rounded-2xl border border-[#d99595]/20 bg-[#211515] px-4 py-3 text-sm leading-relaxed text-[#e4aaaa]"
                     >
-                      {content.privacyLink}
-                    </Link>
-
-                    .
-                  </p>
-                </div>
-
-                {submitError && (
-                  <p
-                    role="alert"
-                    className="rounded-2xl border border-[#d99595]/20 bg-[#211515] px-4 py-3 text-sm leading-relaxed text-[#e4aaaa]"
+                      {submitError}
+                    </p>
+                  )}
+  
+                  <button
+                    type="submit"
+                    disabled={
+                      !isFormValid ||
+                      isSubmitting
+                    }
+                    className="h-[51px] w-full rounded-full border-0 bg-white px-5 text-base font-medium text-black transition-[background-color,color,transform] duration-300 hover:bg-[#d8d8d8] active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-[#363636] disabled:text-white/25"
                   >
-                    {submitError}
-                  </p>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={
-                    !isFormValid ||
-                    isSubmitting
-                  }
-                  className="h-[51px] w-full rounded-full border-0 bg-white px-5 text-base font-medium text-black transition-[background-color,color,transform] duration-300 hover:bg-[#d8d8d8] active:scale-[0.99] disabled:cursor-not-allowed disabled:bg-[#363636] disabled:text-white/25"
-                >
-                  {isSubmitting
-                    ? content.submitting
-                    : content.submit}
-                </button>
-              </form>
-            )}
-        </div>
-      </section>
-    </main>
+                    {isSubmitting
+                      ? content.submitting
+                      : content.submit}
+                  </button>
+                </form>
+              )}
+          </div>
+        </section>
+      </main>
+    </>
   );
 }

@@ -5,6 +5,8 @@ import {
   useState,
 } from 'react';
 
+import { Seo } from '../../../shared/ui/seo';
+
 import {
   Link,
   Navigate,
@@ -516,19 +518,6 @@ export function ProductDetailsPage() {
     displayedProduct?.images[0] ??
     null;
 
-  useEffect(() => {
-    if (!displayedProduct) {
-      return;
-    }
-
-    document.title =
-      `${displayedProduct.name} — Altioria`;
-
-    return () => {
-      document.title = 'Altioria';
-    };
-  }, [displayedProduct]);
-
   if (
     !categorySlug ||
     !productSlug
@@ -600,6 +589,61 @@ export function ProductDetailsPage() {
       </main>
     );
   }
+
+  const productPath =
+    `/products/${categorySlug}/${productSlug}`;
+  
+  const seoDescription =
+    product.description.trim().length > 160
+      ? `${product.description
+          .trim()
+          .slice(0, 157)
+          .trimEnd()}...`
+      : product.description.trim();
+  
+  const seoImage =
+    product.images[0]?.imageUrl;
+  
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+  
+    name: product.name,
+    description: product.description,
+  
+    ...(product.images.length > 0
+      ? {
+          image: product.images.map(
+            (image) => image.imageUrl,
+          ),
+        }
+      : {}),
+  
+    category: product.category.name,
+  
+    brand: {
+      '@type': 'Brand',
+      name: 'Altioria',
+    },
+  
+    ...(product.priceType === 'FIXED' &&
+    product.priceAmount &&
+    product.priceCurrency
+      ? {
+          offers: {
+            '@type': 'Offer',
+  
+            url:
+              `https://altioria.ru${productPath}`,
+  
+            price: product.priceAmount,
+  
+            priceCurrency:
+              product.priceCurrency,
+          },
+        }
+      : {}),
+  };
 
   const imagesCount =
     displayedProduct.images.length;
@@ -735,215 +779,227 @@ export function ProductDetailsPage() {
   }
 
   return (
-    <main
-      key={`product-${locale}`}
-      className="language-content-in min-h-screen bg-[#0c0c0c] px-[30px] pb-[60px] pt-[100px] text-white min-[1201px]:px-[60px] min-[1201px]:pb-20"
-    >
-      <div className="mx-auto grid w-full max-w-[1400px] gap-10 min-[1201px]:grid-cols-2 min-[1201px]:gap-0">
-        <section
-          aria-label={
-            locale === 'ru'
-              ? 'Галерея товара'
-              : 'Product gallery'
-          }
-          className="relative flex w-full min-[1201px]:w-[90%]"
-        >
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl bg-[#1a1a1a] shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
-            <ProductGalleryImage
-              image={currentImage}
-              productName={
-                displayedProduct.name
-              }
-              fallbackText={
-                locale === 'ru'
-                  ? 'Нет изображения'
-                  : 'No image'
-              }
-            />
-
-            {showImageNavigation && (
-              <>
-                <button
-                  type="button"
-                  onClick={
-                    showPreviousImage
-                  }
-                  aria-label={
-                    locale === 'ru'
-                      ? 'Предыдущее изображение'
-                      : 'Previous image'
-                  }
-                  className="absolute bottom-5 left-5 z-10 flex h-12 w-12 items-center justify-center rounded-full border-0 bg-[#555]/20 text-white backdrop-blur-[10px] transition-[background-color,transform] duration-300 hover:scale-110 hover:bg-white/30 active:scale-95"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                    className="h-5 w-5"
+    <>
+      <Seo
+        locale={locale}
+        title={product.name}
+        description={seoDescription}
+        path={productPath}
+        image={seoImage}
+        imageAlt={product.name}
+        type="product"
+        jsonLd={productJsonLd}
+      />
+      <main
+        key={`product-${locale}`}
+        className="language-content-in min-h-screen bg-[#0c0c0c] px-[30px] pb-[60px] pt-[100px] text-white min-[1201px]:px-[60px] min-[1201px]:pb-20"
+      >
+        <div className="mx-auto grid w-full max-w-[1400px] gap-10 min-[1201px]:grid-cols-2 min-[1201px]:gap-0">
+          <section
+            aria-label={
+              locale === 'ru'
+                ? 'Галерея товара'
+                : 'Product gallery'
+            }
+            className="relative flex w-full min-[1201px]:w-[90%]"
+          >
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl bg-[#1a1a1a] shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+              <ProductGalleryImage
+                image={currentImage}
+                productName={
+                  displayedProduct.name
+                }
+                fallbackText={
+                  locale === 'ru'
+                    ? 'Нет изображения'
+                    : 'No image'
+                }
+              />
+  
+              {showImageNavigation && (
+                <>
+                  <button
+                    type="button"
+                    onClick={
+                      showPreviousImage
+                    }
+                    aria-label={
+                      locale === 'ru'
+                        ? 'Предыдущее изображение'
+                        : 'Previous image'
+                    }
+                    className="absolute bottom-5 left-5 z-10 flex h-12 w-12 items-center justify-center rounded-full border-0 bg-[#555]/20 text-white backdrop-blur-[10px] transition-[background-color,transform] duration-300 hover:scale-110 hover:bg-white/30 active:scale-95"
                   >
-                    <path
-                      d="M15 5l-7 7 7 7"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                    />
-                  </svg>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={showNextImage}
-                  aria-label={
-                    locale === 'ru'
-                      ? 'Следующее изображение'
-                      : 'Next image'
-                  }
-                  className="absolute bottom-5 right-5 z-10 flex h-12 w-12 items-center justify-center rounded-full border-0 bg-[#555]/20 text-white backdrop-blur-[10px] transition-[background-color,transform] duration-300 hover:scale-110 hover:bg-white/30 active:scale-95"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                    className="h-5 w-5"
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        d="M15 5l-7 7 7 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </button>
+  
+                  <button
+                    type="button"
+                    onClick={showNextImage}
+                    aria-label={
+                      locale === 'ru'
+                        ? 'Следующее изображение'
+                        : 'Next image'
+                    }
+                    className="absolute bottom-5 right-5 z-10 flex h-12 w-12 items-center justify-center rounded-full border-0 bg-[#555]/20 text-white backdrop-blur-[10px] transition-[background-color,transform] duration-300 hover:scale-110 hover:bg-white/30 active:scale-95"
                   >
-                    <path
-                      d="M9 5l7 7-7 7"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
-          </div>
-        </section>
-
-        <section className="flex flex-col justify-start gap-[30px]">
-          <h1 className="text-[36px] font-normal uppercase leading-[1.2] tracking-[-2px] text-white min-[1201px]:text-[48px]">
-            {displayedProduct.name}
-          </h1>
-
-          {product.variants.length > 0 && (
-            <section>
-              <h2 className="text-base font-light leading-[1.8] text-[#e0e0e0]">
-                {locale === 'ru'
-                  ? 'Выберите исполнение:'
-                  : 'Choose option:'}
-              </h2>
-
-              <div className="mt-5 flex flex-wrap gap-5">
-                <button
-                  type="button"
-                  onClick={
-                    selectMainProduct
-                  }
-                  className={`rounded-lg border px-3 py-1.5 text-sm uppercase transition-[background-color,color,transform] duration-300 hover:-translate-y-1 ${
-                    activeVariantSlug ===
-                    null
-                      ? 'border-white bg-white text-black'
-                      : 'border-white/70 text-white hover:bg-white/10'
-                  }`}
-                >
-                  {product.name}
-                </button>
-
-                {product.variants.map(
-                  (variant) => {
-                    const isActive =
+                    <svg
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      className="h-5 w-5"
+                    >
+                      <path
+                        d="M9 5l7 7-7 7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
+          </section>
+  
+          <section className="flex flex-col justify-start gap-[30px]">
+            <h1 className="text-[36px] font-normal uppercase leading-[1.2] tracking-[-2px] text-white min-[1201px]:text-[48px]">
+              {displayedProduct.name}
+            </h1>
+  
+            {product.variants.length > 0 && (
+              <section>
+                <h2 className="text-base font-light leading-[1.8] text-[#e0e0e0]">
+                  {locale === 'ru'
+                    ? 'Выберите исполнение:'
+                    : 'Choose option:'}
+                </h2>
+  
+                <div className="mt-5 flex flex-wrap gap-5">
+                  <button
+                    type="button"
+                    onClick={
+                      selectMainProduct
+                    }
+                    className={`rounded-lg border px-3 py-1.5 text-sm uppercase transition-[background-color,color,transform] duration-300 hover:-translate-y-1 ${
                       activeVariantSlug ===
-                      variant.slug;
-
-                    return (
-                      <button
-                        key={variant.id}
-                        type="button"
-                        onClick={() =>
-                          selectVariant(
-                            variant.slug,
-                          )
-                        }
-                        className={`rounded-lg border px-3 py-1.5 text-sm uppercase transition-[background-color,color,transform] duration-300 hover:-translate-y-1 ${
-                          isActive
-                            ? 'border-white bg-white text-black'
-                            : 'border-white/70 text-white hover:bg-white/10'
-                        }`}
-                      >
-                        {variant.name}
-                      </button>
-                    );
-                  },
+                      null
+                        ? 'border-white bg-white text-black'
+                        : 'border-white/70 text-white hover:bg-white/10'
+                    }`}
+                  >
+                    {product.name}
+                  </button>
+  
+                  {product.variants.map(
+                    (variant) => {
+                      const isActive =
+                        activeVariantSlug ===
+                        variant.slug;
+  
+                      return (
+                        <button
+                          key={variant.id}
+                          type="button"
+                          onClick={() =>
+                            selectVariant(
+                              variant.slug,
+                            )
+                          }
+                          className={`rounded-lg border px-3 py-1.5 text-sm uppercase transition-[background-color,color,transform] duration-300 hover:-translate-y-1 ${
+                            isActive
+                              ? 'border-white bg-white text-black'
+                              : 'border-white/70 text-white hover:bg-white/10'
+                          }`}
+                        >
+                          {variant.name}
+                        </button>
+                      );
+                    },
+                  )}
+                </div>
+              </section>
+            )}
+  
+            <p className="text-base font-light leading-[1.8] text-[#e0e0e0]">
+              {displayedProduct.description}
+            </p>
+  
+            {dimensionRows.length > 0 && (
+              <div className="flex flex-col border-t border-white/10">
+                {dimensionRows.map(
+                  (row) => (
+                    <div
+                      key={row.label}
+                      className="flex flex-col items-start gap-2 border-b border-white/10 py-5 text-base min-[1201px]:flex-row min-[1201px]:items-center min-[1201px]:justify-between min-[1201px]:gap-8"
+                    >
+                      <span className="font-light text-[#a0a0a0]">
+                        {row.label}
+                      </span>
+                
+                      <span className="w-full break-words text-left font-normal text-white min-[1201px]:max-w-[70%] min-[1201px]:text-right">
+                        {row.value}
+                      </span>
+                    </div>
+                  ),
                 )}
               </div>
-            </section>
-          )}
-
-          <p className="text-base font-light leading-[1.8] text-[#e0e0e0]">
-            {displayedProduct.description}
-          </p>
-
-          {dimensionRows.length > 0 && (
-            <div className="flex flex-col border-t border-white/10">
-              {dimensionRows.map(
-                (row) => (
-                  <div
-                    key={row.label}
-                    className="flex flex-col items-start gap-2 border-b border-white/10 py-5 text-base min-[1201px]:flex-row min-[1201px]:items-center min-[1201px]:justify-between min-[1201px]:gap-8"
-                  >
-                    <span className="font-light text-[#a0a0a0]">
-                      {row.label}
-                    </span>
-              
-                    <span className="w-full break-words text-left font-normal text-white min-[1201px]:max-w-[70%] min-[1201px]:text-right">
-                      {row.value}
-                    </span>
-                  </div>
-                ),
-              )}
+            )}
+  
+            {displayedProduct.files.length >
+              0 && (
+              <div className="flex flex-wrap gap-5 min-[1201px]:gap-[50px]">
+                {displayedProduct.files.map(
+                  (file) => (
+                    <ProductResource
+                      key={file.id}
+                      file={file}
+                    />
+                  ),
+                )}
+              </div>
+            )}
+  
+            <div className="flex flex-wrap items-center gap-5 border-t border-white/10 pt-10 text-2xl font-normal">
+              <span className="mr-2 text-lg text-[#a0a0a0]">
+                {locale === 'ru'
+                  ? 'Цена:'
+                  : 'Price:'}
+              </span>
+  
+              <span>
+                {formatPrice(
+                  displayedProduct,
+                  locale,
+                )}
+              </span>
+  
+              <Link
+                to={inquiryUrl}
+                className="ml-auto inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-sm font-medium text-black transition-[background-color,transform] duration-300 hover:bg-[#d8d8d8] active:scale-[0.99]"
+              >
+                {locale === 'ru'
+                  ? 'Оставить заявку'
+                  : 'Submit application'}
+              </Link>
             </div>
-          )}
-
-          {displayedProduct.files.length >
-            0 && (
-            <div className="flex flex-wrap gap-5 min-[1201px]:gap-[50px]">
-              {displayedProduct.files.map(
-                (file) => (
-                  <ProductResource
-                    key={file.id}
-                    file={file}
-                  />
-                ),
-              )}
-            </div>
-          )}
-
-          <div className="flex flex-wrap items-center gap-5 border-t border-white/10 pt-10 text-2xl font-normal">
-            <span className="mr-2 text-lg text-[#a0a0a0]">
-              {locale === 'ru'
-                ? 'Цена:'
-                : 'Price:'}
-            </span>
-
-            <span>
-              {formatPrice(
-                displayedProduct,
-                locale,
-              )}
-            </span>
-
-            <Link
-              to={inquiryUrl}
-              className="inline-flex h-12 items-center justify-center rounded-full bg-white px-7 text-sm font-medium text-black transition-[background-color,transform] duration-300 hover:bg-[#d8d8d8] active:scale-[0.99]"
-            >
-              {locale === 'ru'
-                ? 'Оставить заявку'
-                : 'Submit application'}
-            </Link>
-          </div>
-        </section>
-      </div>
-    </main>
+          </section>
+        </div>
+      </main>
+    </>
   );
 }

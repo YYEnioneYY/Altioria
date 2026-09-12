@@ -7,6 +7,8 @@ import {
   useNavigate,
 } from 'react-router';
 
+import { NoIndex } from '../../shared/ui/seo';
+
 import {
   getCurrentAdmin,
   logoutAdmin,
@@ -138,68 +140,74 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="min-h-dvh bg-[#0c0c0c] text-white">
-      <button
-        type="button"
-        aria-label="Закрыть меню"
-        tabIndex={isSidebarOpen ? 0 : -1}
-        onClick={() => setIsSidebarOpen(false)}
-        className={`fixed inset-0 z-40 bg-black/75 backdrop-blur-sm transition-opacity duration-300 min-[900px]:hidden ${
-          isSidebarOpen
-            ? 'pointer-events-auto opacity-100'
-            : 'pointer-events-none opacity-0'
-        }`}
+    <>
+      <NoIndex
+        title="Altioria Admin"
+        follow={false}
       />
-
-      <AdminSidebar
-        username={admin.username}
-        isOpen={isSidebarOpen}
-        isLoggingOut={isLoggingOut}
-        logoutError={logoutError}
-        onClose={() => setIsSidebarOpen(false)}
-        onLogout={() => void handleLogout()}
-      />
-
-      <header className="fixed inset-x-0 top-0 z-30 flex h-[4.5rem] items-center justify-between border-b border-white/[0.07] bg-[#0c0c0c]/90 px-5 backdrop-blur-xl min-[900px]:hidden">
-        <img
-          src="/images/altioria-logo.svg"
-          alt="Altioria"
-          draggable={false}
-          className="pointer-events-none w-[7.5rem]"
-        />
-
+      <div className="min-h-dvh bg-[#0c0c0c] text-white">
         <button
           type="button"
-          aria-label="Открыть меню администратора"
-          aria-expanded={isSidebarOpen}
-          onClick={() => setIsSidebarOpen(true)}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            className="h-5 w-5"
-          >
-            <path
-              d="M5 8h14M5 12h14M5 16h14"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="1.5"
-            />
-          </svg>
-        </button>
-      </header>
-
-      <main className="min-h-dvh pt-[4.5rem] min-[900px]:pl-20 min-[900px]:pt-0">
-        <div className="mx-auto w-full max-w-[110rem] px-5 py-8 sm:px-8 min-[900px]:px-10 min-[900px]:py-10">
-          <Outlet
-            context={{
-              admin,
-            }}
+          aria-label="Закрыть меню"
+          tabIndex={isSidebarOpen ? 0 : -1}
+          onClick={() => setIsSidebarOpen(false)}
+          className={`fixed inset-0 z-40 bg-black/75 backdrop-blur-sm transition-opacity duration-300 min-[900px]:hidden ${
+            isSidebarOpen
+              ? 'pointer-events-auto opacity-100'
+              : 'pointer-events-none opacity-0'
+          }`}
+        />
+  
+        <AdminSidebar
+          username={admin.username}
+          isOpen={isSidebarOpen}
+          isLoggingOut={isLoggingOut}
+          logoutError={logoutError}
+          onClose={() => setIsSidebarOpen(false)}
+          onLogout={() => void handleLogout()}
+        />
+  
+        <header className="fixed inset-x-0 top-0 z-30 flex h-[4.5rem] items-center justify-between border-b border-white/[0.07] bg-[#0c0c0c]/90 px-5 backdrop-blur-xl min-[900px]:hidden">
+          <img
+            src="/images/altioria-logo.svg"
+            alt="Altioria"
+            draggable={false}
+            className="pointer-events-none w-[7.5rem]"
           />
-        </div>
-      </main>
-    </div>
+  
+          <button
+            type="button"
+            aria-label="Открыть меню администратора"
+            aria-expanded={isSidebarOpen}
+            onClick={() => setIsSidebarOpen(true)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              className="h-5 w-5"
+            >
+              <path
+                d="M5 8h14M5 12h14M5 16h14"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="1.5"
+              />
+            </svg>
+          </button>
+        </header>
+      
+        <main className="min-h-dvh pt-[4.5rem] min-[900px]:pl-20 min-[900px]:pt-0">
+          <div className="mx-auto w-full max-w-[110rem] px-5 py-8 sm:px-8 min-[900px]:px-10 min-[900px]:py-10">
+            <Outlet
+              context={{
+                admin,
+              }}
+            />
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
