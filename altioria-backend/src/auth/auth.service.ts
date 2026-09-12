@@ -2,7 +2,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { createHash, randomBytes } from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 import * as argon2 from 'argon2';
 
 import { AuthConfigService } from './services/auth-config.service';
@@ -37,7 +37,7 @@ export class AuthService {
 
     const admin = await this.prisma.admin.findUnique({
       where: {
-        username: loginDto.username,
+        username: username,
       },
     });
 

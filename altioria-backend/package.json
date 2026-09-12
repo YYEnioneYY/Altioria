@@ -23,7 +23,8 @@
     "@prisma/config": {
       "deepmerge-ts": "8.0.0"
     },
-    "mysql2": "3.24.3"
+    "mysql2": "3.24.3",
+    "multer": "2.3.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1126.0",
