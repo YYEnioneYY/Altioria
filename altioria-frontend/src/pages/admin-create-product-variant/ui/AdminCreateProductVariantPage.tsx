@@ -37,6 +37,10 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 type PriceMode = "INHERIT" | "FIXED" | "ON_REQUEST";
 
+type VariantNameMode =
+  | "same"
+  | "localized";
+
 interface VariantForm {
   slug: string;
   nameRu: string;
@@ -592,6 +596,9 @@ export function AdminCreateProductVariantPage() {
 
   const [form, setForm] = useState<VariantForm>(initialForm);
 
+  const [nameMode, setNameMode] =
+    useState<VariantNameMode>("same");
+
   const [formError, setFormError] = useState<string | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -676,6 +683,12 @@ export function AdminCreateProductVariantPage() {
         }
 
         setExistingVariant(loadedVariant);
+        setNameMode(
+          loadedVariant.nameRu ===
+            loadedVariant.nameEn
+            ? "same"
+            : "localized",
+        );
         setIsReorderingFiles(false);
         setFileOrderSnapshot(null);
         setEditingFile(null);
@@ -1238,8 +1251,25 @@ export function AdminCreateProductVariantPage() {
     event.preventDefault();
     setFormError(null);
 
-    if (!form.slug.trim() || !form.nameRu.trim() || !form.nameEn.trim()) {
-      setFormError("Заполните slug и названия на двух языках");
+    const normalizedNameRu =
+      form.nameRu.trim();
+
+    const normalizedNameEn =
+      nameMode === "same"
+        ? normalizedNameRu
+        : form.nameEn.trim();
+
+    if (
+      !form.slug.trim() ||
+      !normalizedNameRu ||
+      !normalizedNameEn
+    ) {
+      setFormError(
+        nameMode === "same"
+          ? "Заполните slug и название исполнения"
+          : "Заполните slug и названия на двух языках",
+      );
+
       return;
     }
 
@@ -1263,8 +1293,8 @@ export function AdminCreateProductVariantPage() {
         isEditing && variantId
           ? await updateAdminProductVariant(productId, variantId, {
               slug: form.slug,
-              nameRu: form.nameRu,
-              nameEn: form.nameEn,
+              nameRu: normalizedNameRu,
+              nameEn: normalizedNameEn,
 
               descriptionRu: form.descriptionRu.trim() || null,
 
@@ -1298,8 +1328,8 @@ export function AdminCreateProductVariantPage() {
             })
           : await createAdminProductVariant(productId, {
               slug: form.slug,
-              nameRu: form.nameRu,
-              nameEn: form.nameEn,
+              nameRu: normalizedNameRu,
+              nameEn: normalizedNameEn,
 
               descriptionRu: form.descriptionRu,
               descriptionEn: form.descriptionEn,
@@ -1428,31 +1458,126 @@ export function AdminCreateProductVariantPage() {
             <h2 className="mt-2 text-xl font-medium">Название исполнения</h2>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="mb-5">
+            <span className="mb-2 block text-sm text-white/65">
+              Как заполнить название
+            </span>
+                  
+            <div
+              role="group"
+              aria-label="Способ заполнения названия исполнения"
+              className="grid w-full max-w-[34rem] grid-cols-2 rounded-xl border border-white/10 bg-black/20 p-1"
+            >
+              <button
+                type="button"
+                aria-pressed={
+                  nameMode === "same"
+                }
+                disabled={isSubmitting}
+                onClick={() => {
+                  setNameMode("same");
+                  setFormError(null);
+                }}
+                className={`min-h-10 rounded-lg px-3 text-sm transition-[background-color,color,box-shadow] duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+                  nameMode === "same"
+                    ? "bg-white text-black shadow-sm"
+                    : "text-white/40 hover:text-white/70"
+                }`}
+              >
+                Одно название
+              </button>
+              
+              <button
+                type="button"
+                aria-pressed={
+                  nameMode === "localized"
+                }
+                disabled={isSubmitting}
+                onClick={() => {
+                  setNameMode("localized");
+                  setFormError(null);
+                }}
+                className={`min-h-10 rounded-lg px-3 text-sm transition-[background-color,color,box-shadow] duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+                  nameMode === "localized"
+                    ? "bg-white text-black shadow-sm"
+                    : "text-white/40 hover:text-white/70"
+                }`}
+              >
+                Русский + English
+              </button>
+            </div>
+              
+            <p className="mt-2 text-xs leading-relaxed text-white/25">
+              {nameMode === "same"
+                ? "Название исполнения будет одинаковым в обеих версиях сайта."
+                : "Укажите отдельное название для каждой версии сайта."}
+            </p>
+          </div>
+              
+          <div
+            className={`grid gap-5 ${
+              nameMode === "same"
+                ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
+                : "lg:grid-cols-3"
+            }`}
+          >
             <TextField
               label="Slug"
               required
               value={form.slug}
               placeholder="dark-oak"
-              onChange={(event) => updateField("slug", event.target.value)}
+              onChange={(event) =>
+                updateField(
+                  "slug",
+                  event.target.value,
+                )
+              }
               hint="Уникальный адрес внутри товара"
             />
-
-            <TextField
-              label="Название на русском"
-              required
-              value={form.nameRu}
-              placeholder="Тёмный дуб"
-              onChange={(event) => updateField("nameRu", event.target.value)}
-            />
-
-            <TextField
-              label="Название на английском"
-              required
-              value={form.nameEn}
-              placeholder="Dark oak"
-              onChange={(event) => updateField("nameEn", event.target.value)}
-            />
+          
+            {nameMode === "same" ? (
+              <TextField
+                label="Название исполнения"
+                required
+                value={form.nameRu}
+                placeholder="Например, Dark oak"
+                onChange={(event) =>
+                  updateField(
+                    "nameRu",
+                    event.target.value,
+                  )
+                }
+                hint="Будет использовано в русской и английской версиях"
+              />
+            ) : (
+              <>
+                <TextField
+                  label="Название на русском"
+                  required
+                  value={form.nameRu}
+                  placeholder="Тёмный дуб"
+                  onChange={(event) =>
+                    updateField(
+                      "nameRu",
+                      event.target.value,
+                    )
+                  }
+                />
+          
+                <TextField
+                  label="Название на английском"
+                  required
+                  value={form.nameEn}
+                  placeholder="Dark oak"
+                  onChange={(event) =>
+                    updateField(
+                      "nameEn",
+                      event.target.value,
+                    )
+                  }
+                />
+              </>
+            )}
           </div>
         </section>
 

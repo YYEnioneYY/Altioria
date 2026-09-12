@@ -24,6 +24,8 @@ const MAX_FILES = 10;
 const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
+type ProductNameMode = 'same' | 'localized';
+
 const allowedImageTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 const inputClass =
@@ -100,6 +102,8 @@ export function AdminCreateProductPage() {
 
   const [categoryId, setCategoryId] = useState('');
   const [slug, setSlug] = useState('');
+  const [nameMode, setNameMode] =
+    useState<ProductNameMode>('same');
   const [nameRu, setNameRu] = useState('');
   const [nameEn, setNameEn] = useState('');
   const [descriptionRu, setDescriptionRu] = useState('');
@@ -207,6 +211,13 @@ export function AdminCreateProductPage() {
 
         setCategoryId(product.categoryId);
         setSlug(product.slug);
+
+        setNameMode(
+          product.nameRu === product.nameEn
+            ? 'same'
+            : 'localized',
+        );
+
         setNameRu(product.nameRu);
         setNameEn(product.nameEn);
 
@@ -366,7 +377,11 @@ export function AdminCreateProductPage() {
 
     const normalizedSlug = slug.trim().toLowerCase();
     const normalizedNameRu = nameRu.trim();
-    const normalizedNameEn = nameEn.trim();
+
+    const normalizedNameEn =
+      nameMode === 'same'
+        ? normalizedNameRu
+        : nameEn.trim();
     const normalizedDescriptionRu = descriptionRu.trim();
     const normalizedDescriptionEn = descriptionEn.trim();
 
@@ -655,41 +670,115 @@ export function AdminCreateProductPage() {
               </span>
             </label>
 
-            <label className="block">
+            <div className="lg:col-span-2">
               <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/40">
-                Название на русском *
+                Как заполнить название
               </span>
-
-              <input
-                type="text"
-                value={nameRu}
-                disabled={isSubmitting}
-                placeholder="Альтаир I"
-                onChange={(event) => {
-                  setNameRu(event.target.value);
-                  setError(null);
-                }}
-                className={inputClass}
-              />
-            </label>
-
-            <label className="block">
-              <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/40">
-                Название на английском *
-              </span>
-
-              <input
-                type="text"
-                value={nameEn}
-                disabled={isSubmitting}
-                placeholder="Altair I"
-                onChange={(event) => {
-                  setNameEn(event.target.value);
-                  setError(null);
-                }}
-                className={inputClass}
-              />
-            </label>
+                        
+              <div
+                role="group"
+                aria-label="Способ заполнения названия товара"
+                className="grid w-full max-w-[34rem] grid-cols-2 rounded-xl border border-white/10 bg-black/20 p-1"
+              >
+                <button
+                  type="button"
+                  aria-pressed={nameMode === 'same'}
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    setNameMode('same');
+                    setError(null);
+                  }}
+                  className={`min-h-10 rounded-lg px-3 text-sm transition-[background-color,color,box-shadow] duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+                    nameMode === 'same'
+                      ? 'bg-white text-black shadow-sm'
+                      : 'text-white/40 hover:text-white/70'
+                  }`}
+                >
+                  Одно название
+                </button>
+              
+                <button
+                  type="button"
+                  aria-pressed={nameMode === 'localized'}
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    setNameMode('localized');
+                    setError(null);
+                  }}
+                  className={`min-h-10 rounded-lg px-3 text-sm transition-[background-color,color,box-shadow] duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+                    nameMode === 'localized'
+                      ? 'bg-white text-black shadow-sm'
+                      : 'text-white/40 hover:text-white/70'
+                  }`}
+                >
+                  Русский + English
+                </button>
+              </div>
+              
+              <p className="mt-2 text-xs leading-relaxed text-white/25">
+                {nameMode === 'same'
+                  ? 'Название будет одинаковым в русской и английской версиях сайта.'
+                  : 'Укажите отдельное название для каждой версии сайта.'}
+              </p>
+            </div>
+                
+            {nameMode === 'same' ? (
+              <label className="block lg:col-span-2">
+                <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/40">
+                  Название товара *
+                </span>
+            
+                <input
+                  type="text"
+                  value={nameRu}
+                  disabled={isSubmitting}
+                  placeholder="Например, Altair I"
+                  onChange={(event) => {
+                    setNameRu(event.target.value);
+                    setError(null);
+                  }}
+                  className={inputClass}
+                />
+              </label>
+            ) : (
+              <>
+                <label className="block">
+                  <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/40">
+                    Название на русском *
+                  </span>
+            
+                  <input
+                    type="text"
+                    value={nameRu}
+                    disabled={isSubmitting}
+                    placeholder="Альтаир I"
+                    onChange={(event) => {
+                      setNameRu(event.target.value);
+                      setError(null);
+                    }}
+                    className={inputClass}
+                  />
+                </label>
+                
+                <label className="block">
+                  <span className="mb-2 block text-xs uppercase tracking-[0.12em] text-white/40">
+                    Название на английском *
+                  </span>
+                
+                  <input
+                    type="text"
+                    value={nameEn}
+                    disabled={isSubmitting}
+                    placeholder="Altair I"
+                    onChange={(event) => {
+                      setNameEn(event.target.value);
+                      setError(null);
+                    }}
+                    className={inputClass}
+                  />
+                </label>
+              </>
+            )}
           </div>
         </section>
 
