@@ -79,6 +79,7 @@ services:
     volumes:
       - ./infra/minio/init.sh:/scripts/init.sh:ro
       - ./infra/minio/categories:/initial-images/categories:ro
+      - ./infra/minio/products:/initial-images/products:ro
 
     entrypoint:
       - /bin/sh
