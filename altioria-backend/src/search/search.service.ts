@@ -33,11 +33,13 @@ export class SearchService {
     const searchTerm = query.q.trim();
     const limit = query.limit ?? 10;
 
-    /*
-     * Выполняем три независимых запроса параллельно.
-     * Максимум получим limit * 3 результатов,
-     * затем отсортируем их и оставим limit.
-     */
+    if (!searchTerm) {
+      return this.getDefaultProducts(
+        isEnglish,
+        limit,
+      );
+    }
+
     const [
       categories,
       products,
@@ -406,5 +408,93 @@ export class SearchService {
           : 2;
 
     return nameScore * 10 + typeScore;
+  }
+
+  private async getDefaultProducts(
+    isEnglish: boolean,
+    limit: number,
+  ): Promise<SearchResultDto[]> {
+    const products =
+      await this.prisma.product.findMany({
+        where: {
+          isPublished: true,
+  
+          category: {
+            isPublished: true,
+          },
+  
+          images: {
+            some: {},
+          },
+        },
+  
+        orderBy: [
+          {
+            sortOrder: 'asc',
+          },
+          {
+            slug: 'asc',
+          },
+        ],
+  
+        take: limit,
+  
+        select: {
+          id: true,
+          slug: true,
+          nameRu: true,
+          nameEn: true,
+  
+          category: {
+            select: {
+              slug: true,
+            },
+          },
+  
+          images: {
+            orderBy: [
+              {
+                sortOrder: 'asc',
+              },
+              {
+                createdAt: 'asc',
+              },
+            ],
+  
+            take: 1,
+  
+            select: {
+              imageKey: true,
+            },
+          },
+        },
+      });
+  
+    return products.map((product) => {
+      const cover = product.images[0];
+  
+      return {
+        id: product.id,
+        type: SearchResultType.PRODUCT,
+  
+        name: isEnglish
+          ? product.nameEn
+          : product.nameRu,
+  
+        slug: product.slug,
+  
+        categorySlug:
+          product.category.slug,
+  
+        variantSlug: null,
+        parentProductName: null,
+  
+        imageUrl: cover
+          ? this.storageService.getPublicUrl(
+              cover.imageKey,
+            )
+          : null,
+      };
+    });
   }
 }

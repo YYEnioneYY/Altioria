@@ -4,7 +4,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  Length,
+  MaxLength,
   Max,
   Min,
 } from 'class-validator';
@@ -18,8 +18,9 @@ import { ContentLocale } from '../../common/enums/content-locale.enum';
 export class SearchQueryDto {
   @ApiProperty({
     example: 'altair',
-    minLength: 2,
     maxLength: 100,
+    description:
+      'Пустая строка возвращает первые опубликованные товары',
   })
   @Transform(({ value }) =>
     typeof value === 'string'
@@ -27,7 +28,7 @@ export class SearchQueryDto {
       : value,
   )
   @IsString()
-  @Length(2, 100)
+  @MaxLength(100)
   q!: string;
 
   @ApiPropertyOptional({
