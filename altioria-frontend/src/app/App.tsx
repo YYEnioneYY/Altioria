@@ -1,10 +1,22 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router';
+
+import {
+  useLocale,
+  LocaleProvider,
+  type Locale,
+} from '../shared/lib/i18n';
+
 
 import { HomePage } from '../pages/home';
 import { NotFoundPage } from '../pages/not-found';
 
 import { SiteLayout } from './layouts/SiteLayout';
-import { LocaleProvider } from '../shared/lib/i18n';
 
 import { AboutPage } from '../pages/about';
 import { ContactsPage } from '../pages/contacts';
@@ -29,21 +41,114 @@ import { AdminCreateProductVariantPage } from '../pages/admin-create-product-var
 import { AdminProductVariantDetailsPage } from '../pages/admin-product-variant-details';
 import { AdminHelpPage } from '../pages/admin-help';
 
+
+const publicLocales: Locale[] = [
+  'ru',
+  'en',
+];
+
+function RootRedirect() {
+  const { locale } = useLocale();
+
+  return (
+    <Navigate
+      to={`/${locale}`}
+      replace
+    />
+  );
+}
+
+function LegacyPublicRedirect() {
+  const { locale } = useLocale();
+  const location = useLocation();
+
+  return (
+    <Navigate
+      to={`/${locale}${location.pathname}${location.search}`}
+      replace
+    />
+  );
+}
+
+
 function App() {
   return (
-    <LocaleProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <LocaleProvider>
         <Routes>
-          <Route element={<SiteLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="about" element={<AboutPage />} />
-            <Route path="products" element={<ProductsPage />} />
-            <Route path="products/:categorySlug" element={<CategoryProductsPage />} />
-            <Route path="products/:categorySlug/:productSlug/inquiry" element={<ProductInquiryPage />} />
-            <Route path="products/:categorySlug/:productSlug" element={<ProductDetailsPage />} />
-            <Route path="contacts" element={<ContactsPage />}/>
-            <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
-          </Route>
+          <Route
+            path="/"
+            element={<RootRedirect />}
+          />
+
+          {publicLocales.map(
+            (locale) => (
+              <Route
+                key={locale}
+                path={locale}
+                element={<SiteLayout />}
+              >
+                <Route
+                  index
+                  element={<HomePage />}
+                />
+
+                <Route
+                  path="about"
+                  element={<AboutPage />}
+                />
+
+                <Route
+                  path="products"
+                  element={<ProductsPage />}
+                />
+
+                <Route
+                  path="products/:categorySlug"
+                  element={
+                    <CategoryProductsPage />
+                  }
+                />
+
+                <Route
+                  path="products/:categorySlug/:productSlug"
+                  element={
+                    <ProductDetailsPage />
+                  }
+                />
+
+                <Route
+                  path="products/:categorySlug/:productSlug/inquiry"
+                  element={
+                    <ProductInquiryPage />
+                  }
+                />
+
+                <Route
+                  path="contacts"
+                  element={
+                    <ContactsPage />
+                  }
+                />
+
+                <Route
+                  path="privacy-policy"
+                  element={
+                    <PrivacyPolicyPage />
+                  }
+                />
+              </Route>
+            ),
+          )}
+
+          <Route index element={<LegacyPublicRedirect />} />
+          <Route path="about" element={<LegacyPublicRedirect />} />
+          <Route path="products" element={<LegacyPublicRedirect />} />
+          <Route path="products/:categorySlug" element={<LegacyPublicRedirect />} />
+          <Route path="products/:categorySlug/:productSlug/inquiry" element={<LegacyPublicRedirect />} />
+          <Route path="products/:categorySlug/:productSlug" element={<LegacyPublicRedirect />} />
+          <Route path="contacts" element={<LegacyPublicRedirect />}/>
+          <Route path="privacy-policy" element={<LegacyPublicRedirect />} />
 
           <Route
             path="admin/login"
@@ -104,8 +209,8 @@ function App() {
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
-      </BrowserRouter>
-    </LocaleProvider>
+      </LocaleProvider>
+    </BrowserRouter>
   );
 }
 

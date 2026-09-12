@@ -1,0 +1,30 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	# NestJS API
+	handle /api/* {
+		reverse_proxy backend:3000
+	}
+
+	# Публичные файлы MinIO
+	handle_path /media/* {
+		rewrite /{$MINIO_BUCKET}{path}
+		reverse_proxy minio:9000
+	}
+
+	# Vite assets имеют hash в имени,
+	# поэтому их можно кешировать надолго.
+	@viteAssets path /assets/*
+	header @viteAssets Cache-Control "public, max-age=31536000, immutable"
+
+	# React SPA
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+}

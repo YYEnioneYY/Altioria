@@ -4,7 +4,10 @@ import { Link } from 'react-router';
 import { headerNavigation } from '../config/navigation';
 
 import { LanguageSwitcher } from '../../../features/language-switcher';
-import { useLocale } from '../../../shared/lib/i18n';
+
+import {
+  useLocale,
+} from '../../../shared/lib/i18n';
 
 import {
   CatalogSearch,

@@ -1,17 +1,18 @@
-name: altioria
+name: altioria-prod
 
 services:
   postgres:
     image: postgres:17-alpine
     restart: unless-stopped
+
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - '5433:5432'
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
     healthcheck:
       test:
         [
@@ -22,21 +23,24 @@ services:
       timeout: 5s
       retries: 10
 
+    expose:
+      - '5432'
+
+
   minio:
     image: quay.io/minio/minio:latest
-    command: server /data --console-address ":9001"
-  
+    restart: unless-stopped
+
+    command:
+      server /data --console-address ":9001"
+
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-  
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-  
+
     volumes:
       - minio_data:/data
-  
+
     healthcheck:
       test:
         [
@@ -49,7 +53,12 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
-  
+
+    expose:
+      - '9000'
+      - '9001'
+
+
   minio-init:
     image: quay.io/minio/mc:latest
     restart: "no"
@@ -80,63 +89,119 @@ services:
       context: ./altioria-backend
       dockerfile: Dockerfile
       target: build
+
     restart: 'no'
+
     env_file:
       - ./altioria-backend/.env.docker
+
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+
     depends_on:
       postgres:
         condition: service_healthy
-    command: ['npx', 'prisma', 'migrate', 'deploy']
+
+    command:
+      ['npx', 'prisma', 'migrate', 'deploy']
+
 
   backend-seed:
     build:
       context: ./altioria-backend
       dockerfile: Dockerfile
       target: build
+
     restart: 'no'
+
     env_file:
       - ./altioria-backend/.env.docker
+
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+
     depends_on:
       backend-migrate:
         condition: service_completed_successfully
-    command: ['npx', 'prisma', 'db', 'seed']
+
+    command:
+      ['npx', 'prisma', 'db', 'seed']
+
 
   backend:
     build:
       context: ./altioria-backend
       dockerfile: Dockerfile
       target: production
+
     restart: unless-stopped
     init: true
+
     env_file:
       - ./altioria-backend/.env.docker
+
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 3000
+
+      FRONTEND_URL: https://${DOMAIN}
 
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
 
       S3_ENDPOINT: http://minio:9000
-      S3_PUBLIC_URL: ${S3_PUBLIC_URL}
+      S3_PUBLIC_URL: https://${DOMAIN}/media
       S3_REGION: us-east-1
       S3_BUCKET: ${MINIO_BUCKET}
+
       S3_ACCESS_KEY_ID: ${MINIO_APP_ACCESS_KEY}
       S3_SECRET_ACCESS_KEY: ${MINIO_APP_SECRET_KEY}
+
       S3_FORCE_PATH_STYLE: 'true'
-    ports:
-      - '3000:3000'
+
+    expose:
+      - '3000'
+
     depends_on:
       postgres:
         condition: service_healthy
+
       backend-seed:
         condition: service_completed_successfully
+
       minio-init:
         condition: service_completed_successfully
+
+
+  frontend:
+    build:
+      context: ./altioria-frontend
+      dockerfile: Dockerfile
+      target: production
+
+    restart: unless-stopped
+
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+    depends_on:
+      - backend
+      - minio
+
 
 volumes:
   postgres_data:
   minio_data:
+
+  caddy_data:
+  caddy_config:
