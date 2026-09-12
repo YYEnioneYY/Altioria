@@ -1,0 +1,2718 @@
+{
+  "source": "https://altioria.ru/products.html",
+  "categories": [
+    {
+      "slug": "tables",
+      "nameRu": "Столы",
+      "nameEn": "Tables",
+      "sortOrder": 10,
+      "products": [
+        {
+          "categorySlug": "tables",
+          "slug": "regale",
+          "nameRu": "Regale",
+          "nameEn": "Regale",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 10,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/regale/images/01-regale1.webp",
+              "altRu": "Regale",
+              "altEn": "Regale",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/regale1.webp"
+            },
+            {
+              "imageKey": "products/seed/regale/images/02-regale2.webp",
+              "altRu": "Regale",
+              "altEn": "Regale",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/regale2.webp"
+            },
+            {
+              "imageKey": "products/seed/regale/images/03-regale3.webp",
+              "altRu": "Regale",
+              "altEn": "Regale",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/regale3.webp"
+            },
+            {
+              "imageKey": "products/seed/regale/images/04-regale4.webp",
+              "altRu": "Regale",
+              "altEn": "Regale",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/regale4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/regale.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "theemin",
+          "nameRu": "Theemin",
+          "nameEn": "Theemin",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 20,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/theemin/images/01-theemin1.webp",
+              "altRu": "Theemin",
+              "altEn": "Theemin",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/theemin1.webp"
+            },
+            {
+              "imageKey": "products/seed/theemin/images/02-theemin2.webp",
+              "altRu": "Theemin",
+              "altEn": "Theemin",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/theemin2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/theemin.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "octantis",
+          "nameRu": "Octantis",
+          "nameEn": "Octantis",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 30,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/octantis/images/01-octantis1.webp",
+              "altRu": "Octantis",
+              "altEn": "Octantis",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/octantis1.webp"
+            },
+            {
+              "imageKey": "products/seed/octantis/images/02-octantis2.webp",
+              "altRu": "Octantis",
+              "altEn": "Octantis",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/octantis2.webp"
+            },
+            {
+              "imageKey": "products/seed/octantis/images/03-octantis3.webp",
+              "altRu": "Octantis",
+              "altEn": "Octantis",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/octantis3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/octantis.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "praecupia",
+          "nameRu": "Praecupia",
+          "nameEn": "Praecupia",
+          "descriptionRu": "The Praecipua bedside table displays an exquisite timeless design that will adorn a bedroom in both neoclassical and modern styles. The table top, supported by elaborately crafted metal elements, is inlaid with precious wood veneer. The combination of pearl-gray shade and rich texture, as well as the simplicity of the design, make it possible to complement any interior.",
+          "descriptionEn": "The Praecipua bedside table displays an exquisite timeless design that will adorn a bedroom in both neoclassical and modern styles. The table top, supported by elaborately crafted metal elements, is inlaid with precious wood veneer. The combination of pearl-gray shade and rich texture, as well as the simplicity of the design, make it possible to complement any interior.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 680,
+          "widthMm": 615,
+          "depthMm": 550,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 40,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/praecupia/images/01-praecupia1.webp",
+              "altRu": "Praecupia",
+              "altEn": "Praecupia",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/praecupia1.webp"
+            },
+            {
+              "imageKey": "products/seed/praecupia/images/02-praecupia2.webp",
+              "altRu": "Praecupia",
+              "altEn": "Praecupia",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/praecupia2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/praecupia.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "petal",
+          "nameRu": "Petal",
+          "nameEn": "Petal",
+          "descriptionRu": "The sculptural coffee table is designed for the living room. The tabletop is a system of three separate marble plates resembling petals that move easily. This dynamic shape makes the PETAL table a versatile item: it can be folded for individual use and spread out for a large group. The bronze stand provides support and reflects the lines and aesthetics of the tabletop. The ergonomic floral shape combined with natural marble trim creates a visual and emotional connection between the interior and nature.",
+          "descriptionEn": "The sculptural coffee table is designed for the living room. The tabletop is a system of three separate marble plates resembling petals that move easily. This dynamic shape makes the PETAL table a versatile item: it can be folded for individual use and spread out for a large group. The bronze stand provides support and reflects the lines and aesthetics of the tabletop. The ergonomic floral shape combined with natural marble trim creates a visual and emotional connection between the interior and nature.",
+          "materialsRu": "Natural stone, metal",
+          "materialsEn": "Natural stone, metal",
+          "heightMm": 460,
+          "widthMm": 1650,
+          "depthMm": 680,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 50,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/petal/images/01-petal1.webp",
+              "altRu": "Petal",
+              "altEn": "Petal",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/petal1.webp"
+            },
+            {
+              "imageKey": "products/seed/petal/images/02-petal2.webp",
+              "altRu": "Petal",
+              "altEn": "Petal",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/petal2.webp"
+            },
+            {
+              "imageKey": "products/seed/petal/images/03-petal3.webp",
+              "altRu": "Petal",
+              "altEn": "Petal",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/petal3.webp"
+            },
+            {
+              "imageKey": "products/seed/petal/images/04-petal4.webp",
+              "altRu": "Petal",
+              "altEn": "Petal",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/petal4.webp"
+            },
+            {
+              "imageKey": "products/seed/petal/images/05-petal5.webp",
+              "altRu": "Petal",
+              "altEn": "Petal",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/petal5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/petal.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "latrare",
+          "nameRu": "Latrare",
+          "nameEn": "Latrare",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 630,
+          "widthMm": 395,
+          "depthMm": 530,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 60,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/latrare/images/01-latrare1.webp",
+              "altRu": "Latrare",
+              "altEn": "Latrare",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/latrare1.webp"
+            },
+            {
+              "imageKey": "products/seed/latrare/images/02-latrare2.webp",
+              "altRu": "Latrare",
+              "altEn": "Latrare",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/latrare2.webp"
+            },
+            {
+              "imageKey": "products/seed/latrare/images/03-latrare3.webp",
+              "altRu": "Latrare",
+              "altEn": "Latrare",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/latrare3.webp"
+            },
+            {
+              "imageKey": "products/seed/latrare/images/04-latrare4.webp",
+              "altRu": "Latrare",
+              "altEn": "Latrare",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/latrare4.webp"
+            },
+            {
+              "imageKey": "products/seed/latrare/images/05-latrare5.webp",
+              "altRu": "Latrare",
+              "altEn": "Latrare",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/latrare5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/latrare.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "bonnet",
+          "nameRu": "Bonnet",
+          "nameEn": "Bonnet",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 70,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/bonnet/images/01-bonnet1.webp",
+              "altRu": "Bonnet",
+              "altEn": "Bonnet",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/bonnet1.webp"
+            },
+            {
+              "imageKey": "products/seed/bonnet/images/02-bonnet2.webp",
+              "altRu": "Bonnet",
+              "altEn": "Bonnet",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/bonnet2.webp"
+            },
+            {
+              "imageKey": "products/seed/bonnet/images/03-bonnet3.webp",
+              "altRu": "Bonnet",
+              "altEn": "Bonnet",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/bonnet3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/bonnet.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "torii",
+          "nameRu": "Torii",
+          "nameEn": "Torii",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 760,
+          "widthMm": 965,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 80,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/torii/images/01-torii1.webp",
+              "altRu": "Torii",
+              "altEn": "Torii",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/torii1.webp"
+            },
+            {
+              "imageKey": "products/seed/torii/images/02-torii2.webp",
+              "altRu": "Torii",
+              "altEn": "Torii",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/torii2.webp"
+            },
+            {
+              "imageKey": "products/seed/torii/images/03-torii3.webp",
+              "altRu": "Torii",
+              "altEn": "Torii",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/torii3.webp"
+            },
+            {
+              "imageKey": "products/seed/torii/images/04-torii4.webp",
+              "altRu": "Torii",
+              "altEn": "Torii",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/torii4.webp"
+            },
+            {
+              "imageKey": "products/seed/torii/images/05-torii5.webp",
+              "altRu": "Torii",
+              "altEn": "Torii",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/torii5.webp"
+            },
+            {
+              "imageKey": "products/seed/torii/images/06-torii6.webp",
+              "altRu": "Torii",
+              "altEn": "Torii",
+              "sortOrder": 60,
+              "sourceUrl": "https://altioria.ru/images/torii6.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/torii.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "axis",
+          "nameRu": "Axis",
+          "nameEn": "Axis",
+          "descriptionRu": "The AXIS table",
+          "descriptionEn": "The AXIS table",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 770,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 90,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/axis/images/01-axis1.webp",
+              "altRu": "Axis",
+              "altEn": "Axis",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/axis1.webp"
+            },
+            {
+              "imageKey": "products/seed/axis/images/02-axis2.webp",
+              "altRu": "Axis",
+              "altEn": "Axis",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/axis2.webp"
+            },
+            {
+              "imageKey": "products/seed/axis/images/03-axis3.webp",
+              "altRu": "Axis",
+              "altEn": "Axis",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/axis3.webp"
+            },
+            {
+              "imageKey": "products/seed/axis/images/04-axis4.webp",
+              "altRu": "Axis",
+              "altEn": "Axis",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/axis4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/axis.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "brace",
+          "nameRu": "Brace",
+          "nameEn": "Brace",
+          "descriptionRu": "The BRACE table",
+          "descriptionEn": "The BRACE table",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 770,
+          "widthMm": 2100,
+          "depthMm": 1930,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 100,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/brace/images/01-brace1.webp",
+              "altRu": "Brace",
+              "altEn": "Brace",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/brace1.webp"
+            },
+            {
+              "imageKey": "products/seed/brace/images/02-brace2.webp",
+              "altRu": "Brace",
+              "altEn": "Brace",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/brace2.webp"
+            },
+            {
+              "imageKey": "products/seed/brace/images/03-brace3.webp",
+              "altRu": "Brace",
+              "altEn": "Brace",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/brace3.webp"
+            },
+            {
+              "imageKey": "products/seed/brace/images/04-brace4.webp",
+              "altRu": "Brace",
+              "altEn": "Brace",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/brace4.webp"
+            },
+            {
+              "imageKey": "products/seed/brace/images/05-brace5.webp",
+              "altRu": "Brace",
+              "altEn": "Brace",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/brace5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/brace.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "frame",
+          "nameRu": "Frame",
+          "nameEn": "Frame",
+          "descriptionRu": "The FRAME table",
+          "descriptionEn": "The FRAME table",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 770,
+          "widthMm": 1600,
+          "depthMm": 700,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 110,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/frame/images/01-frame1.webp",
+              "altRu": "Frame",
+              "altEn": "Frame",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/frame1.webp"
+            },
+            {
+              "imageKey": "products/seed/frame/images/02-frame2.webp",
+              "altRu": "Frame",
+              "altEn": "Frame",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/frame2.webp"
+            },
+            {
+              "imageKey": "products/seed/frame/images/03-frame3.webp",
+              "altRu": "Frame",
+              "altEn": "Frame",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/frame3.webp"
+            },
+            {
+              "imageKey": "products/seed/frame/images/04-frame4.webp",
+              "altRu": "Frame",
+              "altEn": "Frame",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/frame4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/frame.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "grid",
+          "nameRu": "Grid",
+          "nameEn": "Grid",
+          "descriptionRu": "The GRID table",
+          "descriptionEn": "The GRID table",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 885,
+          "widthMm": 2810,
+          "depthMm": 1600,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 120,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/grid/images/01-grid1.webp",
+              "altRu": "Grid",
+              "altEn": "Grid",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/grid1.webp"
+            },
+            {
+              "imageKey": "products/seed/grid/images/02-grid2.webp",
+              "altRu": "Grid",
+              "altEn": "Grid",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/grid2.webp"
+            },
+            {
+              "imageKey": "products/seed/grid/images/03-grid3.webp",
+              "altRu": "Grid",
+              "altEn": "Grid",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/grid3.webp"
+            },
+            {
+              "imageKey": "products/seed/grid/images/04-grid4.webp",
+              "altRu": "Grid",
+              "altEn": "Grid",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/grid4.webp"
+            },
+            {
+              "imageKey": "products/seed/grid/images/05-grid5.webp",
+              "altRu": "Grid",
+              "altEn": "Grid",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/grid5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/grid.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "pier",
+          "nameRu": "Pier",
+          "nameEn": "Pier",
+          "descriptionRu": "The PIER table",
+          "descriptionEn": "The PIER table",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 770,
+          "widthMm": 2100,
+          "depthMm": 1930,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 130,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/pier/images/01-pier1.webp",
+              "altRu": "Pier",
+              "altEn": "Pier",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/pier1.webp"
+            },
+            {
+              "imageKey": "products/seed/pier/images/02-pier2.webp",
+              "altRu": "Pier",
+              "altEn": "Pier",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/pier2.webp"
+            },
+            {
+              "imageKey": "products/seed/pier/images/03-pier3.webp",
+              "altRu": "Pier",
+              "altEn": "Pier",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/pier3.webp"
+            },
+            {
+              "imageKey": "products/seed/pier/images/04-pier4.webp",
+              "altRu": "Pier",
+              "altEn": "Pier",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/pier4.webp"
+            },
+            {
+              "imageKey": "products/seed/pier/images/05-pier5.webp",
+              "altRu": "Pier",
+              "altEn": "Pier",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/pier5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/pier.html"
+        },
+        {
+          "categorySlug": "tables",
+          "slug": "span",
+          "nameRu": "Span",
+          "nameEn": "Span",
+          "descriptionRu": "The SPAN table",
+          "descriptionEn": "The SPAN table",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 770,
+          "widthMm": 2800,
+          "depthMm": 1200,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 140,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/span/images/01-span1.webp",
+              "altRu": "Span",
+              "altEn": "Span",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/span1.webp"
+            },
+            {
+              "imageKey": "products/seed/span/images/02-span2.webp",
+              "altRu": "Span",
+              "altEn": "Span",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/span2.webp"
+            },
+            {
+              "imageKey": "products/seed/span/images/03-span3.webp",
+              "altRu": "Span",
+              "altEn": "Span",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/span3.webp"
+            },
+            {
+              "imageKey": "products/seed/span/images/04-span4.webp",
+              "altRu": "Span",
+              "altEn": "Span",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/span4.webp"
+            },
+            {
+              "imageKey": "products/seed/span/images/05-span5.webp",
+              "altRu": "Span",
+              "altEn": "Span",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/span5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/span.html"
+        }
+      ]
+    },
+    {
+      "slug": "lighting",
+      "nameRu": "Освещение",
+      "nameEn": "Lighting",
+      "sortOrder": 20,
+      "products": [
+        {
+          "categorySlug": "lighting",
+          "slug": "diadem",
+          "nameRu": "Diadem",
+          "nameEn": "Diadem",
+          "descriptionRu": "The flower-shaped DIADEM glass chandelier is ideal for spacious living rooms and bedrooms. The strict geometry of the minimalistic petals is supported by a complex bracket system. The thin metal strips resemble flower stalks strewn with morning dew, turning the DIADEM chandelier into a completely weightless and graceful work of art.",
+          "descriptionEn": "The flower-shaped DIADEM glass chandelier is ideal for spacious living rooms and bedrooms. The strict geometry of the minimalistic petals is supported by a complex bracket system. The thin metal strips resemble flower stalks strewn with morning dew, turning the DIADEM chandelier into a completely weightless and graceful work of art.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 730,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 10,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/diadem/images/01-diadem1.webp",
+              "altRu": "Diadem",
+              "altEn": "Diadem",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/diadem1.webp"
+            },
+            {
+              "imageKey": "products/seed/diadem/images/02-diadem2.webp",
+              "altRu": "Diadem",
+              "altEn": "Diadem",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/diadem2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/diadem.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "altair-i",
+          "nameRu": "Altair I",
+          "nameEn": "Altair I",
+          "descriptionRu": "The Altair I pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+          "descriptionEn": "The Altair I pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+          "materialsRu": "Metal (bronze, nickel), Optiwhite glass",
+          "materialsEn": "Metal (bronze, nickel), Optiwhite glass",
+          "heightMm": 1500,
+          "widthMm": 230,
+          "depthMm": 230,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 20,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/altair-i/images/01-altair1.webp",
+              "altRu": "Altair I",
+              "altEn": "Altair I",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/altair1.webp"
+            },
+            {
+              "imageKey": "products/seed/altair-i/images/02-altair2.webp",
+              "altRu": "Altair I",
+              "altEn": "Altair I",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/altair2.webp"
+            },
+            {
+              "imageKey": "products/seed/altair-i/images/03-altair3.webp",
+              "altRu": "Altair I",
+              "altEn": "Altair I",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/altair3.webp"
+            },
+            {
+              "imageKey": "products/seed/altair-i/images/04-altair4.webp",
+              "altRu": "Altair I",
+              "altEn": "Altair I",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/altair4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [
+            {
+              "slug": "altair-ii",
+              "nameRu": "Altair II",
+              "nameEn": "Altair II",
+              "descriptionRu": "The Altair II pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+              "descriptionEn": "The Altair II pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+              "materialsRu": "Metal (bronze, nickel), Optiwhite glass",
+              "materialsEn": "Metal (bronze, nickel), Optiwhite glass",
+              "heightMm": 1500,
+              "widthMm": 560,
+              "depthMm": 230,
+              "priceType": "ON_REQUEST",
+              "priceAmount": null,
+              "priceCurrency": null,
+              "sortOrder": 10,
+              "isPublished": true,
+              "images": [
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-ii/images/01-altair2-1.webp",
+                  "altRu": "Altair II",
+                  "altEn": "Altair II",
+                  "sortOrder": 10,
+                  "sourceUrl": "https://altioria.ru/images/altair2-1.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-ii/images/02-altair2-2.webp",
+                  "altRu": "Altair II",
+                  "altEn": "Altair II",
+                  "sortOrder": 20,
+                  "sourceUrl": "https://altioria.ru/images/altair2-2.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-ii/images/03-altair2-3.webp",
+                  "altRu": "Altair II",
+                  "altEn": "Altair II",
+                  "sortOrder": 30,
+                  "sourceUrl": "https://altioria.ru/images/altair2-3.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-ii/images/04-altair2-4.webp",
+                  "altRu": "Altair II",
+                  "altEn": "Altair II",
+                  "sortOrder": 40,
+                  "sourceUrl": "https://altioria.ru/images/altair2-4.webp"
+                }
+              ],
+              "files": [],
+              "sourceUrl": "https://altioria.ru/altair-II.html"
+            },
+            {
+              "slug": "altair-iii",
+              "nameRu": "Altair III",
+              "nameEn": "Altair III",
+              "descriptionRu": "The Altair III pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+              "descriptionEn": "The Altair III pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+              "materialsRu": "Metal (bronze, nickel), Optiwhite glass",
+              "materialsEn": "Metal (bronze, nickel), Optiwhite glass",
+              "heightMm": 1500,
+              "widthMm": 560,
+              "depthMm": 230,
+              "priceType": "ON_REQUEST",
+              "priceAmount": null,
+              "priceCurrency": null,
+              "sortOrder": 20,
+              "isPublished": true,
+              "images": [
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-iii/images/01-altair3-1.webp",
+                  "altRu": "Altair III",
+                  "altEn": "Altair III",
+                  "sortOrder": 10,
+                  "sourceUrl": "https://altioria.ru/images/altair3-1.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-iii/images/02-altair3-2.webp",
+                  "altRu": "Altair III",
+                  "altEn": "Altair III",
+                  "sortOrder": 20,
+                  "sourceUrl": "https://altioria.ru/images/altair3-2.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-iii/images/03-altair3-3.webp",
+                  "altRu": "Altair III",
+                  "altEn": "Altair III",
+                  "sortOrder": 30,
+                  "sourceUrl": "https://altioria.ru/images/altair3-3.webp"
+                }
+              ],
+              "files": [],
+              "sourceUrl": "https://altioria.ru/altair-III.html"
+            },
+            {
+              "slug": "altair-iv",
+              "nameRu": "Altair IV",
+              "nameEn": "Altair IV",
+              "descriptionRu": "The Altair IV pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+              "descriptionEn": "The Altair IV pendant lamp is an ideal choice for hallway lighting. This elegant geometric chandelier is designed for rooms with high ceilings, including atriums and stairs. Hidden metal slats and balls serve as decorative elements, while vertical glass elements create a soft and cozy light. Light up your hallway stylishly and exquisitely.",
+              "materialsRu": "Metal (bronze, nickel), Optiwhite glass",
+              "materialsEn": "Metal (bronze, nickel), Optiwhite glass",
+              "heightMm": 1500,
+              "widthMm": 531,
+              "depthMm": 531,
+              "priceType": "ON_REQUEST",
+              "priceAmount": null,
+              "priceCurrency": null,
+              "sortOrder": 30,
+              "isPublished": true,
+              "images": [
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-iv/images/01-altair4-1.webp",
+                  "altRu": "Altair IV",
+                  "altEn": "Altair IV",
+                  "sortOrder": 10,
+                  "sourceUrl": "https://altioria.ru/images/altair4-1.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-iv/images/02-altair4-2.webp",
+                  "altRu": "Altair IV",
+                  "altEn": "Altair IV",
+                  "sortOrder": 20,
+                  "sourceUrl": "https://altioria.ru/images/altair4-2.webp"
+                },
+                {
+                  "imageKey": "products/seed/altair-i/variants/altair-iv/images/03-altair4-3.webp",
+                  "altRu": "Altair IV",
+                  "altEn": "Altair IV",
+                  "sortOrder": 30,
+                  "sourceUrl": "https://altioria.ru/images/altair4-3.webp"
+                }
+              ],
+              "files": [],
+              "sourceUrl": "https://altioria.ru/altair-IV.html"
+            }
+          ],
+          "sourceUrl": "https://altioria.ru/altair-I.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "meissa-iii",
+          "nameRu": "Meissa III",
+          "nameEn": "Meissa III",
+          "descriptionRu": "The MEISSA chandelier is a contemporary light fixture that can become the focal point of any space with high ceilings, including atriums and stairwells.",
+          "descriptionEn": "The MEISSA chandelier is a contemporary light fixture that can become the focal point of any space with high ceilings, including atriums and stairwells.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 30,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/meissa-iii/images/01-meissa1.webp",
+              "altRu": "Meissa III",
+              "altEn": "Meissa III",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/meissa1.webp"
+            },
+            {
+              "imageKey": "products/seed/meissa-iii/images/02-meissa2.webp",
+              "altRu": "Meissa III",
+              "altEn": "Meissa III",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/meissa2.webp"
+            },
+            {
+              "imageKey": "products/seed/meissa-iii/images/03-meissa3.webp",
+              "altRu": "Meissa III",
+              "altEn": "Meissa III",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/meissa3.webp"
+            },
+            {
+              "imageKey": "products/seed/meissa-iii/images/04-meissa4.webp",
+              "altRu": "Meissa III",
+              "altEn": "Meissa III",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/meissa4.webp"
+            },
+            {
+              "imageKey": "products/seed/meissa-iii/images/05-meissa5.webp",
+              "altRu": "Meissa III",
+              "altEn": "Meissa III",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/meissa5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/meissa-III.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "meredian",
+          "nameRu": "Meredian",
+          "nameEn": "Meredian",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 40,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/meredian/images/01-meridian1.webp",
+              "altRu": "Meredian",
+              "altEn": "Meredian",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/meridian1.webp"
+            },
+            {
+              "imageKey": "products/seed/meredian/images/02-meridian2.webp",
+              "altRu": "Meredian",
+              "altEn": "Meredian",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/meridian2.webp"
+            },
+            {
+              "imageKey": "products/seed/meredian/images/03-meridian3.webp",
+              "altRu": "Meredian",
+              "altEn": "Meredian",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/meridian3.webp"
+            },
+            {
+              "imageKey": "products/seed/meredian/images/04-meridian4.webp",
+              "altRu": "Meredian",
+              "altEn": "Meredian",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/meridian4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/meredian.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "pearl",
+          "nameRu": "Pearl",
+          "nameEn": "Pearl",
+          "descriptionRu": "Жемчуг – одно из самых восхитительных сокровищ моря. Керамические пластины с перламутровым блеском, обрамленные в изящную металлическую оправу в сочетании со стеклянной сферой внутри, воссоздают образ морской раковины с жемчужиной. Лаконичный и утонченный дизайн светильника «Pearl» станет центром внимания в любом интерьере – как в приватной спальне, так и в общественных пространствах.",
+          "descriptionEn": "Жемчуг – одно из самых восхитительных сокровищ моря. Керамические пластины с перламутровым блеском, обрамленные в изящную металлическую оправу в сочетании со стеклянной сферой внутри, воссоздают образ морской раковины с жемчужиной. Лаконичный и утонченный дизайн светильника «Pearl» станет центром внимания в любом интерьере – как в приватной спальне, так и в общественных пространствах.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 50,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/pearl/images/01-pearl1.webp",
+              "altRu": "Pearl",
+              "altEn": "Pearl",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/pearl1.webp"
+            },
+            {
+              "imageKey": "products/seed/pearl/images/02-pearl2.webp",
+              "altRu": "Pearl",
+              "altEn": "Pearl",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/pearl2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/pearl.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "felis",
+          "nameRu": "Felis",
+          "nameEn": "Felis",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 485,
+          "widthMm": 156,
+          "depthMm": 137,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 60,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/felis/images/01-felis1.webp",
+              "altRu": "Felis",
+              "altEn": "Felis",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/felis1.webp"
+            },
+            {
+              "imageKey": "products/seed/felis/images/02-felis2.webp",
+              "altRu": "Felis",
+              "altEn": "Felis",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/felis2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/felis.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "fornacis",
+          "nameRu": "Fornacis",
+          "nameEn": "Fornacis",
+          "descriptionRu": "Настенный светильник FORNACIS – шедевр инженерной мысли, элегантно ступенчатый, идеально подходит для освещения лестниц. Его эффектная металлическая поверхность цвета никеля шампанского добавляет изысканности и идеально дополняет перила и балясины.",
+          "descriptionEn": "Настенный светильник FORNACIS – шедевр инженерной мысли, элегантно ступенчатый, идеально подходит для освещения лестниц. Его эффектная металлическая поверхность цвета никеля шампанского добавляет изысканности и идеально дополняет перила и балясины.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 1030,
+          "widthMm": 600,
+          "depthMm": 60,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 70,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/fornacis/images/01-fornacis1.webp",
+              "altRu": "Fornacis",
+              "altEn": "Fornacis",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/fornacis1.webp"
+            },
+            {
+              "imageKey": "products/seed/fornacis/images/02-fornacis2.webp",
+              "altRu": "Fornacis",
+              "altEn": "Fornacis",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/fornacis2.webp"
+            },
+            {
+              "imageKey": "products/seed/fornacis/images/03-fornacis3.webp",
+              "altRu": "Fornacis",
+              "altEn": "Fornacis",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/fornacis3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/fornacis.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "vega",
+          "nameRu": "Vega",
+          "nameEn": "Vega",
+          "descriptionRu": "Выполненный в том же стиле, что и люстра AVIOR, настенный светильник VEGA представляет собой стеклянную сферу, которая мягко освещает интерьер. Создаётся эффект преломления лучей света через рельефную металлическую поверхность, наполняя комнату тёплым, естественным сиянием.",
+          "descriptionEn": "Выполненный в том же стиле, что и люстра AVIOR, настенный светильник VEGA представляет собой стеклянную сферу, которая мягко освещает интерьер. Создаётся эффект преломления лучей света через рельефную металлическую поверхность, наполняя комнату тёплым, естественным сиянием.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 1015,
+          "widthMm": 205,
+          "depthMm": 92,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 80,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/vega/images/01-vega1.webp",
+              "altRu": "Vega",
+              "altEn": "Vega",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/vega1.webp"
+            },
+            {
+              "imageKey": "products/seed/vega/images/02-vega2.webp",
+              "altRu": "Vega",
+              "altEn": "Vega",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/vega2.webp"
+            },
+            {
+              "imageKey": "products/seed/vega/images/03-vega3.webp",
+              "altRu": "Vega",
+              "altEn": "Vega",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/vega3.webp"
+            },
+            {
+              "imageKey": "products/seed/vega/images/04-vega4.webp",
+              "altRu": "Vega",
+              "altEn": "Vega",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/vega4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/vega.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "mintaka",
+          "nameRu": "Mintaka",
+          "nameEn": "Mintaka",
+          "descriptionRu": "Напольный светильник Mintaka – это воплощение баланса контрастных материалов. Инновационная асимметрия креплений позволяет сохранить основание в одной плоскости, что придает изделию уникальный характер. Металлические кольца в основании излучают равномерное светодиодное свечение, служащее одновременно источником света и тонким декоративным элементом.",
+          "descriptionEn": "Напольный светильник Mintaka – это воплощение баланса контрастных материалов. Инновационная асимметрия креплений позволяет сохранить основание в одной плоскости, что придает изделию уникальный характер. Металлические кольца в основании излучают равномерное светодиодное свечение, служащее одновременно источником света и тонким декоративным элементом.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 1965,
+          "widthMm": 650,
+          "depthMm": 971,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 90,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/mintaka/images/01-mintaka1.webp",
+              "altRu": "Mintaka",
+              "altEn": "Mintaka",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/mintaka1.webp"
+            },
+            {
+              "imageKey": "products/seed/mintaka/images/02-mintaka2.webp",
+              "altRu": "Mintaka",
+              "altEn": "Mintaka",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/mintaka2.webp"
+            },
+            {
+              "imageKey": "products/seed/mintaka/images/03-mintaka3.webp",
+              "altRu": "Mintaka",
+              "altEn": "Mintaka",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/mintaka3.webp"
+            },
+            {
+              "imageKey": "products/seed/mintaka/images/04-mintaka4.webp",
+              "altRu": "Mintaka",
+              "altEn": "Mintaka",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/mintaka4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/mintaka.html"
+        },
+        {
+          "categorySlug": "lighting",
+          "slug": "avior",
+          "nameRu": "Avior",
+          "nameEn": "Avior",
+          "descriptionRu": "Люстра Avior из коллекции Олега Клодта станет прекрасным дополнением к обеденной зоне или стойке ресепшен. Этот эффектный элемент подойдет как для минималистичных, так и для классических интерьеров. Благодаря точным пропорциям и продуманной конструкции люстра кажется почти невесомой. Внутренние источники света направлены на отражающие сферы, наполняющие помещение нежным золотистым сиянием. *Индивидуальная отделка доступна по запросу.",
+          "descriptionEn": "Люстра Avior из коллекции Олега Клодта станет прекрасным дополнением к обеденной зоне или стойке ресепшен. Этот эффектный элемент подойдет как для минималистичных, так и для классических интерьеров. Благодаря точным пропорциям и продуманной конструкции люстра кажется почти невесомой. Внутренние источники света направлены на отражающие сферы, наполняющие помещение нежным золотистым сиянием. *Индивидуальная отделка доступна по запросу.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 1650,
+          "widthMm": 1680,
+          "depthMm": 285,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 100,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/avior/images/01-avior1.webp",
+              "altRu": "Avior",
+              "altEn": "Avior",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/avior1.webp"
+            },
+            {
+              "imageKey": "products/seed/avior/images/02-avior2.webp",
+              "altRu": "Avior",
+              "altEn": "Avior",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/avior2.webp"
+            },
+            {
+              "imageKey": "products/seed/avior/images/03-avior3.webp",
+              "altRu": "Avior",
+              "altEn": "Avior",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/avior3.webp"
+            },
+            {
+              "imageKey": "products/seed/avior/images/04-avior4.webp",
+              "altRu": "Avior",
+              "altEn": "Avior",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/avior4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/avior.html"
+        }
+      ]
+    },
+    {
+      "slug": "seating",
+      "nameRu": "Мягкая мебель",
+      "nameEn": "Seating",
+      "sortOrder": 30,
+      "products": [
+        {
+          "categorySlug": "seating",
+          "slug": "swan-banket",
+          "nameRu": "Swan",
+          "nameEn": "Swan",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 10,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/swan-banket/images/01-swan1.webp",
+              "altRu": "Swan",
+              "altEn": "Swan",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/swan1.webp"
+            },
+            {
+              "imageKey": "products/seed/swan-banket/images/02-swan2.webp",
+              "altRu": "Swan",
+              "altEn": "Swan",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/swan2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/swan-banket.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "delphini",
+          "nameRu": "Delphini",
+          "nameEn": "Delphini",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 20,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/delphini/images/01-delphini1.webp",
+              "altRu": "Delphini",
+              "altEn": "Delphini",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/delphini1.webp"
+            },
+            {
+              "imageKey": "products/seed/delphini/images/02-delphini2.webp",
+              "altRu": "Delphini",
+              "altEn": "Delphini",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/delphini2.webp"
+            },
+            {
+              "imageKey": "products/seed/delphini/images/03-delphini3.webp",
+              "altRu": "Delphini",
+              "altEn": "Delphini",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/delphini3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/delphini.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "gomeisa",
+          "nameRu": "Gomeisa",
+          "nameEn": "Gomeisa",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 30,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/gomeisa/images/01-gomeisa1.webp",
+              "altRu": "Gomeisa",
+              "altEn": "Gomeisa",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/gomeisa1.webp"
+            },
+            {
+              "imageKey": "products/seed/gomeisa/images/02-gomeisa2.webp",
+              "altRu": "Gomeisa",
+              "altEn": "Gomeisa",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/gomeisa2.webp"
+            },
+            {
+              "imageKey": "products/seed/gomeisa/images/03-gomeisa3.webp",
+              "altRu": "Gomeisa",
+              "altEn": "Gomeisa",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/gomeisa3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/gomeisa.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "swan-puf",
+          "nameRu": "Swan",
+          "nameEn": "Swan",
+          "descriptionRu": "The SWAN pouf looks both elegant and concise, ideal for a bedroom. The designers were inspired to create this piece of furniture by beautiful white swans with flexible necks. The ergonomic shape of the pouf provides maximum comfort and harmoniously fits into the interiors of a wide variety of styles. It will be a wonderful addition to the interior of private homes and hotels.",
+          "descriptionEn": "The SWAN pouf looks both elegant and concise, ideal for a bedroom. The designers were inspired to create this piece of furniture by beautiful white swans with flexible necks. The ergonomic shape of the pouf provides maximum comfort and harmoniously fits into the interiors of a wide variety of styles. It will be a wonderful addition to the interior of private homes and hotels.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 40,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/swan-puf/images/01-swan-puf1.webp",
+              "altRu": "Swan",
+              "altEn": "Swan",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/swan-puf1.webp"
+            },
+            {
+              "imageKey": "products/seed/swan-puf/images/02-swan-puf2.webp",
+              "altRu": "Swan",
+              "altEn": "Swan",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/swan-puf2.webp"
+            },
+            {
+              "imageKey": "products/seed/swan-puf/images/03-swan-puf3.webp",
+              "altRu": "Swan",
+              "altEn": "Swan",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/swan-puf3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/swan-puf.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "metallah",
+          "nameRu": "Metallah",
+          "nameEn": "Metallah",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 50,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/metallah/images/01-metallah.webp",
+              "altRu": "Metallah",
+              "altEn": "Metallah",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/metallah.webp"
+            },
+            {
+              "imageKey": "products/seed/metallah/images/02-metallah2.webp",
+              "altRu": "Metallah",
+              "altEn": "Metallah",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/metallah2.webp"
+            },
+            {
+              "imageKey": "products/seed/metallah/images/03-metallah3.webp",
+              "altRu": "Metallah",
+              "altEn": "Metallah",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/metallah3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/metallah.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "apodis",
+          "nameRu": "Apodis",
+          "nameEn": "Apodis",
+          "descriptionRu": "The APODIS sofa is designed to become the central element of any interior and attract attention from any point of view. The harmony of the composition is achieved thanks to the designer's impeccable attention to every small detail.",
+          "descriptionEn": "The APODIS sofa is designed to become the central element of any interior and attract attention from any point of view. The harmony of the composition is achieved thanks to the designer's impeccable attention to every small detail.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 880,
+          "widthMm": 2440,
+          "depthMm": 950,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 60,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/apodis/images/01-apodis1.webp",
+              "altRu": "Apodis",
+              "altEn": "Apodis",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/apodis1.webp"
+            },
+            {
+              "imageKey": "products/seed/apodis/images/02-apodis2.webp",
+              "altRu": "Apodis",
+              "altEn": "Apodis",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/apodis2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/apodis.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "ceti",
+          "nameRu": "Ceti",
+          "nameEn": "Ceti",
+          "descriptionRu": "The CETI armchair harmoniously complements the APODIS sofa. The main feature of this chair is the contrast between the massive back and the elegant seat. The absence of armrests eliminates the bulkiness inherent in this piece of furniture. The unusual support system gives the chair a light, floating look.",
+          "descriptionEn": "The CETI armchair harmoniously complements the APODIS sofa. The main feature of this chair is the contrast between the massive back and the elegant seat. The absence of armrests eliminates the bulkiness inherent in this piece of furniture. The unusual support system gives the chair a light, floating look.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 850,
+          "widthMm": 750,
+          "depthMm": 820,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 70,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/ceti/images/01-ceti1.webp",
+              "altRu": "Ceti",
+              "altEn": "Ceti",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/ceti1.webp"
+            },
+            {
+              "imageKey": "products/seed/ceti/images/02-ceti2.webp",
+              "altRu": "Ceti",
+              "altEn": "Ceti",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/ceti2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/ceti.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "apollo",
+          "nameRu": "Apollo",
+          "nameEn": "Apollo",
+          "descriptionRu": "This ergonomic pouf is designed for use in hallways where there is always a shortage of space. The elegant and compact pouf in the shape of an equilateral trapezoid easily slides under the console, saving space. Weightless and concise, it will perfectly fit into any modern interior.",
+          "descriptionEn": "This ergonomic pouf is designed for use in hallways where there is always a shortage of space. The elegant and compact pouf in the shape of an equilateral trapezoid easily slides under the console, saving space. Weightless and concise, it will perfectly fit into any modern interior.",
+          "materialsRu": "Solid brass base with wooden wedge-shaped legs.\nFabric to choose from",
+          "materialsEn": "Solid brass base with wooden wedge-shaped legs.\nFabric to choose from",
+          "heightMm": 490,
+          "widthMm": 480,
+          "depthMm": 340,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 80,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/apollo/images/01-apollo1.webp",
+              "altRu": "Apollo",
+              "altEn": "Apollo",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/apollo1.webp"
+            },
+            {
+              "imageKey": "products/seed/apollo/images/02-apollo2.webp",
+              "altRu": "Apollo",
+              "altEn": "Apollo",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/apollo2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/apollo.html"
+        },
+        {
+          "categorySlug": "seating",
+          "slug": "le-rouleau1",
+          "nameRu": "Le Rouleau I",
+          "nameEn": "Le Rouleau I",
+          "descriptionRu": "The LE ROULEAU chair series was designed by architect Oleg Klodt in a minimalist design. Handmade natural fabric and wood make these chairs ideal for a modern dining room or a gourmet restaurant. The chair features an architectural linear frame, and the upholstered upholstery, which encircles the back and base like a roll of fabric, emphasizes the precise geometry of straight lines. Each detail of the chair is distinguished by its tactility and aesthetic, which can only be achieved by combining traditional and modern furniture manufacturing technologies.",
+          "descriptionEn": "The LE ROULEAU chair series was designed by architect Oleg Klodt in a minimalist design. Handmade natural fabric and wood make these chairs ideal for a modern dining room or a gourmet restaurant. The chair features an architectural linear frame, and the upholstered upholstery, which encircles the back and base like a roll of fabric, emphasizes the precise geometry of straight lines. Each detail of the chair is distinguished by its tactility and aesthetic, which can only be achieved by combining traditional and modern furniture manufacturing technologies.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 880,
+          "widthMm": 500,
+          "depthMm": 530,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 90,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/le-rouleau1/images/01-rouleau-one1.webp",
+              "altRu": "Le Rouleau I",
+              "altEn": "Le Rouleau I",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/rouleau-one1.webp"
+            },
+            {
+              "imageKey": "products/seed/le-rouleau1/images/02-rouleau-one2.webp",
+              "altRu": "Le Rouleau I",
+              "altEn": "Le Rouleau I",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/rouleau-one2.webp"
+            },
+            {
+              "imageKey": "products/seed/le-rouleau1/images/03-rouleau-one3.webp",
+              "altRu": "Le Rouleau I",
+              "altEn": "Le Rouleau I",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/rouleau-one3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [
+            {
+              "slug": "le-rouleau2",
+              "nameRu": "Le Rouleau II",
+              "nameEn": "Le Rouleau II",
+              "descriptionRu": "The LE ROULEAU chair series was designed by architect Oleg Klodt in a minimalist design. Handmade natural fabric and wood make these chairs ideal for a modern dining room or a gourmet restaurant. The chair features an architectural linear frame, and the upholstered upholstery, which encircles the back and base like a roll of fabric, emphasizes the precise geometry of straight lines. Each detail of the chair is distinguished by its tactility and aesthetic, which can only be achieved by combining traditional and modern furniture manufacturing technologies.",
+              "descriptionEn": "The LE ROULEAU chair series was designed by architect Oleg Klodt in a minimalist design. Handmade natural fabric and wood make these chairs ideal for a modern dining room or a gourmet restaurant. The chair features an architectural linear frame, and the upholstered upholstery, which encircles the back and base like a roll of fabric, emphasizes the precise geometry of straight lines. Each detail of the chair is distinguished by its tactility and aesthetic, which can only be achieved by combining traditional and modern furniture manufacturing technologies.",
+              "materialsRu": null,
+              "materialsEn": null,
+              "heightMm": 880,
+              "widthMm": 500,
+              "depthMm": 530,
+              "priceType": "ON_REQUEST",
+              "priceAmount": null,
+              "priceCurrency": null,
+              "sortOrder": 10,
+              "isPublished": true,
+              "images": [
+                {
+                  "imageKey": "products/seed/le-rouleau1/variants/le-rouleau2/images/01-rouleau-two1.webp",
+                  "altRu": "Le Rouleau II",
+                  "altEn": "Le Rouleau II",
+                  "sortOrder": 10,
+                  "sourceUrl": "https://altioria.ru/images/rouleau-two1.webp"
+                },
+                {
+                  "imageKey": "products/seed/le-rouleau1/variants/le-rouleau2/images/02-rouleau-two2.webp",
+                  "altRu": "Le Rouleau II",
+                  "altEn": "Le Rouleau II",
+                  "sortOrder": 20,
+                  "sourceUrl": "https://altioria.ru/images/rouleau-two2.webp"
+                }
+              ],
+              "files": [],
+              "sourceUrl": "https://altioria.ru/le-rouleau2.html"
+            }
+          ],
+          "sourceUrl": "https://altioria.ru/le-rouleau1.html"
+        }
+      ]
+    },
+    {
+      "slug": "storages",
+      "nameRu": "Системы хранения",
+      "nameEn": "Storages",
+      "sortOrder": 40,
+      "products": [
+        {
+          "categorySlug": "storages",
+          "slug": "alphard",
+          "nameRu": "Alphard",
+          "nameEn": "Alphard",
+          "descriptionRu": "The ALPHARD chest of drawers is a carefully thought—out balance of elegance and functionality. The rigor of its geometric shapes is subtly emphasized by the restrained warmth of the color scheme.",
+          "descriptionEn": "The ALPHARD chest of drawers is a carefully thought—out balance of elegance and functionality. The rigor of its geometric shapes is subtly emphasized by the restrained warmth of the color scheme.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 900,
+          "widthMm": 1860,
+          "depthMm": 580,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 10,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/alphard/images/01-alphard6.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/alphard6.webp"
+            },
+            {
+              "imageKey": "products/seed/alphard/images/02-alphard7.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/alphard7.webp"
+            },
+            {
+              "imageKey": "products/seed/alphard/images/03-alphard1.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/alphard1.webp"
+            },
+            {
+              "imageKey": "products/seed/alphard/images/04-alphard2.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/alphard2.webp"
+            },
+            {
+              "imageKey": "products/seed/alphard/images/05-alphard4.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/alphard4.webp"
+            },
+            {
+              "imageKey": "products/seed/alphard/images/06-alphard3.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 60,
+              "sourceUrl": "https://altioria.ru/images/alphard3.webp"
+            },
+            {
+              "imageKey": "products/seed/alphard/images/07-alphard5.webp",
+              "altRu": "Alphard",
+              "altEn": "Alphard",
+              "sortOrder": 70,
+              "sourceUrl": "https://altioria.ru/images/alphard5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/alphard.html"
+        },
+        {
+          "categorySlug": "storages",
+          "slug": "content-one",
+          "nameRu": "Content",
+          "nameEn": "Content",
+          "descriptionRu": "Architect Oleg Klodt has developed a series of storage furniture called CONTENT, which traces the natural texture of wood. An indispensable item if you need a concise piece in any space of your apartment. Nothing superfluous, function and aesthetics are the main dominants here. And the brass legs act as elegant and discreet decorative elements.",
+          "descriptionEn": "Architect Oleg Klodt has developed a series of storage furniture called CONTENT, which traces the natural texture of wood. An indispensable item if you need a concise piece in any space of your apartment. Nothing superfluous, function and aesthetics are the main dominants here. And the brass legs act as elegant and discreet decorative elements.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 900,
+          "widthMm": 1740,
+          "depthMm": 580,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 20,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/content-one/images/01-content-one1.webp",
+              "altRu": "Content",
+              "altEn": "Content",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/content-one1.webp"
+            },
+            {
+              "imageKey": "products/seed/content-one/images/02-content-one2.webp",
+              "altRu": "Content",
+              "altEn": "Content",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/content-one2.webp"
+            },
+            {
+              "imageKey": "products/seed/content-one/images/03-content-one3.webp",
+              "altRu": "Content",
+              "altEn": "Content",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/content-one3.webp"
+            },
+            {
+              "imageKey": "products/seed/content-one/images/04-content-one4.webp",
+              "altRu": "Content",
+              "altEn": "Content",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/content-one4.webp"
+            },
+            {
+              "imageKey": "products/seed/content-one/images/05-content-one5.webp",
+              "altRu": "Content",
+              "altEn": "Content",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/content-one5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [
+            {
+              "slug": "content-two",
+              "nameRu": "Content II",
+              "nameEn": "Content II",
+              "descriptionRu": "Architect Oleg Klodt has developed a series of storage furniture called CONTENT, which traces the natural texture of wood. An indispensable item if you need a concise piece in any space of your apartment. Nothing superfluous, function and aesthetics are the main dominants here. And the brass legs act as elegant and discreet decorative elements.",
+              "descriptionEn": "Architect Oleg Klodt has developed a series of storage furniture called CONTENT, which traces the natural texture of wood. An indispensable item if you need a concise piece in any space of your apartment. Nothing superfluous, function and aesthetics are the main dominants here. And the brass legs act as elegant and discreet decorative elements.",
+              "materialsRu": null,
+              "materialsEn": null,
+              "heightMm": 900,
+              "widthMm": 3420,
+              "depthMm": 580,
+              "priceType": "ON_REQUEST",
+              "priceAmount": null,
+              "priceCurrency": null,
+              "sortOrder": 10,
+              "isPublished": true,
+              "images": [
+                {
+                  "imageKey": "products/seed/content-one/variants/content-two/images/01-content-two1.webp",
+                  "altRu": "Content II",
+                  "altEn": "Content II",
+                  "sortOrder": 10,
+                  "sourceUrl": "https://altioria.ru/images/content-two1.webp"
+                },
+                {
+                  "imageKey": "products/seed/content-one/variants/content-two/images/02-content-two2.webp",
+                  "altRu": "Content II",
+                  "altEn": "Content II",
+                  "sortOrder": 20,
+                  "sourceUrl": "https://altioria.ru/images/content-two2.webp"
+                }
+              ],
+              "files": [],
+              "sourceUrl": "https://altioria.ru/content-two.html"
+            },
+            {
+              "slug": "content-three",
+              "nameRu": "Content III",
+              "nameEn": "Content III",
+              "descriptionRu": "Architect Oleg Klodt has developed a series of storage furniture called CONTENT, which traces the natural texture of wood. An indispensable item if you need a concise piece in any space of your apartment. Nothing superfluous, function and aesthetics are the main dominants here. And the brass legs act as elegant and discreet decorative elements.",
+              "descriptionEn": "Architect Oleg Klodt has developed a series of storage furniture called CONTENT, which traces the natural texture of wood. An indispensable item if you need a concise piece in any space of your apartment. Nothing superfluous, function and aesthetics are the main dominants here. And the brass legs act as elegant and discreet decorative elements.",
+              "materialsRu": null,
+              "materialsEn": null,
+              "heightMm": 900,
+              "widthMm": 5100,
+              "depthMm": 550,
+              "priceType": "ON_REQUEST",
+              "priceAmount": null,
+              "priceCurrency": null,
+              "sortOrder": 20,
+              "isPublished": true,
+              "images": [
+                {
+                  "imageKey": "products/seed/content-one/variants/content-three/images/01-content-three1.webp",
+                  "altRu": "Content III",
+                  "altEn": "Content III",
+                  "sortOrder": 10,
+                  "sourceUrl": "https://altioria.ru/images/content-three1.webp"
+                },
+                {
+                  "imageKey": "products/seed/content-one/variants/content-three/images/02-content-three2.webp",
+                  "altRu": "Content III",
+                  "altEn": "Content III",
+                  "sortOrder": 20,
+                  "sourceUrl": "https://altioria.ru/images/content-three2.webp"
+                }
+              ],
+              "files": [],
+              "sourceUrl": "https://altioria.ru/content-three.html"
+            }
+          ],
+          "sourceUrl": "https://altioria.ru/content-one.html"
+        },
+        {
+          "categorySlug": "storages",
+          "slug": "section-one",
+          "nameRu": "Section I",
+          "nameEn": "Section I",
+          "descriptionRu": "The Rack Section I",
+          "descriptionEn": "The Rack Section I",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 2450,
+          "widthMm": 1875,
+          "depthMm": 360,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 30,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/section-one/images/01-section-one1.webp",
+              "altRu": "Section I",
+              "altEn": "Section I",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/section-one1.webp"
+            },
+            {
+              "imageKey": "products/seed/section-one/images/02-section-one2.webp",
+              "altRu": "Section I",
+              "altEn": "Section I",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/section-one2.webp"
+            },
+            {
+              "imageKey": "products/seed/section-one/images/03-section-one3.webp",
+              "altRu": "Section I",
+              "altEn": "Section I",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/section-one3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/section-one.html"
+        },
+        {
+          "categorySlug": "storages",
+          "slug": "section-two",
+          "nameRu": "Section II",
+          "nameEn": "Section II",
+          "descriptionRu": "The Rack Section II",
+          "descriptionEn": "The Rack Section II",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 2450,
+          "widthMm": 1875,
+          "depthMm": 360,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 40,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/section-two/images/01-section-two1.webp",
+              "altRu": "Section II",
+              "altEn": "Section II",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/section-two1.webp"
+            },
+            {
+              "imageKey": "products/seed/section-two/images/02-section-two2.webp",
+              "altRu": "Section II",
+              "altEn": "Section II",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/section-two2.webp"
+            },
+            {
+              "imageKey": "products/seed/section-two/images/03-section-two3.webp",
+              "altRu": "Section II",
+              "altEn": "Section II",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/section-two3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/section-two.html"
+        }
+      ]
+    },
+    {
+      "slug": "consoles",
+      "nameRu": "Консоли",
+      "nameEn": "Consoles",
+      "sortOrder": 50,
+      "products": [
+        {
+          "categorySlug": "consoles",
+          "slug": "adagio",
+          "nameRu": "Adagio",
+          "nameEn": "Adagio",
+          "descriptionRu": "The Adagio console is a work of art, ideal for those who appreciate sophistication and elegance. This timeless piece of furniture, made from selected wood and marble, will become the centerpiece of any living space. The console table combines form and functionality, transforming the room with its graceful curves and unique character. It exudes charm in any interior, from modern to traditional.",
+          "descriptionEn": "The Adagio console is a work of art, ideal for those who appreciate sophistication and elegance. This timeless piece of furniture, made from selected wood and marble, will become the centerpiece of any living space. The console table combines form and functionality, transforming the room with its graceful curves and unique character. It exudes charm in any interior, from modern to traditional.",
+          "materialsRu": "Oak veneer, marble",
+          "materialsEn": "Oak veneer, marble",
+          "heightMm": 775,
+          "widthMm": 1630,
+          "depthMm": 385,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 10,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/adagio/images/01-adagio1.webp",
+              "altRu": "Adagio",
+              "altEn": "Adagio",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/adagio1.webp"
+            },
+            {
+              "imageKey": "products/seed/adagio/images/02-adagio2.webp",
+              "altRu": "Adagio",
+              "altEn": "Adagio",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/adagio2.webp"
+            },
+            {
+              "imageKey": "products/seed/adagio/images/03-adagio3.webp",
+              "altRu": "Adagio",
+              "altEn": "Adagio",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/adagio3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/adagio.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "auva",
+          "nameRu": "Auva",
+          "nameEn": "Auva",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 20,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/auva/images/01-auva1.webp",
+              "altRu": "Auva",
+              "altEn": "Auva",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/auva1.webp"
+            },
+            {
+              "imageKey": "products/seed/auva/images/02-auva2.webp",
+              "altRu": "Auva",
+              "altEn": "Auva",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/auva2.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/auva.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "clavis",
+          "nameRu": "Clavis",
+          "nameEn": "Clavis",
+          "descriptionRu": "A compact console table with a drawer, inspired by the Art Deco style, attracts attention with unusual metal legs, which not only provide stability, but also serve as a decorative element. The metal legs combined with the original countertop finish make this piece of furniture modern and versatile.",
+          "descriptionEn": "A compact console table with a drawer, inspired by the Art Deco style, attracts attention with unusual metal legs, which not only provide stability, but also serve as a decorative element. The metal legs combined with the original countertop finish make this piece of furniture modern and versatile.",
+          "materialsRu": "Metal, wood, decorative coating, veneer",
+          "materialsEn": "Metal, wood, decorative coating, veneer",
+          "heightMm": 950,
+          "widthMm": 870,
+          "depthMm": 440,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 30,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/clavis/images/01-clavis1.webp",
+              "altRu": "Clavis",
+              "altEn": "Clavis",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/clavis1.webp"
+            },
+            {
+              "imageKey": "products/seed/clavis/images/02-clavis2.webp",
+              "altRu": "Clavis",
+              "altEn": "Clavis",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/clavis2.webp"
+            },
+            {
+              "imageKey": "products/seed/clavis/images/03-clavis3.webp",
+              "altRu": "Clavis",
+              "altEn": "Clavis",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/clavis3.webp"
+            },
+            {
+              "imageKey": "products/seed/clavis/images/04-clavis4.webp",
+              "altRu": "Clavis",
+              "altEn": "Clavis",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/clavis4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/clavis.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "diorda",
+          "nameRu": "Diorda",
+          "nameEn": "Diorda",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 40,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/diorda/images/01-diorda1.webp",
+              "altRu": "Diorda",
+              "altEn": "Diorda",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/diorda1.webp"
+            },
+            {
+              "imageKey": "products/seed/diorda/images/02-diorda2.webp",
+              "altRu": "Diorda",
+              "altEn": "Diorda",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/diorda2.webp"
+            },
+            {
+              "imageKey": "products/seed/diorda/images/03-diorda3.webp",
+              "altRu": "Diorda",
+              "altEn": "Diorda",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/diorda3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/diorda.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "lyra",
+          "nameRu": "Lyra",
+          "nameEn": "Lyra",
+          "descriptionRu": "The Lyra miniature console is better suited for narrow spaces, lobbies and corridors. It not only immediately attracts attention with its unusual combination of bronze and pearl sycamore trim, but also, thanks to its neutral color scheme, fits well into any interior.",
+          "descriptionEn": "The Lyra miniature console is better suited for narrow spaces, lobbies and corridors. It not only immediately attracts attention with its unusual combination of bronze and pearl sycamore trim, but also, thanks to its neutral color scheme, fits well into any interior.",
+          "materialsRu": "Metal, wood, decorative coating",
+          "materialsEn": "Metal, wood, decorative coating",
+          "heightMm": 805,
+          "widthMm": 545,
+          "depthMm": 245,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 50,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/lyra/images/01-lyra1.webp",
+              "altRu": "Lyra",
+              "altEn": "Lyra",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/lyra1.webp"
+            },
+            {
+              "imageKey": "products/seed/lyra/images/02-lyra2.webp",
+              "altRu": "Lyra",
+              "altEn": "Lyra",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/lyra2.webp"
+            },
+            {
+              "imageKey": "products/seed/lyra/images/03-lyra3.webp",
+              "altRu": "Lyra",
+              "altEn": "Lyra",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/lyra3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/lyra.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "naos",
+          "nameRu": "Naos",
+          "nameEn": "Naos",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 60,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/naos/images/01-naos1.webp",
+              "altRu": "Naos",
+              "altEn": "Naos",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/naos1.webp"
+            },
+            {
+              "imageKey": "products/seed/naos/images/02-naos2.webp",
+              "altRu": "Naos",
+              "altEn": "Naos",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/naos2.webp"
+            },
+            {
+              "imageKey": "products/seed/naos/images/03-naos3.webp",
+              "altRu": "Naos",
+              "altEn": "Naos",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/naos3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/naos.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "nekkar",
+          "nameRu": "Nekkar",
+          "nameEn": "Nekkar",
+          "descriptionRu": "",
+          "descriptionEn": "",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 70,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/nekkar/images/01-nekkar1.webp",
+              "altRu": "Nekkar",
+              "altEn": "Nekkar",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/nekkar1.webp"
+            },
+            {
+              "imageKey": "products/seed/nekkar/images/02-nekkar2.webp",
+              "altRu": "Nekkar",
+              "altEn": "Nekkar",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/nekkar2.webp"
+            },
+            {
+              "imageKey": "products/seed/nekkar/images/03-nekkar3.webp",
+              "altRu": "Nekkar",
+              "altEn": "Nekkar",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/nekkar3.webp"
+            },
+            {
+              "imageKey": "products/seed/nekkar/images/04-nekkar4.webp",
+              "altRu": "Nekkar",
+              "altEn": "Nekkar",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/nekkar4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/nekkar.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "nexum",
+          "nameRu": "Nexum",
+          "nameEn": "Nexum",
+          "descriptionRu": "Experimenting with materials, the designers created a console table in the style of \"brutalism\". The metal base resembles straps that use tension to provide stability. The marble slats at the top and at the base symbolize the strong connection between materials, colors and shapes.",
+          "descriptionEn": "Experimenting with materials, the designers created a console table in the style of \"brutalism\". The metal base resembles straps that use tension to provide stability. The marble slats at the top and at the base symbolize the strong connection between materials, colors and shapes.",
+          "materialsRu": "Metal, marble",
+          "materialsEn": "Metal, marble",
+          "heightMm": 870,
+          "widthMm": 1330,
+          "depthMm": 400,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 80,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/nexum/images/01-nexum1.webp",
+              "altRu": "Nexum",
+              "altEn": "Nexum",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/nexum1.webp"
+            },
+            {
+              "imageKey": "products/seed/nexum/images/02-nexum2.webp",
+              "altRu": "Nexum",
+              "altEn": "Nexum",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/nexum2.webp"
+            },
+            {
+              "imageKey": "products/seed/nexum/images/03-nexum3.webp",
+              "altRu": "Nexum",
+              "altEn": "Nexum",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/nexum3.webp"
+            },
+            {
+              "imageKey": "products/seed/nexum/images/04-nexum4.webp",
+              "altRu": "Nexum",
+              "altEn": "Nexum",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/nexum4.webp"
+            },
+            {
+              "imageKey": "products/seed/nexum/images/05-nexum5.webp",
+              "altRu": "Nexum",
+              "altEn": "Nexum",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/nexum5.webp"
+            },
+            {
+              "imageKey": "products/seed/nexum/images/06-nexum6.webp",
+              "altRu": "Nexum",
+              "altEn": "Nexum",
+              "sortOrder": 60,
+              "sourceUrl": "https://altioria.ru/images/nexum6.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/nexum.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "tempo",
+          "nameRu": "Tempo",
+          "nameEn": "Tempo",
+          "descriptionRu": "Music is magic, but is it possible to see the sounds? We were inspired by the graphic representation of sound on the acoustic panel when creating the TEMPO console. It conveys a sense of movement and fits perfectly into a modern space. The minimalist design of the console will become the leading element of the entire interior.",
+          "descriptionEn": "Music is magic, but is it possible to see the sounds? We were inspired by the graphic representation of sound on the acoustic panel when creating the TEMPO console. It conveys a sense of movement and fits perfectly into a modern space. The minimalist design of the console will become the leading element of the entire interior.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 90,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/tempo/images/01-tempo1.webp",
+              "altRu": "Tempo",
+              "altEn": "Tempo",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/tempo1.webp"
+            },
+            {
+              "imageKey": "products/seed/tempo/images/02-tempo2.webp",
+              "altRu": "Tempo",
+              "altEn": "Tempo",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/tempo2.webp"
+            },
+            {
+              "imageKey": "products/seed/tempo/images/03-tempo3.webp",
+              "altRu": "Tempo",
+              "altEn": "Tempo",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/tempo3.webp"
+            },
+            {
+              "imageKey": "products/seed/tempo/images/04-tempo4.webp",
+              "altRu": "Tempo",
+              "altEn": "Tempo",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/tempo4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/tempo.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "torrent",
+          "nameRu": "Torrent",
+          "nameEn": "Torrent",
+          "descriptionRu": "The TORRENT console is ideal for a spacious hallway or living room. Light and elegant, it will fit seamlessly into any modern interior, complementing it and placing the necessary accents. The combination of modern design and glass finish makes it versatile: it can serve as a drink stand, a place for table lamps and vases, and more.",
+          "descriptionEn": "The TORRENT console is ideal for a spacious hallway or living room. Light and elegant, it will fit seamlessly into any modern interior, complementing it and placing the necessary accents. The combination of modern design and glass finish makes it versatile: it can serve as a drink stand, a place for table lamps and vases, and more.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": null,
+          "widthMm": null,
+          "depthMm": null,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 100,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/torrent/images/01-torrent1.webp",
+              "altRu": "Torrent",
+              "altEn": "Torrent",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/torrent1.webp"
+            },
+            {
+              "imageKey": "products/seed/torrent/images/02-torrent4.webp",
+              "altRu": "Torrent",
+              "altEn": "Torrent",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/torrent4.webp"
+            },
+            {
+              "imageKey": "products/seed/torrent/images/03-torrent2.webp",
+              "altRu": "Torrent",
+              "altEn": "Torrent",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/torrent2.webp"
+            },
+            {
+              "imageKey": "products/seed/torrent/images/04-torrent3.webp",
+              "altRu": "Torrent",
+              "altEn": "Torrent",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/torrent3.webp"
+            },
+            {
+              "imageKey": "products/seed/torrent/images/05-torrent5.webp",
+              "altRu": "Torrent",
+              "altEn": "Torrent",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/torrent5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/torrent.html"
+        },
+        {
+          "categorySlug": "consoles",
+          "slug": "alkes",
+          "nameRu": "Alkes",
+          "nameEn": "Alkes",
+          "descriptionRu": "The ALKES console has a calm, austere appearance that hides many decorative elements. This combination of restraint and brutality is inspired by the contrast of age-old traditions and the spirit of modernity.",
+          "descriptionEn": "The ALKES console has a calm, austere appearance that hides many decorative elements. This combination of restraint and brutality is inspired by the contrast of age-old traditions and the spirit of modernity.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 900,
+          "widthMm": 1700,
+          "depthMm": 470,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 110,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/alkes/images/01-alkes1.webp",
+              "altRu": "Alkes",
+              "altEn": "Alkes",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/alkes1.webp"
+            },
+            {
+              "imageKey": "products/seed/alkes/images/02-alkes4.webp",
+              "altRu": "Alkes",
+              "altEn": "Alkes",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/alkes4.webp"
+            },
+            {
+              "imageKey": "products/seed/alkes/images/03-alkes2.webp",
+              "altRu": "Alkes",
+              "altEn": "Alkes",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/alkes2.webp"
+            },
+            {
+              "imageKey": "products/seed/alkes/images/04-alkes3.webp",
+              "altRu": "Alkes",
+              "altEn": "Alkes",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/alkes3.webp"
+            },
+            {
+              "imageKey": "products/seed/alkes/images/05-alkes5.webp",
+              "altRu": "Alkes",
+              "altEn": "Alkes",
+              "sortOrder": 50,
+              "sourceUrl": "https://altioria.ru/images/alkes5.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/alkes.html"
+        }
+      ]
+    },
+    {
+      "slug": "mirrors",
+      "nameRu": "Зеркала",
+      "nameEn": "Mirrors",
+      "sortOrder": 60,
+      "products": [
+        {
+          "categorySlug": "mirrors",
+          "slug": "cameo",
+          "nameRu": "Cameo",
+          "nameEn": "Cameo",
+          "descriptionRu": "Luxury Cameo wall mirror with metal frame and marble decorative elements. Refresh the beauty of your interior with the unique Cameo mirror! Create an atmosphere of romance in any room — from the bedroom to the hallway. The modern mirror is inspired by historical relics, such as elegant jewelry from antique jewelry boxes, reminiscent of past centuries and historical heritage. Decorate the wall and add depth; this reflective accessory promises a luxurious life.",
+          "descriptionEn": "Luxury Cameo wall mirror with metal frame and marble decorative elements. Refresh the beauty of your interior with the unique Cameo mirror! Create an atmosphere of romance in any room — from the bedroom to the hallway. The modern mirror is inspired by historical relics, such as elegant jewelry from antique jewelry boxes, reminiscent of past centuries and historical heritage. Decorate the wall and add depth; this reflective accessory promises a luxurious life.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 2200,
+          "widthMm": 960,
+          "depthMm": 95,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 10,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/cameo/images/01-cameo1.webp",
+              "altRu": "Cameo",
+              "altEn": "Cameo",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/cameo1.webp"
+            },
+            {
+              "imageKey": "products/seed/cameo/images/02-cameo2.webp",
+              "altRu": "Cameo",
+              "altEn": "Cameo",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/cameo2.webp"
+            },
+            {
+              "imageKey": "products/seed/cameo/images/03-cameo3.webp",
+              "altRu": "Cameo",
+              "altEn": "Cameo",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/cameo3.webp"
+            },
+            {
+              "imageKey": "products/seed/cameo/images/04-cameo4.webp",
+              "altRu": "Cameo",
+              "altEn": "Cameo",
+              "sortOrder": 40,
+              "sourceUrl": "https://altioria.ru/images/cameo4.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/cameo.html"
+        },
+        {
+          "categorySlug": "mirrors",
+          "slug": "segin",
+          "nameRu": "Segin",
+          "nameEn": "Segin",
+          "descriptionRu": "The elegant SEGIN mirror easily fits into the interior due to its simple lines and rectangular shape, and its impressive scale creates an effect of presence and visually expands the space.",
+          "descriptionEn": "The elegant SEGIN mirror easily fits into the interior due to its simple lines and rectangular shape, and its impressive scale creates an effect of presence and visually expands the space.",
+          "materialsRu": null,
+          "materialsEn": null,
+          "heightMm": 2250,
+          "widthMm": 635,
+          "depthMm": 35,
+          "priceType": "ON_REQUEST",
+          "priceAmount": null,
+          "priceCurrency": null,
+          "sortOrder": 20,
+          "isPublished": true,
+          "images": [
+            {
+              "imageKey": "products/seed/segin/images/01-segin1.webp",
+              "altRu": "Segin",
+              "altEn": "Segin",
+              "sortOrder": 10,
+              "sourceUrl": "https://altioria.ru/images/segin1.webp"
+            },
+            {
+              "imageKey": "products/seed/segin/images/02-segin2.webp",
+              "altRu": "Segin",
+              "altEn": "Segin",
+              "sortOrder": 20,
+              "sourceUrl": "https://altioria.ru/images/segin2.webp"
+            },
+            {
+              "imageKey": "products/seed/segin/images/03-segin3.webp",
+              "altRu": "Segin",
+              "altEn": "Segin",
+              "sortOrder": 30,
+              "sourceUrl": "https://altioria.ru/images/segin3.webp"
+            }
+          ],
+          "files": [],
+          "variants": [],
+          "sourceUrl": "https://altioria.ru/segin.html"
+        }
+      ]
+    }
+  ]
+}

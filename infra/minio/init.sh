@@ -125,4 +125,15 @@ do
 done
 
 
+echo "Uploading product catalog media..."
+
+if [ -d /initial-images/products ]
+then
+  mc mirror \
+    --overwrite \
+    /initial-images/products \
+    "local/$MINIO_BUCKET/products"
+fi
+
+
 echo "MinIO initialization completed"
