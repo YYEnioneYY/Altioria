@@ -1,7 +1,8 @@
 export type AdminNavigationIcon =
   | 'dashboard'
   | 'categories'
-  | 'products';
+  | 'products'
+  | 'help';
 
 export interface AdminNavigationItem {
   label: string;
@@ -26,5 +27,10 @@ export const adminNavigation: AdminNavigationItem[] = [
     label: 'Товары',
     path: '/admin/products',
     icon: 'products',
+  },
+  {
+    label: 'Справка',
+    path: '/admin/help',
+    icon: 'help',
   },
 ];

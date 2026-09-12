@@ -75,6 +75,40 @@ function NavigationIcon({
     );
   }
 
+  if (icon === 'help') {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="h-5 w-5"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="8.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+  
+        <path
+          d="M9.7 9.3a2.45 2.45 0 014.65 1.08c0 1.75-2.35 2.05-2.35 3.62"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth="1.5"
+        />
+  
+        <circle
+          cx="12"
+          cy="17"
+          r="0.9"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  }
+
   return (
     <svg
       viewBox="0 0 24 24"

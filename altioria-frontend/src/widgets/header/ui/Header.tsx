@@ -6,6 +6,10 @@ import { headerNavigation } from '../config/navigation';
 import { LanguageSwitcher } from '../../../features/language-switcher';
 import { useLocale } from '../../../shared/lib/i18n';
 
+import {
+  CatalogSearch,
+} from '../../../features/catalog-search';
+
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { locale } = useLocale();
@@ -74,36 +78,12 @@ export function Header() {
         <div className="hidden items-center gap-3 min-[1201px]:flex">
           <LanguageSwitcher />
 
-          <form
-            role="search"
-            className="flex items-center rounded-[20px] bg-white/10 px-[15px] py-[5px] transition-transform duration-300 hover:scale-[1.02]"
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <input
-              type="search"
-              placeholder={locale === 'ru' ? 'Поиск...' : 'Search...'}
-              aria-label={
-                locale === 'ru'
-                  ? 'Поиск по сайту'
-                  : 'Search the website'
-              }
-              draggable={false}
-              className="w-40 select-text border-0 bg-transparent px-1 py-0.5 text-sm text-white outline-none placeholder:text-white/50"
+          <div className="hidden items-center gap-3 min-[1201px]:flex">
+            <CatalogSearch
+              mode="desktop"
+              onNavigate={closeMenu}
             />
-
-            <button
-              type="submit"
-              className="ml-2 mt-1 border-0 bg-transparent"
-              aria-label={locale === 'ru' ? 'Найти' : 'Search'}
-            >
-              <img
-                src="/images/search-icon.svg"
-                alt=""
-                draggable={false}
-                className="pointer-events-none h-[15px] w-[15px] opacity-70"
-              />
-            </button>
-          </form>
+          </div>
         </div>
 
         <button
@@ -163,24 +143,13 @@ export function Header() {
             tabIndex={isMenuOpen ? 0 : -1}
           />
         
-          <form
-            role="search"
-            className="flex min-w-0 flex-1 items-center rounded-[20px] bg-white/10 px-[15px] py-2"
-            onSubmit={(event) => event.preventDefault()}
-          >
-            <input
-              type="search"
-              placeholder={locale === 'ru' ? 'Поиск...' : 'Search...'}
-              aria-label={
-                locale === 'ru'
-                  ? 'Поиск по сайту'
-                  : 'Search the website'
-              }
-              draggable={false}
+          <div className="relative z-20 mb-[30px]">
+            <CatalogSearch
+              mode="mobile"
               tabIndex={isMenuOpen ? 0 : -1}
-              className="min-w-0 flex-1 select-text border-0 bg-transparent text-base text-white outline-none placeholder:text-white/50"
+              onNavigate={closeMenu}
             />
-          </form>
+          </div>
         </div>
 
         <nav

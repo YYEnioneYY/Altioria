@@ -8,6 +8,9 @@ import { LocaleProvider } from '../shared/lib/i18n';
 
 import { AboutPage } from '../pages/about';
 import { ContactsPage } from '../pages/contacts';
+import { CategoryProductsPage } from '../pages/category-products';
+import { ProductDetailsPage } from '../pages/product-details';
+import { ProductInquiryPage } from '../pages/product-inquiry';
 
 import { AdminLoginPage } from '../pages/admin-login';
 import { AdminDashboardPage } from '../pages/admin-dashboard';
@@ -24,6 +27,7 @@ import { AdminCreateProductPage } from '../pages/admin-create-product';
 import { AdminProductDetailsPage } from '../pages/admin-product-details';
 import { AdminCreateProductVariantPage } from '../pages/admin-create-product-variant';
 import { AdminProductVariantDetailsPage } from '../pages/admin-product-variant-details';
+import { AdminHelpPage } from '../pages/admin-help';
 
 function App() {
   return (
@@ -34,6 +38,9 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="products" element={<ProductsPage />} />
+            <Route path="products/:categorySlug" element={<CategoryProductsPage />} />
+            <Route path="products/:categorySlug/:productSlug/inquiry" element={<ProductInquiryPage />} />
+            <Route path="products/:categorySlug/:productSlug" element={<ProductDetailsPage />} />
             <Route path="contacts" element={<ContactsPage />}/>
             <Route path="privacy-policy" element={<PrivacyPolicyPage />} />
           </Route>
@@ -87,6 +94,11 @@ function App() {
             <Route
               path="admin/products/:productId/variants/:variantId/edit"
               element={<AdminCreateProductVariantPage />}
+            />
+
+            <Route
+              path="admin/help"
+              element={<AdminHelpPage />}
             />
           </Route>
 

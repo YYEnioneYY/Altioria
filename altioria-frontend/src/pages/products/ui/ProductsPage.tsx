@@ -138,6 +138,9 @@ export function ProductsPage() {
                   <Link
                     key={category.id}
                     to={`/products/${category.slug}`}
+                    state={{
+                      categoryName: category.name,
+                    }}
                     aria-label={category.name}
                     draggable={false}
                     className="group flex flex-col items-center text-white no-underline"
