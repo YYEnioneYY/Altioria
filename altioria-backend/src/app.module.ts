@@ -12,6 +12,7 @@ import { EmailModule } from './email/email.module';
 import { ProductInquiriesModule } from './product-inquiries/product-inquiries.module';
 import { ProductsModule } from './products/products.module';
 import { SearchModule } from './search/search.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SearchModule } from './search/search.module';
     ProductInquiriesModule,
     ProductsModule,
     SearchModule,
+    HealthModule,
   ],
   providers: [
     {

@@ -98,13 +98,14 @@ services:
 
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      ALLOW_DESTRUCTIVE_CATALOG_MIGRATION: ${ALLOW_DESTRUCTIVE_CATALOG_MIGRATION:-false}
 
     depends_on:
       postgres:
         condition: service_healthy
 
     command:
-      ['npx', 'prisma', 'migrate', 'deploy']
+      ['npm', 'run', 'migrate:deploy']
 
 
   backend-seed:
@@ -162,6 +163,19 @@ services:
     expose:
       - '3000'
 
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3000/api/health').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -196,8 +210,10 @@ services:
       - caddy_config:/config
 
     depends_on:
-      - backend
-      - minio
+      backend:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
 
 
 volumes:

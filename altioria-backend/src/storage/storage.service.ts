@@ -4,11 +4,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
-import {
-  Injectable,
-  OnModuleDestroy,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -21,15 +17,10 @@ function requireEnv(name: string): string {
 }
 
 @Injectable()
-export class StorageService
-  implements OnModuleInit, OnModuleDestroy
-{
+export class StorageService implements OnModuleInit, OnModuleDestroy {
   private readonly bucket = requireEnv('S3_BUCKET');
 
-  private readonly publicUrl = requireEnv('S3_PUBLIC_URL').replace(
-    /\/+$/,
-    '',
-  );
+  private readonly publicUrl = requireEnv('S3_PUBLIC_URL').replace(/\/+$/, '');
 
   private readonly client = new S3Client({
     endpoint: requireEnv('S3_ENDPOINT'),
@@ -42,6 +33,10 @@ export class StorageService
   });
 
   async onModuleInit(): Promise<void> {
+    await this.checkHealth();
+  }
+
+  async checkHealth(): Promise<void> {
     await this.client.send(
       new HeadBucketCommand({
         Bucket: this.bucket,
@@ -53,11 +48,7 @@ export class StorageService
     this.client.destroy();
   }
 
-  async upload(
-    key: string,
-    body: Buffer,
-    contentType: string,
-  ): Promise<void> {
+  async upload(key: string, body: Buffer, contentType: string): Promise<void> {
     await this.client.send(
       new PutObjectCommand({
         Bucket: this.bucket,

@@ -2,13 +2,20 @@ import 'dotenv/config';
 
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { setupSwagger } from './swagger/setup-swagger';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  const environment = process.env.NODE_ENV ?? 'development';
+
+  if (environment === 'production') {
+    app.set('trust proxy', 1);
+  }
 
   const frontendUrl = process.env.FRONTEND_URL;
 
@@ -33,8 +40,6 @@ async function bootstrap(): Promise<void> {
     origin: frontendUrl,
     credentials: true,
   });
-
-  const environment = process.env.NODE_ENV ?? 'development';
 
   if (environment !== 'production') {
     setupSwagger(app, environment);
