@@ -121,7 +121,7 @@ function ProductCard({
       draggable={false}
       className="group block min-w-0 text-white no-underline"
     >
-      <div className="aspect-[3/4] w-full overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-[transform,box-shadow] duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
+      <div className="aspect-[3/4] w-full transform-gpu overflow-hidden rounded-2xl bg-[#1a1a1a] shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-all duration-700 ease-in-out min-[1201px]:group-hover:-translate-y-1.5 min-[1201px]:group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.6)]">
         <ProductImage
           src={product.coverImageUrl}
           alt={product.name}
@@ -129,7 +129,7 @@ function ProductCard({
         />
       </div>
 
-      <h2 className="mt-[14px] truncate text-center text-[15px] font-normal text-white transition-colors duration-300 group-hover:text-white/65 min-[1201px]:text-[18px]">
+      <h2 className="mt-[14px] truncate text-center text-[15px] font-normal text-white transition-colors duration-500 group-hover:text-white/65 min-[1201px]:text-[18px]">
         {product.name}
       </h2>
     </Link>

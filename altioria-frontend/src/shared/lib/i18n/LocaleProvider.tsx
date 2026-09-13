@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -20,11 +21,12 @@ interface LocaleProviderProps {
   children: ReactNode;
 }
 
+const LOCALE_FADE_OUT_MS = 180;
+
 function getSavedLocale(): Locale {
-  const savedLocale =
-    localStorage.getItem(
-      'altioria-locale',
-    );
+  const savedLocale = localStorage.getItem(
+    'altioria-locale',
+  );
 
   return savedLocale === 'en'
     ? 'en'
@@ -56,10 +58,20 @@ export function LocaleProvider({
   const [fallbackLocale, setFallbackLocale] =
     useState<Locale>(getSavedLocale);
 
-  const pathLocale =
-    getLocaleFromPath(
-      location.pathname,
-    );
+  const [
+    isLocaleChanging,
+    setIsLocaleChanging,
+  ] = useState(false);
+
+  const transitionTimeoutRef =
+    useRef<number | null>(null);
+
+  const transitionFrameRef =
+    useRef<number | null>(null);
+
+  const pathLocale = getLocaleFromPath(
+    location.pathname,
+  );
 
   const locale =
     pathLocale ?? fallbackLocale;
@@ -70,41 +82,108 @@ export function LocaleProvider({
       locale,
     );
 
-    document.documentElement.lang =
-      locale;
+    document.documentElement.lang = locale;
   }, [locale]);
+
+  useEffect(
+    () => () => {
+      if (
+        transitionTimeoutRef.current !== null
+      ) {
+        window.clearTimeout(
+          transitionTimeoutRef.current,
+        );
+      }
+
+      if (
+        transitionFrameRef.current !== null
+      ) {
+        window.cancelAnimationFrame(
+          transitionFrameRef.current,
+        );
+      }
+    },
+    [],
+  );
 
   const setLocale = useCallback(
     (nextLocale: Locale) => {
-      setFallbackLocale(nextLocale);
+      if (
+        nextLocale === locale ||
+        isLocaleChanging
+      ) {
+        return;
+      }
 
       const currentLocale =
         getLocaleFromPath(
           location.pathname,
         );
 
-      // Admin URL не локализуем.
-      if (!currentLocale) {
+      const applyLocale = () => {
+        setFallbackLocale(nextLocale);
+
+        // Админские URL не локализуем.
+        if (!currentLocale) {
+          return;
+        }
+
+        const segments =
+          location.pathname.split('/');
+
+        segments[1] = nextLocale;
+
+        navigate(
+          {
+            pathname: segments.join('/'),
+            search: location.search,
+            hash: location.hash,
+          },
+          {
+            replace: true,
+          },
+        );
+      };
+
+      const prefersReducedMotion =
+        window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        ).matches;
+
+      if (prefersReducedMotion) {
+        applyLocale();
         return;
       }
 
-      const segments =
-        location.pathname.split('/');
+      // Сначала плавно скрываем страницу.
+      setIsLocaleChanging(true);
 
-      segments[1] = nextLocale;
+      transitionTimeoutRef.current =
+        window.setTimeout(() => {
+          // Затем меняем язык.
+          applyLocale();
 
-      navigate(
-        {
-          pathname:
-            segments.join('/'),
-          search:
-            location.search,
-          hash:
-            location.hash,
-        },
-      );
+          // Ждём отрисовку нового текста
+          // и плавно показываем страницу.
+          transitionFrameRef.current =
+            window.requestAnimationFrame(() => {
+              transitionFrameRef.current =
+                window.requestAnimationFrame(
+                  () => {
+                    setIsLocaleChanging(false);
+
+                    transitionFrameRef.current =
+                      null;
+                  },
+                );
+            });
+
+          transitionTimeoutRef.current = null;
+        }, LOCALE_FADE_OUT_MS);
     },
     [
+      locale,
+      isLocaleChanging,
       location.pathname,
       location.search,
       location.hash,
@@ -116,17 +195,17 @@ export function LocaleProvider({
     () => ({
       locale,
       setLocale,
+      isLocaleChanging,
     }),
     [
       locale,
       setLocale,
+      isLocaleChanging,
     ],
   );
 
   return (
-    <LocaleContext.Provider
-      value={value}
-    >
+    <LocaleContext.Provider value={value}>
       {children}
     </LocaleContext.Provider>
   );
