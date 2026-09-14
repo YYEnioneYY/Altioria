@@ -3,3 +3,5 @@ Allow: /
 
 Disallow: /admin
 Disallow: /api
+
+Sitemap: https://altioria.ru/sitemap.xml

@@ -10,6 +10,12 @@
     @nonIndexable path /admin /admin/* /admin-dashboard /admin-dashboard/* /api /api/*
     header @nonIndexable X-Robots-Tag "noindex, nofollow"
 
+    # Динамический sitemap из опубликованного каталога.
+    handle /sitemap.xml {
+    	rewrite * /api/sitemap.xml
+    	reverse_proxy backend:3000
+    }
+
 	# NestJS API
 	handle /api/* {
 		reverse_proxy backend:3000

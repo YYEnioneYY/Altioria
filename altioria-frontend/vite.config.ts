@@ -30,6 +30,12 @@ export default defineConfig(({ command, mode }) => {
                 target: apiProxyTarget,
                 changeOrigin: true,
               },
+              '/sitemap.xml': {
+                target: apiProxyTarget,
+                changeOrigin: true,
+                rewrite: () =>
+                  '/api/sitemap.xml',
+              },
             },
           }
         : undefined,

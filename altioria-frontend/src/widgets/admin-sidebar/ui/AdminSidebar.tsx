@@ -9,6 +9,10 @@ import {
   type AdminNavigationIcon,
 } from '../config/navigation';
 
+import {
+  SystemHealthIndicator,
+} from './SystemHealthIndicator';
+
 interface AdminSidebarProps {
   username: string;
   isOpen: boolean;
@@ -275,6 +279,10 @@ export function AdminSidebar({
           </nav>
 
           <footer className="flex shrink-0 flex-col items-center gap-2 border-t border-white/[0.07] py-4">
+            <SystemHealthIndicator />
+
+            <div className="h-px w-8 bg-white/[0.07]" />
+            
             <Link
               to="/products"
               aria-label="Перейти на сайт"

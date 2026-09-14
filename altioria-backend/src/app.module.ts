@@ -13,6 +13,7 @@ import { ProductInquiriesModule } from './product-inquiries/product-inquiries.mo
 import { ProductsModule } from './products/products.module';
 import { SearchModule } from './search/search.module';
 import { HealthModule } from './health/health.module';
+import { SitemapModule } from './sitemap/sitemap.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { HealthModule } from './health/health.module';
     ProductsModule,
     SearchModule,
     HealthModule,
+    SitemapModule,
   ],
   providers: [
     {
