@@ -12,6 +12,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "generate:og": "node scripts/generate-og-image.mjs",
     "premigrate:deploy": "node scripts/check-destructive-catalog-migration.mjs",
     "migrate:deploy": "prisma migrate deploy",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

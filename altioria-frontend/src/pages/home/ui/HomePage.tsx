@@ -18,7 +18,7 @@ export function HomePage() {
         title={seo.title}
         description={seo.description}
         path="/"
-        image="https://altioria.ru/images/og/altioria.webp"
+        image="https://altioria.ru/images/og/altioria.jpg"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'Organization',

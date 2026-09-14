@@ -32,10 +32,32 @@
 	@viteAssets path /assets/*
 	header @viteAssets Cache-Control "public, max-age=31536000, immutable"
 
-	# React SPA
-	handle {
-		root * /srv
-		try_files {path} /index.html
-		file_server
-	}
+	# Известные маршруты React SPA.
+    @spaRoutes path / /ru /en /ru/about /en/about /ru/products /en/products /ru/products/* /en/products/* /ru/contacts /en/contacts /ru/privacy-policy /en/privacy-policy /about /products /products/* /contacts /privacy-policy /admin/login /admin-dashboard /admin/categories /admin/products /admin/products/* /admin/help
+    
+    handle @spaRoutes {
+    	root * /srv
+    	try_files {path} /index.html
+    	file_server
+    }
+    
+    # Настоящие статические файлы:
+    # изображения, robots.txt, favicon и assets.
+    handle {
+    	root * /srv
+    	try_files {path} =404
+    	file_server
+    }
+    
+    # Для неизвестного адреса возвращаем index.html,
+    # но сохраняем HTTP-статус 404.
+    handle_errors {
+    	@notFound expression {http.error.status_code} == 404
+    
+    	handle @notFound {
+    		rewrite * /index.html
+    		root * /srv
+    		file_server
+    	}
+    }
 }

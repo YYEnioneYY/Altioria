@@ -38,7 +38,7 @@ export function Seo({
   title,
   description,
   path,
-  image = `${SITE_URL}/images/og/altioria.webp`,
+  image = `${SITE_URL}/images/og/altioria.jpg`,
   imageAlt = 'Altioria',
   type = 'website',
   noIndex = false,
