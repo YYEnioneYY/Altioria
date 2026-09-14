@@ -1,9 +1,21 @@
 name: altioria-prod
 
+x-logging: &default-logging
+  driver: local
+
+  options:
+    max-size: '10m'
+    max-file: '5'
+    compress: 'true'
+
 services:
   postgres:
     image: postgres:17-alpine
     restart: unless-stopped
+
+    mem_limit: 1g
+    cpus: 1.0
+    logging: *default-logging
 
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
@@ -28,8 +40,12 @@ services:
 
 
   minio:
-    image: quay.io/minio/minio:latest
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     restart: unless-stopped
+
+    mem_limit: 768m
+    cpus: 1.0
+    logging: *default-logging
 
     command:
       server /data --console-address ":9001"
@@ -60,8 +76,12 @@ services:
 
 
   minio-init:
-    image: quay.io/minio/mc:latest
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
     restart: "no"
+
+    mem_limit: 256m
+    cpus: 0.25
+    logging: *default-logging
 
     depends_on:
       minio:
@@ -93,6 +113,10 @@ services:
 
     restart: 'no'
 
+    mem_limit: 768m
+    cpus: 1.0
+    logging: *default-logging
+
     env_file:
       - ./altioria-backend/.env.docker
 
@@ -109,12 +133,19 @@ services:
 
 
   backend-seed:
+    profiles:
+      - tools
+
     build:
       context: ./altioria-backend
       dockerfile: Dockerfile
       target: build
 
     restart: 'no'
+    
+    mem_limit: 1g
+    cpus: 1.0
+    logging: *default-logging
 
     env_file:
       - ./altioria-backend/.env.docker
@@ -124,6 +155,9 @@ services:
 
     depends_on:
       backend-migrate:
+        condition: service_completed_successfully
+
+      minio-init:
         condition: service_completed_successfully
 
     command:
@@ -138,6 +172,10 @@ services:
 
     restart: unless-stopped
     init: true
+
+    mem_limit: 1g
+    cpus: 1.25
+    logging: *default-logging
 
     env_file:
       - ./altioria-backend/.env.docker
@@ -180,7 +218,7 @@ services:
       postgres:
         condition: service_healthy
 
-      backend-seed:
+      backend-migrate:
         condition: service_completed_successfully
 
       minio-init:
@@ -194,6 +232,10 @@ services:
       target: production
 
     restart: unless-stopped
+
+    mem_limit: 256m
+    cpus: 0.5
+    logging: *default-logging
 
     environment:
       DOMAIN: ${DOMAIN}
