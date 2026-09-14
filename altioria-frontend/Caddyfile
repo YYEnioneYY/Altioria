@@ -5,6 +5,11 @@
 {$DOMAIN} {
 	encode zstd gzip
 
+    # Запрещаем индексировать служебные маршруты,
+    # даже если поисковый робот не исполняет JavaScript.
+    @nonIndexable path /admin /admin/* /admin-dashboard /admin-dashboard/* /api /api/*
+    header @nonIndexable X-Robots-Tag "noindex, nofollow"
+
 	# NestJS API
 	handle /api/* {
 		reverse_proxy backend:3000

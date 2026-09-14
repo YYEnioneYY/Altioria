@@ -17,6 +17,7 @@ import { HomePage } from '../pages/home';
 import { NotFoundPage } from '../pages/not-found';
 
 import { SiteLayout } from './layouts/SiteLayout';
+import { AdminNoIndexLayout } from './layouts/AdminNoIndexLayout';
 
 import { AboutPage } from '../pages/about';
 import { ContactsPage } from '../pages/contacts';
@@ -150,61 +151,63 @@ function App() {
           <Route path="contacts" element={<LegacyPublicRedirect />}/>
           <Route path="privacy-policy" element={<LegacyPublicRedirect />} />
 
-          <Route
-            path="admin/login"
-            element={<AdminLoginPage />}
-          />
-
-          <Route element={<AdminLayout />}>
+          <Route element={<AdminNoIndexLayout />}>
             <Route
-              path="admin-dashboard"
-              element={<AdminDashboardPage />}
+              path="admin/login"
+              element={<AdminLoginPage />}
             />
-
-            <Route
-              path="admin/categories"
-              element={<AdminCategoriesPage />}
-            />
-
-            <Route
-              path="admin/products"
-              element={<AdminProductsPage />}
-            />
-
-            <Route
-              path="admin/products/new"
-              element={<AdminCreateProductPage />}
-            />
-
-            <Route
-              path="admin/products/:id"
-              element={<AdminProductDetailsPage />}
-            />
-
-            <Route
-              path="admin/products/:id/edit"
-              element={<AdminCreateProductPage />}
-            />
-
-            <Route
-              path="admin/products/:productId/variants/new"
-              element={<AdminCreateProductVariantPage />}
-            />
-
-            <Route
-              path="admin/products/:productId/variants/:variantId"
-              element={<AdminProductVariantDetailsPage />}
-            />
-
-            <Route
-              path="admin/products/:productId/variants/:variantId/edit"
-              element={<AdminCreateProductVariantPage />}
-            />
-
-            <Route
-              path="admin/help"
-              element={<AdminHelpPage />}
-            />
+  
+            <Route element={<AdminLayout />}>
+              <Route
+                path="admin-dashboard"
+                element={<AdminDashboardPage />}
+              />
+  
+              <Route
+                path="admin/categories"
+                element={<AdminCategoriesPage />}
+              />
+  
+              <Route
+                path="admin/products"
+                element={<AdminProductsPage />}
+              />
+  
+              <Route
+                path="admin/products/new"
+                element={<AdminCreateProductPage />}
+              />
+  
+              <Route
+                path="admin/products/:id"
+                element={<AdminProductDetailsPage />}
+              />
+  
+              <Route
+                path="admin/products/:id/edit"
+                element={<AdminCreateProductPage />}
+              />
+  
+              <Route
+                path="admin/products/:productId/variants/new"
+                element={<AdminCreateProductVariantPage />}
+              />
+  
+              <Route
+                path="admin/products/:productId/variants/:variantId"
+                element={<AdminProductVariantDetailsPage />}
+              />
+  
+              <Route
+                path="admin/products/:productId/variants/:variantId/edit"
+                element={<AdminCreateProductVariantPage />}
+              />
+  
+              <Route
+                path="admin/help"
+                element={<AdminHelpPage />}
+              />
+            </Route>
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

@@ -7,8 +7,6 @@ import {
   useNavigate,
 } from 'react-router';
 
-import { NoIndex } from '../../shared/ui/seo';
-
 import {
   getCurrentAdmin,
   logoutAdmin,
@@ -141,10 +139,6 @@ export function AdminLayout() {
 
   return (
     <>
-      <NoIndex
-        title="Altioria Admin"
-        follow={false}
-      />
       <div className="min-h-dvh bg-[#0c0c0c] text-white">
         <button
           type="button"
