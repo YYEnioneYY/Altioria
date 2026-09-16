@@ -2,126 +2,58 @@ name: altioria-prod
 
 x-logging: &default-logging
   driver: local
-
   options:
-    max-size: '10m'
-    max-file: '5'
-    compress: 'true'
+    max-size: "10m"
+    max-file: "5"
+    compress: "true"
+
+x-database-environment: &database-environment
+  DATABASE_URL: "postgresql://${POSTGRES_USER:?Set POSTGRES_USER}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:?Set POSTGRES_DB}?schema=public"
 
 services:
   postgres:
-    image: postgres:17-alpine
+    image: ${POSTGRES_IMAGE:?Set POSTGRES_IMAGE}
     restart: unless-stopped
 
     mem_limit: 1g
     cpus: 1.0
+
     logging: *default-logging
 
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
     healthcheck:
       test:
-        [
-          'CMD-SHELL',
-          'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"',
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-    expose:
-      - '5432'
-
-
-  minio:
-    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
-    restart: unless-stopped
-
-    mem_limit: 768m
-    cpus: 1.0
-    logging: *default-logging
-
-    command:
-      server /data --console-address ":9001"
-
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-
-    volumes:
-      - minio_data:/data
-
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:9000/minio/health/live"
-        ]
+        - CMD-SHELL
+        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 10s
 
-    expose:
-      - '9000'
-      - '9001'
-
-
-  minio-init:
-    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
-    restart: "no"
-
-    mem_limit: 256m
-    cpus: 0.25
-    logging: *default-logging
-
-    depends_on:
-      minio:
-        condition: service_healthy
-
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-
-      MINIO_APP_ACCESS_KEY: ${MINIO_APP_ACCESS_KEY}
-      MINIO_APP_SECRET_KEY: ${MINIO_APP_SECRET_KEY}
-
-      MINIO_BUCKET: ${MINIO_BUCKET}
-
-    volumes:
-      - ./infra/minio/init.sh:/scripts/init.sh:ro
-      - ./infra/minio/categories:/initial-images/categories:ro
-      - ./infra/minio/products:/initial-images/products:ro
-
-    entrypoint:
-      - /bin/sh
-      - /scripts/init.sh
+    stop_grace_period: 60s
 
   backend-migrate:
     build:
       context: ./altioria-backend
-      dockerfile: Dockerfile
       target: build
 
-    restart: 'no'
+    restart: "no"
 
     mem_limit: 768m
     cpus: 1.0
+
     logging: *default-logging
 
-    env_file:
-      - ./altioria-backend/.env.docker
-
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      <<: *database-environment
+
       ALLOW_DESTRUCTIVE_CATALOG_MIGRATION: ${ALLOW_DESTRUCTIVE_CATALOG_MIGRATION:-false}
 
     depends_on:
@@ -129,8 +61,9 @@ services:
         condition: service_healthy
 
     command:
-      ['npm', 'run', 'migrate:deploy']
-
+      - npm
+      - run
+      - migrate:deploy
 
   backend-seed:
     profiles:
@@ -138,36 +71,34 @@ services:
 
     build:
       context: ./altioria-backend
-      dockerfile: Dockerfile
       target: build
 
-    restart: 'no'
-    
+    restart: "no"
+
     mem_limit: 1g
     cpus: 1.0
+
     logging: *default-logging
 
-    env_file:
-      - ./altioria-backend/.env.docker
-
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      <<: *database-environment
+
+      ADMIN_SEED_USERNAME: ${ADMIN_SEED_USERNAME:-}
+      ADMIN_SEED_PASSWORD: ${ADMIN_SEED_PASSWORD:-}
 
     depends_on:
       backend-migrate:
         condition: service_completed_successfully
 
-      minio-init:
-        condition: service_completed_successfully
-
     command:
-      ['npx', 'prisma', 'db', 'seed']
-
+      - npx
+      - prisma
+      - db
+      - seed
 
   backend:
     build:
       context: ./altioria-backend
-      dockerfile: Dockerfile
       target: production
 
     restart: unless-stopped
@@ -175,77 +106,69 @@ services:
 
     mem_limit: 1g
     cpus: 1.25
+
     logging: *default-logging
 
-    env_file:
-      - ./altioria-backend/.env.docker
-
     environment:
+      <<: *database-environment
+
       NODE_ENV: production
-      PORT: 3000
+      PORT: "3000"
+      FRONTEND_URL: "https://${DOMAIN:?Set DOMAIN}"
 
-      FRONTEND_URL: https://${DOMAIN}
+      ADMIN_SESSION_TTL_HOURS: ${ADMIN_SESSION_TTL_HOURS:-24}
 
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      S3_ENDPOINT: ${S3_ENDPOINT:?Set S3_ENDPOINT}
+      S3_REGION: ${S3_REGION:?Set S3_REGION}
+      S3_BUCKET: ${S3_BUCKET:?Set S3_BUCKET}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:?Set S3_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:?Set S3_SECRET_ACCESS_KEY}
+      S3_FORCE_PATH_STYLE: ${S3_FORCE_PATH_STYLE:-true}
+      S3_PUBLIC_URL: ${S3_PUBLIC_URL:?Set S3_PUBLIC_URL}
 
-      S3_ENDPOINT: http://minio:9000
-      S3_PUBLIC_URL: https://${DOMAIN}/media
-      S3_REGION: us-east-1
-      S3_BUCKET: ${MINIO_BUCKET}
-
-      S3_ACCESS_KEY_ID: ${MINIO_APP_ACCESS_KEY}
-      S3_SECRET_ACCESS_KEY: ${MINIO_APP_SECRET_KEY}
-
-      S3_FORCE_PATH_STYLE: 'true'
-
-    expose:
-      - '3000'
-
-    healthcheck:
-      test:
-        [
-          'CMD',
-          'node',
-          '-e',
-          "fetch('http://127.0.0.1:3000/api/health').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 15s
+      RESEND_API_KEY: ${RESEND_API_KEY:?Set RESEND_API_KEY}
+      MAIL_FROM: ${MAIL_FROM:?Set MAIL_FROM}
+      INQUIRY_RECIPIENT_EMAIL: ${INQUIRY_RECIPIENT_EMAIL:?Set INQUIRY_RECIPIENT_EMAIL}
 
     depends_on:
       postgres:
         condition: service_healthy
-
       backend-migrate:
         condition: service_completed_successfully
 
-      minio-init:
-        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health', {signal: AbortSignal.timeout(4000)}).then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
+    stop_grace_period: 30s
 
   frontend:
     build:
       context: ./altioria-frontend
-      dockerfile: Dockerfile
       target: production
 
     restart: unless-stopped
 
     mem_limit: 256m
     cpus: 0.5
+
     logging: *default-logging
 
     environment:
-      DOMAIN: ${DOMAIN}
-      ACME_EMAIL: ${ACME_EMAIL}
-      MINIO_BUCKET: ${MINIO_BUCKET}
+      DOMAIN: ${DOMAIN:?Set DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL}
 
     ports:
-      - '80:80'
-      - '443:443'
-      - '443:443/udp'
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
 
     volumes:
       - caddy_data:/data
@@ -254,13 +177,8 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-      minio:
-        condition: service_healthy
-
 
 volumes:
   postgres_data:
-  minio_data:
-
   caddy_data:
   caddy_config:
