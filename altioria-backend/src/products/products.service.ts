@@ -14,6 +14,12 @@ import {
 import sharp from 'sharp';
 
 import {
+  localizeProductSpecifications,
+  mergeProductSpecifications,
+  normalizeProductSpecifications,
+} from './utils/map-product-specifications';
+
+import {
   Prisma,
   ProductFileType,
   ProductPriceType,
@@ -53,6 +59,7 @@ const adminProductSelect = {
   descriptionEn: true,
   materialsRu: true,
   materialsEn: true,
+  specifications: true,
   heightMm: true,
   widthMm: true,
   depthMm: true,
@@ -308,6 +315,7 @@ export class ProductsService {
         descriptionEn: true,
         materialsRu: true,
         materialsEn: true,
+        specifications: true,
         heightMm: true,
         widthMm: true,
         depthMm: true,
@@ -382,6 +390,7 @@ export class ProductsService {
             descriptionEn: true,
             materialsRu: true,
             materialsEn: true,
+            specifications: true,
             heightMm: true,
             widthMm: true,
             depthMm: true,
@@ -439,6 +448,11 @@ export class ProductsService {
   
     const isEnglish =
       query.locale === ProductLocale.EN;
+
+    const productSpecifications =
+      normalizeProductSpecifications(
+        product.specifications,
+      );
   
     const mapImage = (
       image: (typeof product.images)[number],
@@ -492,6 +506,12 @@ export class ProductsService {
       materials: isEnglish
         ? product.materialsEn
         : product.materialsRu,
+
+      specifications:
+        localizeProductSpecifications(
+          productSpecifications,
+          isEnglish,
+        ),
   
       heightMm: product.heightMm,
       widthMm: product.widthMm,
@@ -523,12 +543,19 @@ export class ProductsService {
             ? product.images
             : variant.images;
   
-        /*
-         * null в priceType означает,
-         * что цена наследуется от товара.
-         */
         const usesProductPrice =
           variant.priceType === null;
+        
+        const variantSpecifications =
+          normalizeProductSpecifications(
+            variant.specifications,
+          );
+        
+        const resultingSpecifications =
+          mergeProductSpecifications(
+            productSpecifications,
+            variantSpecifications,
+          );
   
         return {
           id: variant.id,
@@ -549,6 +576,12 @@ export class ProductsService {
               product.materialsEn
             : variant.materialsRu ??
               product.materialsRu,
+
+          specifications:
+            localizeProductSpecifications(
+              resultingSpecifications,
+              isEnglish,
+            ),
   
           heightMm:
             variant.heightMm ??
@@ -854,6 +887,11 @@ export class ProductsService {
     dto: UpdateProductDto,
     uploads: ProductUploads,
   ): Promise<AdminProductResponseDto> {
+    const specifications =
+      parseProductSpecifications(
+        dto.specifications,
+      );
+
     this.validateImages(
       uploads.images,
       false,
@@ -1177,6 +1215,12 @@ export class ProductsService {
               ? {
                   materialsEn:
                     dto.materialsEn,
+                }
+              : {}),
+
+            ...(specifications !== undefined
+              ? {
+                  specifications,
                 }
               : {}),
   
@@ -1660,6 +1704,10 @@ export class ProductsService {
         product.materialsRu,
       materialsEn:
         product.materialsEn,
+      specifications:
+        normalizeProductSpecifications(
+          product.specifications,
+        ),
       heightMm: product.heightMm,
       widthMm: product.widthMm,
       depthMm: product.depthMm,

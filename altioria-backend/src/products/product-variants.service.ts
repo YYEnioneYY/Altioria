@@ -10,6 +10,10 @@ import { extname } from 'node:path';
 import sharp from 'sharp';
 
 import {
+  normalizeProductSpecifications,
+} from './utils/map-product-specifications';
+
+import {
   Prisma,
   ProductFileType,
   ProductPriceType,
@@ -47,6 +51,7 @@ const ADMIN_PRODUCT_VARIANT_SELECT = {
   descriptionEn: true,
   materialsRu: true,
   materialsEn: true,
+  specifications: true,
   heightMm: true,
   widthMm: true,
   depthMm: true,
@@ -397,6 +402,11 @@ export class ProductVariantsService {
     images: Express.Multer.File[],
     files: Express.Multer.File[],
   ): Promise<AdminProductVariantResponseDto> {
+    const specifications =
+      parseProductSpecifications(
+        dto.specifications,
+      );
+
     const existingVariant =
       await this.prisma.productVariant.findFirst({
         where: {
@@ -632,6 +642,12 @@ export class ProductVariantsService {
               ? {
                   materialsEn:
                     dto.materialsEn,
+                }
+              : {}),
+
+            ...(specifications !== undefined
+              ? {
+                  specifications,
                 }
               : {}),
   
@@ -1221,6 +1237,10 @@ export class ProductVariantsService {
       descriptionEn: variant.descriptionEn,
       materialsRu: variant.materialsRu,
       materialsEn: variant.materialsEn,
+      specifications:
+        normalizeProductSpecifications(
+          variant.specifications,
+        ),
       heightMm: variant.heightMm,
       widthMm: variant.widthMm,
       depthMm: variant.depthMm,

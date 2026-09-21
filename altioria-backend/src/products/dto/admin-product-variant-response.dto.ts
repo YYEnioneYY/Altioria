@@ -8,6 +8,10 @@ import {
   ProductPriceType,
 } from '../../generated/prisma/client';
 
+import {
+  AdminProductSpecificationResponseDto,
+} from './product-specification-response.dto';
+
 export class AdminProductVariantImageResponseDto {
   @ApiProperty()
   id!: string;
@@ -99,6 +103,13 @@ export class AdminProductVariantResponseDto {
     nullable: true,
   })
   materialsEn!: string | null;
+
+  @ApiProperty({
+    type: [
+      AdminProductSpecificationResponseDto,
+    ],
+  })
+  specifications!: AdminProductSpecificationResponseDto[];
 
   @ApiPropertyOptional({
     nullable: true,

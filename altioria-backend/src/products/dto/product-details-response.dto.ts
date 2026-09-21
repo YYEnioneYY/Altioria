@@ -10,6 +10,10 @@ export class ProductDetailsCategoryDto {
   name!: string;
 }
 
+import {
+  ProductSpecificationResponseDto,
+} from './product-specification-response.dto';
+
 export class ProductDetailsImageDto {
   @ApiProperty()
   id!: string;
@@ -70,6 +74,13 @@ export class ProductDetailsVariantDto {
   })
   materials!: string | null;
 
+  @ApiProperty({
+    type: [
+      ProductSpecificationResponseDto,
+    ],
+  })
+  specifications!: ProductSpecificationResponseDto[];
+
   @ApiPropertyOptional({
     nullable: true,
   })
@@ -126,6 +137,13 @@ export class ProductDetailsResponseDto {
 
   description!: string;
   materials!: string | null;
+
+  @ApiProperty({
+    type: [
+      ProductSpecificationResponseDto,
+    ],
+  })
+  specifications!: ProductSpecificationResponseDto[];
 
   heightMm!: number | null;
   widthMm!: number | null;

@@ -5,6 +5,10 @@ import {
   ProductPriceType,
 } from '../../generated/prisma/client';
 
+import {
+  AdminProductSpecificationResponseDto,
+} from './product-specification-response.dto';
+
 export class AdminProductCategoryResponseDto {
   id!: string;
   slug!: string;
@@ -54,6 +58,8 @@ export class AdminProductResponseDto {
 
   materialsRu!: string | null;
   materialsEn!: string | null;
+
+  specifications!: AdminProductSpecificationResponseDto[];
 
   heightMm!: number | null;
   widthMm!: number | null;
