@@ -21,6 +21,10 @@ import {
   DeleteAdminProductVariantButton,
 } from '../../../features/admin-product-variants/ui/DeleteAdminProductVariantButton';
 
+import {
+  AdminProductSpecificationsList,
+} from '../../../shared/ui/AdminProductSpecificationsList';
+
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat('ru-RU', {
     dateStyle: 'long',
@@ -517,6 +521,32 @@ export function AdminProductVariantDetailsPage() {
                 )}
               </InformationCard>
             </div>
+          </section>
+
+          <section className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.025] p-5 sm:p-7">
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-[0.16em] text-white/25">
+                Характеристики
+              </p>
+                        
+              <h2 className="mt-2 text-xl font-medium">
+                Собственные параметры исполнения
+              </h2>
+                        
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/30">
+                Здесь отображаются только собственные
+                параметры исполнения. На публичной странице
+                они объединяются с параметрами основного
+                товара.
+              </p>
+            </div>
+                        
+            <AdminProductSpecificationsList
+              specifications={
+                variant.specifications
+              }
+              emptyText="Собственные параметры не указаны — используются параметры основного товара"
+            />
           </section>
 
           <section className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.025] p-5 sm:p-7">

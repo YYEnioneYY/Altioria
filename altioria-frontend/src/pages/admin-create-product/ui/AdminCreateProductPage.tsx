@@ -18,6 +18,16 @@ import {
   type ProductPriceType,
 } from '../../../features/admin-products';
 
+import {
+  ProductSpecificationsEditor,
+} from '../../../shared/ui/ProductSpecificationsEditor';
+
+import {
+  normalizeProductSpecifications,
+  validateProductSpecifications,
+  type ProductSpecification,
+} from '../../../shared/types/product-specification';
+
 const MAX_IMAGES = 15;
 const MAX_FILES = 10;
 
@@ -110,6 +120,11 @@ export function AdminCreateProductPage() {
   const [descriptionEn, setDescriptionEn] = useState('');
   const [materialsRu, setMaterialsRu] = useState('');
   const [materialsEn, setMaterialsEn] = useState('');
+
+  const [
+    specifications,
+    setSpecifications,
+  ] = useState<ProductSpecification[]>([]);
 
   const [heightMm, setHeightMm] = useState('');
   const [widthMm, setWidthMm] = useState('');
@@ -228,6 +243,10 @@ export function AdminCreateProductPage() {
         setMaterialsRu(product.materialsRu ?? '');
 
         setMaterialsEn(product.materialsEn ?? '');
+
+        setSpecifications(
+          product.specifications ?? [],
+        );
 
         setHeightMm(product.heightMm?.toString() ?? '');
 
@@ -429,6 +448,16 @@ export function AdminCreateProductPage() {
       return;
     }
 
+    const specificationsError =
+      validateProductSpecifications(
+        specifications,
+      );
+    
+    if (specificationsError) {
+      setError(specificationsError);
+      return;
+    }
+
     let parsedHeight: number | undefined;
     let parsedWidth: number | undefined;
     let parsedDepth: number | undefined;
@@ -456,6 +485,11 @@ export function AdminCreateProductPage() {
       return;
     }
 
+    const normalizedSpecifications =
+      normalizeProductSpecifications(
+        specifications,
+      );
+
     setIsSubmitting(true);
 
     try {
@@ -468,6 +502,7 @@ export function AdminCreateProductPage() {
         descriptionEn: normalizedDescriptionEn,
         materialsRu: materialsRu.trim() || undefined,
         materialsEn: materialsEn.trim() || undefined,
+        specifications: normalizedSpecifications,
         heightMm: parsedHeight,
         widthMm: parsedWidth,
         depthMm: parsedDepth,
@@ -871,6 +906,35 @@ export function AdminCreateProductPage() {
             </p>
 
             <h2 className="mt-2 text-xl font-medium tracking-[-0.025em]">
+              Дополнительные параметры
+            </h2>
+
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/30">
+              Добавьте любые характеристики, которые
+              отсутствуют среди стандартных полей товара.
+            </p>
+          </div>
+
+          <ProductSpecificationsEditor
+            value={specifications}
+            disabled={isSubmitting}
+            onChange={(nextSpecifications) => {
+              setSpecifications(
+                nextSpecifications,
+              );
+            
+              setError(null);
+            }}
+          />
+        </section>
+
+        <section className="rounded-[1.5rem] border border-white/[0.08] bg-white/[0.025] p-5 sm:p-7">
+          <div className="mb-6">
+            <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/25">
+              04
+            </p>
+
+            <h2 className="mt-2 text-xl font-medium tracking-[-0.025em]">
               Размеры и стоимость
             </h2>
           </div>
@@ -1001,7 +1065,7 @@ export function AdminCreateProductPage() {
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/25">
-                04
+                05
               </p>
 
               <h2 className="mt-2 text-xl font-medium tracking-[-0.025em]">
@@ -1165,7 +1229,7 @@ export function AdminCreateProductPage() {
           <div className="mb-6 flex items-end justify-between gap-4">
             <div>
               <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/25">
-                05
+                06
               </p>
 
               <h2 className="mt-2 text-xl font-medium tracking-[-0.025em]">

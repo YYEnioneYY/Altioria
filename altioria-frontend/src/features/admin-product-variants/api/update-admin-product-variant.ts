@@ -4,6 +4,10 @@ import {
   type AdminProductVariantPriceType,
 } from './get-admin-product-variants';
 
+import type {
+  ProductSpecification,
+} from '../../../shared/types/product-specification';
+
 export interface UpdateAdminProductVariantInput {
   slug?: string;
   nameRu?: string;
@@ -13,6 +17,8 @@ export interface UpdateAdminProductVariantInput {
   descriptionEn?: string | null;
   materialsRu?: string | null;
   materialsEn?: string | null;
+
+  specifications?: ProductSpecification[];
 
   heightMm?: number | null;
   widthMm?: number | null;
@@ -119,6 +125,15 @@ export async function updateAdminProductVariant(
     'materialsEn',
     input.materialsEn,
   );
+
+  if (input.specifications !== undefined) {
+    formData.append(
+      'specifications',
+      JSON.stringify(
+        input.specifications,
+      ),
+    );
+  }
 
   appendNullableNumber(
     formData,

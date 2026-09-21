@@ -84,6 +84,11 @@ export async function updateAdminProduct(
     input.materialsEn,
   );
 
+  formData.append(
+    'specifications',
+    JSON.stringify(input.specifications),
+  );
+
   appendOptional(
     formData,
     'heightMm',

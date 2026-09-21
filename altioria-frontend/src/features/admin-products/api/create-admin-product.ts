@@ -4,6 +4,10 @@ import {
   type ProductPriceType,
 } from './get-admin-products';
 
+import type {
+  ProductSpecification,
+} from '../../../shared/types/product-specification';
+
 export interface CreateAdminProductInput {
   categoryId: string;
   slug: string;
@@ -13,6 +17,7 @@ export interface CreateAdminProductInput {
   descriptionEn: string;
   materialsRu?: string;
   materialsEn?: string;
+  specifications: ProductSpecification[];
   heightMm?: number;
   widthMm?: number;
   depthMm?: number;
@@ -82,6 +87,11 @@ export async function createAdminProduct(
       input.materialsEn,
     );
   }
+
+  formData.append(
+    'specifications',
+    JSON.stringify(input.specifications),
+  );
 
   if (input.heightMm !== undefined) {
     formData.append(

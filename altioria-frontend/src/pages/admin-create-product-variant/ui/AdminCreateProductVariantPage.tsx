@@ -28,6 +28,16 @@ import {
   type AdminProductVariant,
 } from '../../../features/admin-product-variants';
 
+import {
+  ProductSpecificationsEditor,
+} from '../../../shared/ui/ProductSpecificationsEditor';
+
+import {
+  normalizeProductSpecifications,
+  validateProductSpecifications,
+  type ProductSpecification,
+} from '../../../shared/types/product-specification';
+
 const MAX_IMAGES = 15;
 const MAX_FILES = 10;
 
@@ -50,6 +60,8 @@ interface VariantForm {
   descriptionEn: string;
   materialsRu: string;
   materialsEn: string;
+
+  specifications: ProductSpecification[];
 
   heightMm: string;
   widthMm: string;
@@ -75,6 +87,8 @@ const initialForm: VariantForm = {
   descriptionEn: "",
   materialsRu: "",
   materialsEn: "",
+
+  specifications: [],
 
   heightMm: "",
   widthMm: "",
@@ -712,6 +726,8 @@ export function AdminCreateProductVariantPage() {
 
           materialsEn: loadedVariant.materialsEn ?? "",
 
+          specifications: loadedVariant.specifications ?? [],
+
           heightMm: loadedVariant.heightMm?.toString() ?? "",
 
           widthMm: loadedVariant.widthMm?.toString() ?? "",
@@ -1286,6 +1302,21 @@ export function AdminCreateProductVariantPage() {
       return;
     }
 
+    const specificationsError =
+      validateProductSpecifications(
+        form.specifications,
+      );
+    
+    if (specificationsError) {
+      setFormError(specificationsError);
+      return;
+    }
+
+    const normalizedSpecifications =
+      normalizeProductSpecifications(
+        form.specifications,
+      );
+
     setIsSubmitting(true);
 
     try {
@@ -1303,6 +1334,8 @@ export function AdminCreateProductVariantPage() {
               materialsRu: form.materialsRu.trim() || null,
 
               materialsEn: form.materialsEn.trim() || null,
+
+              specifications: normalizedSpecifications,
 
               heightMm:
                 form.heightMm.trim() !== "" ? Number(form.heightMm) : null,
@@ -1335,6 +1368,8 @@ export function AdminCreateProductVariantPage() {
               descriptionEn: form.descriptionEn,
               materialsRu: form.materialsRu,
               materialsEn: form.materialsEn,
+
+              specifications: normalizedSpecifications,
 
               heightMm: form.heightMm,
               widthMm: form.widthMm,
@@ -1673,6 +1708,39 @@ export function AdminCreateProductVariantPage() {
               onChange={(event) => updateField("depthMm", event.target.value)}
             />
           </div>
+        </section>
+
+        <section className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.025] p-5 sm:p-7">
+          <div className="mb-6">
+            <p className="text-xs uppercase tracking-[0.16em] text-white/25">
+              Характеристики
+            </p>
+                    
+            <h2 className="mt-2 text-xl font-medium">
+              Дополнительные параметры
+            </h2>
+                    
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/30">
+              Параметры исполнения заменяют параметры
+              основного товара с таким же техническим
+              ключом. Если список пуст, используются
+              характеристики товара.
+            </p>
+          </div>
+                    
+          <ProductSpecificationsEditor
+            value={form.specifications}
+            disabled={isSubmitting}
+            emptyDescription="Если ничего не добавлять, исполнение будет использовать дополнительные параметры основного товара."
+            onChange={(specifications) => {
+              setForm((current) => ({
+                ...current,
+                specifications,
+              }));
+            
+              setFormError(null);
+            }}
+          />
         </section>
 
         <section className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.025] p-5 sm:p-7">

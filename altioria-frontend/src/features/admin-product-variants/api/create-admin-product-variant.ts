@@ -4,6 +4,10 @@ import {
   type AdminProductVariantPriceType,
 } from './get-admin-product-variants';
 
+import type {
+  ProductSpecification,
+} from '../../../shared/types/product-specification';
+
 export interface CreateAdminProductVariantInput {
   slug: string;
   nameRu: string;
@@ -13,6 +17,8 @@ export interface CreateAdminProductVariantInput {
   descriptionEn?: string;
   materialsRu?: string;
   materialsEn?: string;
+
+  specifications: ProductSpecification[];
 
   heightMm?: string;
   widthMm?: string;
@@ -93,6 +99,11 @@ export async function createAdminProductVariant(
     formData,
     'materialsEn',
     input.materialsEn,
+  );
+
+  formData.append(
+    'specifications',
+    JSON.stringify(input.specifications),
   );
 
   appendOptional(

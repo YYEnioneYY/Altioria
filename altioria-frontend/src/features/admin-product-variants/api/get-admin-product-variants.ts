@@ -1,3 +1,7 @@
+import type {
+  ProductSpecification,
+} from '../../../shared/types/product-specification';
+
 export type AdminProductVariantPriceType =
   | 'FIXED'
   | 'ON_REQUEST';
@@ -36,6 +40,7 @@ export interface AdminProductVariant {
   descriptionEn: string | null;
   materialsRu: string | null;
   materialsEn: string | null;
+  specifications: ProductSpecification[];
   heightMm: number | null;
   widthMm: number | null;
   depthMm: number | null;

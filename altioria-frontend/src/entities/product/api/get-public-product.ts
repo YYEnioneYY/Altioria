@@ -27,12 +27,21 @@ export interface PublicProductFile {
   sortOrder: number;
 }
 
+export interface PublicProductSpecification {
+  key: string;
+  label: string;
+  value: string;
+  unit: string;
+}
+
 export interface PublicProductVariant {
   id: string;
   slug: string;
   name: string;
   description: string;
   materials: string | null;
+
+  specifications: PublicProductSpecification[];
 
   heightMm: number | null;
   widthMm: number | null;
@@ -54,6 +63,8 @@ export interface PublicProductDetails {
   name: string;
   description: string;
   materials: string | null;
+
+  specifications: PublicProductSpecification[];
 
   heightMm: number | null;
   widthMm: number | null;

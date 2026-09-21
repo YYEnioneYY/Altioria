@@ -20,6 +20,7 @@ import {
   type PublicProductDetails,
   type PublicProductFile,
   type PublicProductImage,
+  type PublicProductSpecification,
 } from '../../../entities/product';
 
 import {
@@ -31,6 +32,8 @@ interface DisplayedProductData {
   name: string;
   description: string;
   materials: string | null;
+
+  specifications: PublicProductSpecification[];
 
   heightMm: number | null;
   widthMm: number | null;
@@ -467,6 +470,9 @@ export function ProductDetailsPage() {
         materials:
           activeVariant.materials,
 
+        specifications:
+          activeVariant.specifications,
+
         heightMm:
           activeVariant.heightMm,
         widthMm:
@@ -491,6 +497,9 @@ export function ProductDetailsPage() {
             product.description,
           materials:
             product.materials,
+
+          specifications:
+            product.specifications,
 
           heightMm:
             product.heightMm,
@@ -778,6 +787,32 @@ export function ProductDetailsPage() {
     });
   }
 
+  for (
+    const specification of
+    displayedProduct.specifications
+  ) {
+    const label =
+      specification.label.trim();
+  
+    const value =
+      specification.value.trim();
+  
+    const unit =
+      specification.unit.trim();
+  
+    if (!label || !value) {
+      continue;
+    }
+  
+    dimensionRows.push({
+      label,
+    
+      value: unit
+        ? `${value} ${unit}`
+        : value,
+    });
+  }
+
   return (
     <>
       <Seo
@@ -942,9 +977,9 @@ export function ProductDetailsPage() {
             {dimensionRows.length > 0 && (
               <div className="flex flex-col border-t border-white/10">
                 {dimensionRows.map(
-                  (row) => (
+                  (row, index) => (
                     <div
-                      key={row.label}
+                      key={`${row.label}-${index}`}
                       className="flex flex-col items-start gap-2 border-b border-white/10 py-5 text-base min-[1201px]:flex-row min-[1201px]:items-center min-[1201px]:justify-between min-[1201px]:gap-8"
                     >
                       <span className="font-light text-[#a0a0a0]">

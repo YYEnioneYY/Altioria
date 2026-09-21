@@ -21,6 +21,10 @@ import {
   AdminProductVariantsSection,
 } from '../../../widgets/admin-product-variants';
 
+import {
+  AdminProductSpecificationsList,
+} from '../../../shared/ui/AdminProductSpecificationsList';
+
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat('ru-RU', {
     dateStyle: 'long',
@@ -442,6 +446,29 @@ export function AdminProductDetailsPage() {
                 </p>
               </article>
             </div>
+          </section>
+
+          <section className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.025] p-6 sm:p-8">
+            <div className="mb-6">
+              <p className="text-[0.65rem] uppercase tracking-[0.18em] text-white/25">
+                Характеристики
+              </p>
+                            
+              <h2 className="mt-2 text-xl font-medium tracking-[-0.025em]">
+                Дополнительные параметры
+              </h2>
+                            
+              <p className="mt-2 text-sm text-white/30">
+                Параметры отображаются на публичной
+                странице товара с учётом выбранного языка.
+              </p>
+            </div>
+                            
+            <AdminProductSpecificationsList
+              specifications={
+                product.specifications
+              }
+            />
           </section>
 
           <section className="rounded-[1.75rem] border border-white/[0.08] bg-white/[0.025] p-6 sm:p-8">

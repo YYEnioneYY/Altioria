@@ -12,4 +12,5 @@ export {
   type PublicProductFileType,
   type PublicProductImage,
   type PublicProductVariant,
+  type PublicProductSpecification,
 } from './api/get-public-product';
