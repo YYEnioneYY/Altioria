@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  IsJSON,
   Length,
   Matches,
   Max,
@@ -267,4 +268,31 @@ export class CreateProductDto {
   @IsOptional()
   @IsBoolean()
   isPublished?: boolean;
+
+  @ApiPropertyOptional({
+    type: String,
+    description:
+      'JSON-массив дополнительных параметров товара',
+    example: JSON.stringify([
+      {
+        key: 'weight',
+        labelRu: 'Вес',
+        labelEn: 'Weight',
+        valueRu: '45',
+        valueEn: '45',
+        unitRu: 'кг',
+        unitEn: 'kg',
+      },
+    ]),
+  })
+  @Transform(({ value }) =>
+    typeof value === 'string'
+      ? value.trim()
+      : value,
+  )
+  @IsOptional()
+  @IsString()
+  @IsJSON()
+  @MaxLength(50_000)
+  specifications?: string;
 }

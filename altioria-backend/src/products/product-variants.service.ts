@@ -23,6 +23,8 @@ import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
 
 import { ReorderProductVariantsDto } from './dto/reorder-product-variants.dto';
 
+import { parseProductSpecifications } from './utils/parse-product-specifications';
+
 const MAX_VARIANT_IMAGES = 15;
 const MAX_VARIANT_FILES = 10;
 
@@ -179,6 +181,11 @@ export class ProductVariantsService {
     images: Express.Multer.File[],
     files: Express.Multer.File[],
   ): Promise<AdminProductVariantResponseDto> {
+    const specifications =
+      parseProductSpecifications(
+        dto.specifications,
+      );
+
     const product = await this.prisma.product.findUnique({
       where: {
         id: productId,
@@ -311,6 +318,12 @@ export class ProductVariantsService {
 
             materialsEn:
               dto.materialsEn ?? null,
+
+            ...(specifications !== undefined
+              ? {
+                  specifications,
+                }
+              : {}),
 
             heightMm:
               dto.heightMm ?? null,

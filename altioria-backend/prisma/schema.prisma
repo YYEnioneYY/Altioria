@@ -91,6 +91,8 @@ model Product {
 
   category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
 
+  specifications Json @default("[]") @db.JsonB
+
   images   ProductImage[]
   files    ProductFile[]
   variants ProductVariant[]
@@ -173,6 +175,8 @@ model ProductVariant {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  specifications Json @default("[]") @db.JsonB
+  
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   images ProductVariantImage[]

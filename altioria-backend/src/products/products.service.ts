@@ -41,6 +41,8 @@ import { ProductCardResponseDto } from './dto/product-card-response.dto';
 import { ProductDetailsResponseDto } from './dto/product-details-response.dto';
 import { ProductDetailsImageDto, ProductDetailsFileDto } from './dto/product-details-response.dto';
 
+import { parseProductSpecifications } from './utils/parse-product-specifications';
+
 const adminProductSelect = {
   id: true,
   categoryId: true,
@@ -641,6 +643,11 @@ export class ProductsService {
     dto: CreateProductDto,
     uploads: ProductUploads,
   ): Promise<AdminProductResponseDto> {
+    const specifications =
+      parseProductSpecifications(
+        dto.specifications,
+      );
+
     this.validateImages(
       uploads.images,
       true,
@@ -776,6 +783,11 @@ export class ProductsService {
               dto.materialsRu ?? null,
             materialsEn:
               dto.materialsEn ?? null,
+            ...(specifications !== undefined
+              ? {
+                  specifications,
+                }
+              : {}),
             heightMm:
               dto.heightMm ?? null,
             widthMm:

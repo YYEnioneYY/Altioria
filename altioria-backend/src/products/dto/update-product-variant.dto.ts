@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsJSON,
   Matches,
   MaxLength,
   Min,
@@ -223,4 +224,20 @@ export class UpdateProductVariantDto {
   @IsOptional()
   @IsBoolean()
   isPublished?: boolean;
+
+  @ApiPropertyOptional({
+    type: String,
+    description:
+      'JSON-массив дополнительных параметров исполнения. Пустой массив удаляет дополнительные параметры',
+  })
+  @Transform(({ value }) =>
+    typeof value === 'string'
+      ? value.trim()
+      : value,
+  )
+  @IsOptional()
+  @IsString()
+  @IsJSON()
+  @MaxLength(50_000)
+  specifications?: string;
 }

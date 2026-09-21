@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsJSON,
   Matches,
   MaxLength,
   Min,
@@ -207,4 +208,31 @@ export class CreateProductVariantDto {
   @IsOptional()
   @IsBoolean()
   isPublished?: boolean;
+
+  @ApiPropertyOptional({
+    type: String,
+    description:
+      'JSON-массив дополнительных параметров исполнения',
+    example: JSON.stringify([
+      {
+        key: 'finish',
+        labelRu: 'Отделка',
+        labelEn: 'Finish',
+        valueRu: 'Матовый лак',
+        valueEn: 'Matte lacquer',
+        unitRu: '',
+        unitEn: '',
+      },
+    ]),
+  })
+  @Transform(({ value }) =>
+    typeof value === 'string'
+      ? value.trim()
+      : value,
+  )
+  @IsOptional()
+  @IsString()
+  @IsJSON()
+  @MaxLength(50_000)
+  specifications?: string;
 }
