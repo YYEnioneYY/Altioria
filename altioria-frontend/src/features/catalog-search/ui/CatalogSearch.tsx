@@ -26,7 +26,7 @@ interface CatalogSearchProps {
 
 const contentByLocale = {
   ru: {
-    placeholder: 'Поиск...',
+    placeholder: 'поиск',
     title: 'Каталог',
     loading: 'Поиск...',
     empty: 'Ничего не найдено',
@@ -42,7 +42,7 @@ const contentByLocale = {
   },
 
   en: {
-    placeholder: 'Search...',
+    placeholder: 'search',
     title: 'Catalog',
     loading: 'Searching...',
     empty: 'Nothing found',
@@ -400,11 +400,7 @@ export function CatalogSearch({
   return (
     <div
       ref={rootRef}
-      className={`relative ${
-        isDesktop
-          ? 'w-[239px]'
-          : 'w-full'
-      }`}
+      className="relative w-full"
     >
       <form
         role="search"
@@ -412,7 +408,11 @@ export function CatalogSearch({
           event.preventDefault();
           setIsOpen(true);
         }}
-        className="flex items-center gap-2 rounded-[20px] bg-white/10 px-[15px] py-[5px] transition-[background-color,transform] duration-300 hover:scale-[1.02] hover:bg-white/[0.13] focus-within:bg-white/[0.14]"
+        className={`flex items-center gap-3 transition-colors duration-300 ${
+          isDesktop
+            ? 'h-[32px] border-b border-white/70 bg-transparent'
+            : 'h-11 border-b border-white/50 bg-transparent'
+        }`}
       >
         <input
           ref={inputRef}
@@ -427,9 +427,9 @@ export function CatalogSearch({
             setQuery(event.target.value);
             setIsOpen(true);
           }}
-          className={`min-w-0 flex-1 border-0 bg-transparent px-1 py-0.5 text-white outline-none placeholder:text-white/50 ${
+          className={`min-w-0 flex-1 border-0 bg-transparent p-0 font-normal lowercase text-white outline-none placeholder:text-white/35 ${
             isDesktop
-              ? 'text-sm'
+              ? 'text-[15px]'
               : 'text-base'
           }`}
         />
@@ -447,7 +447,7 @@ export function CatalogSearch({
               src="/images/search-icon.svg"
               alt=""
               draggable={false}
-              className="h-[15px] w-[15px] opacity-70"
+              className="h-[16px] w-[16px] opacity-90"
             />
           )}
         </button>

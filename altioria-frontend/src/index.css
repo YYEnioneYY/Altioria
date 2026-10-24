@@ -1,8 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
 @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 @import 'tailwindcss';
 
-html {
-  background: #0c0c0c;
+.site-mono {
+  font-family: 'PT Mono', monospace;
+  font-weight: 400;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  background-color: #000;
+  overflow-x: clip;
 }
 
 body {
@@ -10,7 +22,7 @@ body {
   min-height: 100vh;
   margin: 0;
   font-family: 'SF Pro Display', sans-serif;
-  background: #0c0c0c;
+  background-color: #000;
   -webkit-font-smoothing: antialiased;
 }
 
