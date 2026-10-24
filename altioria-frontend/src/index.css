@@ -58,7 +58,7 @@
 
 .about-editorial-story {
   grid-area: story;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .about-editorial-image img {
@@ -143,11 +143,11 @@
 
   .about-editorial-story {
     grid-area: story;
-    align-self: end;
+    align-self: start;
     margin-top: clamp(
-      2rem,
-      3.5dvh,
-      3rem
+      1.5rem,
+      2.5dvh,
+      2rem
     );
     padding-right: clamp(
       0.5rem,
@@ -1440,8 +1440,8 @@ body {
 
 .product-description {
   display: flex;
-  min-height: 100px;
-  flex: 1;
+  min-height: 92px;
+  flex: 0 0 auto;
   flex-direction: column;
   justify-content: flex-start;
   padding: 14px 10px;
@@ -1451,7 +1451,7 @@ body {
 
 .product-description p {
   max-width: 100%;
-  margin: 20px 0 0;
+  margin: 14px 0 0;
   padding: 0;
   color: rgba(255, 255, 255, 0.9);
   font-size: clamp(12px, 1.05vw, 15px);
@@ -1877,9 +1877,9 @@ body {
     font-size: 38px;
     white-space: normal;
   }
-
+  
   .product-description {
-    min-height: 220px;
+    min-height: 82px;
   }
 
   .product-description p {
