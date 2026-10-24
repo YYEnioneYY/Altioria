@@ -47,11 +47,45 @@ export function Header() {
       return;
     }
 
-    const previousOverflow =
+    const scrollPosition =
+      window.scrollY;
+
+    const previousBodyOverflow =
       document.body.style.overflow;
+
+    const previousBodyPosition =
+      document.body.style.position;
+
+    const previousBodyTop =
+      document.body.style.top;
+
+    const previousBodyLeft =
+      document.body.style.left;
+
+    const previousBodyRight =
+      document.body.style.right;
+
+    const previousBodyWidth =
+      document.body.style.width;
+
+    const previousHtmlOverflow =
+      document.documentElement.style.overflow;
+
+    document.documentElement.style.overflow =
+      'hidden';
 
     document.body.style.overflow =
       'hidden';
+
+    document.body.style.position =
+      'fixed';
+
+    document.body.style.top =
+      `-${scrollPosition}px`;
+
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
 
     const handleKeyDown = (
       event: KeyboardEvent,
@@ -67,12 +101,35 @@ export function Header() {
     );
 
     return () => {
-      document.body.style.overflow =
-        previousOverflow;
-
       document.removeEventListener(
         'keydown',
         handleKeyDown,
+      );
+
+      document.documentElement.style.overflow =
+        previousHtmlOverflow;
+
+      document.body.style.overflow =
+        previousBodyOverflow;
+
+      document.body.style.position =
+        previousBodyPosition;
+
+      document.body.style.top =
+        previousBodyTop;
+
+      document.body.style.left =
+        previousBodyLeft;
+
+      document.body.style.right =
+        previousBodyRight;
+
+      document.body.style.width =
+        previousBodyWidth;
+
+      window.scrollTo(
+        0,
+        scrollPosition,
       );
     };
   }, [isMenuOpen]);
@@ -83,7 +140,7 @@ export function Header() {
 
   return (
     <>
-      <header className="header-enter site-mono fixed inset-x-0 top-0 z-50 select-none bg-black text-white">
+      <header className="header-enter site-mono fixed inset-x-0 top-0 z-50 select-none bg-transparent text-white">
         {/* Desktop navbar */}
         <div
           className="hidden h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center px-[60px] will-change-transform min-[1201px]:grid"
@@ -161,21 +218,26 @@ export function Header() {
         </div>
 
         {/* Mobile navbar */}
-        <div className="flex h-20 items-center justify-between px-5 min-[1201px]:hidden">
-          <Link
-            to="/"
-            aria-label="Altioria — главная страница"
-            draggable={false}
-            onClick={closeMenu}
-            className="relative z-50 block"
-          >
-            <img
-              src="/images/altioria-logo.svg"
-              alt="Altioria"
-              draggable={false}
-              className="block w-[118px]"
-            />
-          </Link>
+        <div
+          className="grid h-20 grid-cols-[1fr_auto_1fr] items-center px-5 will-change-transform min-[1201px]:hidden"
+          style={
+            isHomePage
+              ? {
+                  transform: isMenuOpen
+                    ? 'translate3d(0, 0, 0)'
+                    : 'translate3d(0, var(--home-nav-offset, 0px), 0)',
+                }
+              : undefined
+          }
+        >
+          <div className="justify-self-start">
+            <LanguageSwitcher />
+          </div>
+        
+          <span
+            aria-hidden="true"
+            className="block w-px"
+          />
 
           <button
             type="button"
@@ -191,22 +253,22 @@ export function Header() {
                 (current) => !current,
               )
             }
-            className="relative z-50 flex h-11 w-11 items-center justify-center border border-white/35"
+            className="relative z-50 flex h-11 w-11 items-center justify-center justify-self-end focus-visible:outline-none"
           >
             <span className="sr-only">
               Меню
             </span>
-
+          
             <span
-              className={`absolute h-px w-5 bg-white transition-transform duration-300 ${
+              className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
                 isMenuOpen
                   ? 'rotate-45'
-                  : '-translate-y-[5px]'
+                  : '-translate-y-[8px]'
               }`}
             />
 
             <span
-              className={`absolute h-px w-5 bg-white transition-opacity duration-300 ${
+              className={`absolute h-px w-8 bg-white transition-opacity duration-300 ${
                 isMenuOpen
                   ? 'opacity-0'
                   : 'opacity-100'
@@ -214,10 +276,10 @@ export function Header() {
             />
 
             <span
-              className={`absolute h-px w-5 bg-white transition-transform duration-300 ${
+              className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
                 isMenuOpen
                   ? '-rotate-45'
-                  : 'translate-y-[5px]'
+                  : 'translate-y-[8px]'
               }`}
             />
           </button>
@@ -233,7 +295,29 @@ export function Header() {
             : 'pointer-events-none -translate-y-full opacity-0'
         }`}
       >
-        <div className="mb-10 flex flex-col gap-5">
+        <Link
+          to="/"
+          tabIndex={
+            isMenuOpen ? 0 : -1
+          }
+          aria-label="Altioria — главная страница"
+          draggable={false}
+          onClick={closeMenu}
+          className={`mx-auto mb-10 block transition-[opacity,transform] duration-500 ${
+            isMenuOpen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-3 opacity-0'
+          }`}
+        >
+          <img
+            src="/images/altioria-logo.svg"
+            alt="Altioria"
+            draggable={false}
+            className="block w-[160px]"
+          />
+        </Link>
+
+        <div className="mb-10">
           <CatalogSearch
             mode="mobile"
             tabIndex={
@@ -241,14 +325,6 @@ export function Header() {
             }
             onNavigate={closeMenu}
           />
-
-          <div className="self-end">
-            <LanguageSwitcher
-              tabIndex={
-                isMenuOpen ? 0 : -1
-              }
-            />
-          </div>
         </div>
 
         <nav

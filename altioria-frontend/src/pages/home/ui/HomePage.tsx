@@ -103,28 +103,13 @@ function AnimatedHomeLogo({
       const isDesktop =
         viewportWidth >= 1201;
 
-      if (!isDesktop) {
-        root.style.setProperty(
-          '--home-nav-offset',
-          '0px',
-        );
-      
-        root.style.setProperty(
-          '--home-header-logo-opacity',
-          '1',
-        );
-      
-        logo.style.opacity = '1';
-      
-        return;
-      }
-
       const reducedMotion =
         window.matchMedia(
           '(prefers-reduced-motion: reduce)',
         ).matches;
 
-      const headerHeight = 82;
+      const headerHeight =
+        isDesktop ? 82 : 80;
       const headerCenter =
         headerHeight / 2;
 
@@ -184,11 +169,15 @@ function AnimatedHomeLogo({
       logo.style.opacity =
         String(1 - logoHandoffProgress);
 
+      logo.style.pointerEvents =
+        logoHandoffProgress >= 0.9
+          ? 'none'
+          : 'auto';
       /*
        * До 55% прокрутки логотип уменьшается
        * и встречается с navbar.
        */
-      const meetingPoint = 0.55;
+      const meetingPoint = isDesktop ? 0.55 : 0.58;
 
       const meetingProgress =
         smoothstep(
@@ -205,7 +194,8 @@ function AnimatedHomeLogo({
           (1 - meetingNavProgress);
 
       const initialY =
-        viewportHeight * 0.43;
+        viewportHeight *
+        (isDesktop ? 0.43 : 0.48);
 
       const currentNavY =
         headerCenter + navOffset;
@@ -220,12 +210,18 @@ function AnimatedHomeLogo({
           : currentNavY;
       
       const initialWidth =
-        Math.min(
-          viewportWidth * 0.72,
-          1100,
-        );
-
-      const finalWidth = 210;
+        isDesktop
+          ? Math.min(
+              viewportWidth * 0.72,
+              1100,
+            )
+          : Math.min(
+              viewportWidth * 0.82,
+              520,
+            );
+          
+      const finalWidth =
+        isDesktop ? 210 : 118;
 
       const logoWidth =
         lerp(
@@ -322,66 +318,41 @@ function AnimatedHomeLogo({
 
   return (
     <>
-      {/* Desktop-анимация */}
       <div
         ref={logoRef}
-        className="pointer-events-none fixed left-1/2 top-[43vh] z-[80] hidden -translate-x-1/2 -translate-y-1/2 will-change-[top,width,opacity] min-[1201px]:block"
+        className="fixed left-1/2 top-[48vh] z-[80] w-[82vw] -translate-x-1/2 -translate-y-1/2 will-change-[top,width,opacity] min-[1201px]:top-[43vh]"
       >
-        <img
-          src="/images/altioria-logo.svg"
-          alt={logoAlt}
+        <Link
+          to="/products"
           draggable={false}
-          className="block h-auto w-full"
-        />
-
+          aria-label={productsLinkLabel}
+          className="block w-full"
+        >
+          <img
+            src="/images/altioria-logo.svg"
+            alt={logoAlt}
+            draggable={false}
+            className="block h-auto w-full"
+          />
+        </Link>
+        
         <p
           ref={taglineRef}
-          className="site-mono absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap text-[clamp(11px,1vw,16px)] font-normal lowercase tracking-[0.04em] text-white/35 will-change-[opacity,transform]"
+          className="site-mono absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap text-[11px] font-normal lowercase tracking-[0.04em] text-white/35 will-change-[opacity,transform] min-[1201px]:text-[clamp(11px,1vw,16px)]"
         >
           <span aria-hidden="true">
             [
           </span>
-
+            
           <span className="mx-2">
             {tagline}
           </span>
-
+            
           <span aria-hidden="true">
             ]
           </span>
         </p>
       </div>
-
-      {/* Статичная мобильная версия */}
-      <Link
-        to="/products"
-        draggable={false}
-        aria-label={productsLinkLabel}
-        className="flex h-[100dvh] items-center justify-center px-5 min-[1201px]:hidden"
-      >
-        <div className="flex w-full flex-col items-center">
-          <img
-            src="/images/altioria-logo.svg"
-            alt={logoAlt}
-            draggable={false}
-            className="block w-[min(88vw,620px)]"
-          />
-
-          <p className="site-mono mt-4 text-center text-[12px] font-normal lowercase tracking-[0.03em] text-white/35">
-            <span aria-hidden="true">
-              [
-            </span>
-
-            <span className="mx-2">
-              {tagline}
-            </span>
-
-            <span aria-hidden="true">
-              ]
-            </span>
-          </p>
-        </div>
-      </Link>
     </>
   );
 }
@@ -426,7 +397,7 @@ export function HomePage() {
            * За одну дополнительную высоту происходит
            * скролл-анимация.
            */}
-          <section className="relative bg-black min-[1201px]:h-[200dvh]">
+          <section className="relative h-[200dvh] bg-black">
             <div className="sticky top-0 h-[100dvh] bg-black">
               <AnimatedHomeLogo
                 logoAlt={

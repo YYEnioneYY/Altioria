@@ -40,7 +40,7 @@ export function LanguageSwitcher({
           ? 'Выбор языка'
           : 'Choose language'
       }
-      className="relative grid h-[32px] w-[70px] shrink-0 grid-cols-2 overflow-hidden border border-white/70 bg-black"
+      className="relative grid h-[34px] w-[76px] shrink-0 grid-cols-2 overflow-hidden border border-white/70 bg-black/20 backdrop-blur-sm min-[1201px]:h-[32px] min-[1201px]:w-[70px]"
     >
       <span
         aria-hidden="true"
@@ -65,7 +65,7 @@ export function LanguageSwitcher({
             onClick={() =>
               setLocale(language.value)
             }
-            className={`relative z-10 flex h-full items-center justify-center text-[14px] font-normal lowercase transition-colors duration-300 focus-visible:outline-none ${
+            className={`relative z-10 flex h-full items-center justify-center text-[15px] min-[1201px]:text-[14px] font-normal lowercase transition-colors duration-300 focus-visible:outline-none ${
               isActive
                 ? 'text-black'
                 : 'text-white/55 hover:text-white'
