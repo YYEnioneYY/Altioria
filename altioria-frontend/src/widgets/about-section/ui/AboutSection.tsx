@@ -188,9 +188,7 @@ export function AboutSection({
         </header>
 
         <div className="about-editorial-grid">
-          <p
-            className={`about-editorial-lead text-[12px] font-normal leading-[1.35] text-white/80 transition-[opacity,transform] duration-700 min-[901px]:text-[14px] min-[901px]:leading-[1.3] ${contentState}`}
-          >
+          <p className="about-editorial-lead site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[15px] min-[901px]:leading-[1.12]">
             {content.lead}
           </p>
 
@@ -207,13 +205,13 @@ export function AboutSection({
           </figure>
 
           <article
-            className={`about-editorial-biography transition-[opacity,transform] duration-700 [transition-delay:160ms] ${contentState}`}
+            className="about-editorial-biography border-l border-white/35 pl-4 min-[901px]:border-l-0 min-[901px]:border-r min-[901px]:pl-0 min-[901px]:pr-6"
             aria-labelledby="oleg-klodt-heading"
           >
-            <div className="mb-5 flex items-center justify-between min-[901px]:mb-7">
+            <div className="mb-6 flex items-center justify-between min-[901px]:mb-8">
               <h2
                 id="oleg-klodt-heading"
-                className="site-mono text-[12px] font-normal leading-none tracking-[-0.02em] text-white min-[901px]:text-[13px]"
+                className="site-mono text-[11px] font-normal leading-none tracking-[-0.025em] text-white min-[901px]:text-[14px]"
               >
                 {content.personName}
               </h2>
@@ -221,34 +219,50 @@ export function AboutSection({
               <div className="flex items-center gap-4 min-[901px]:hidden">
                 <span
                   aria-hidden="true"
-                  className="h-4 w-px shrink-0 bg-white/35"
+                  className="h-4 w-px bg-white/35"
                 />
 
                 <button
                   type="button"
                   onClick={scrollToTop}
-                  className="site-mono whitespace-nowrap text-[10px] font-normal lowercase text-white/60 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:text-white"
+                  className="site-mono text-[9px] lowercase text-white/55"
                 >
                   {locale === 'ru'
                     ? 'наверх'
                     : 'up'}
                 </button>
-
+                  
                 <span
                   aria-hidden="true"
-                  className="h-4 w-px shrink-0 bg-white/35"
+                  className="h-4 w-px bg-white/35"
                 />
               </div>
             </div>
-
-            <div className="about-biography-copy border-l border-white/35 pl-4 text-[13px] font-normal leading-[1.32] tracking-[-0.015em] text-white/75 min-[901px]:border-l-0 min-[901px]:border-r min-[901px]:pl-0 min-[901px]:pr-6 min-[901px]:text-[15px] min-[901px]:leading-[1.22]">
+                  
+            <div className="site-serif text-[15px] font-normal leading-[1.1] tracking-[-0.012em] text-white/90 min-[901px]:text-[18px] min-[901px]:leading-[1.05]">
               {content.biography.map(
                 (paragraph, index) => (
                   <p
-                    key={`${paragraph}-${index}`}
-                    className="mb-[1.15em] last:mb-0"
+                    key={paragraph}
+                    className="mb-[1.05em] last:mb-0"
                   >
-                    {paragraph}
+                    {index === 0 ? (
+                      <>
+                        <span className="italic">
+                          {content.personName}
+                        </span>
+                    
+                        {paragraph.startsWith(
+                          content.personName,
+                        )
+                          ? paragraph.slice(
+                              content.personName.length,
+                            )
+                          : ` ${paragraph}`}
+                      </>
+                    ) : (
+                      paragraph
+                    )}
                   </p>
                 ),
               )}
@@ -257,11 +271,13 @@ export function AboutSection({
 
           {lastStory && (
             <div
-              className={`about-editorial-story text-[13px] font-normal leading-[1.32] tracking-[-0.015em] text-white/75 transition-[opacity,transform] duration-700 [transition-delay:200ms] min-[901px]:text-[15px] min-[901px]:leading-[1.22] ${contentState}`}
+              className="about-editorial-story site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[15px] min-[901px]:leading-[1.12]"
               aria-label={content.aboutLabel}
             >
               <p>
-                {`${lastStory.beforeBrand}Altioria${lastStory.afterBrand}`}
+                {lastStory.beforeBrand}
+                Altioria
+                {lastStory.afterBrand}
               </p>
             </div>
           )}
@@ -299,7 +315,7 @@ export function AboutSection({
 
         </div>
 
-                <section
+        <section
           className={`about-conclusion transition-[opacity,transform] duration-700 [transition-delay:260ms] ${contentState}`}
           aria-label={
             locale === 'ru'

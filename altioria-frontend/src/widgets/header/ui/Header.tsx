@@ -50,18 +50,23 @@ export function Header() {
   ): boolean => {
     if (path === '/products') {
       return (
-        normalizedPathname === '/products' ||
+        normalizedPathname ===
+          '/products' ||
         normalizedPathname.startsWith(
           '/products/',
         )
       );
     }
 
-    return normalizedPathname === path;
+    return (
+      normalizedPathname === path
+    );
   };
 
   const isHomePage =
-    /^\/(?:ru|en)?\/?$/.test(pathname);
+    /^\/(?:ru|en)?\/?$/.test(
+      pathname,
+    );
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -90,10 +95,11 @@ export function Header() {
       document.body.style.width;
 
     const previousHtmlOverflow =
-      document.documentElement.style.overflow;
+      document.documentElement.style
+        .overflow;
 
-    document.documentElement.style.overflow =
-      'hidden';
+    document.documentElement.style
+      .overflow = 'hidden';
 
     document.body.style.overflow =
       'hidden';
@@ -127,7 +133,8 @@ export function Header() {
         handleKeyDown,
       );
 
-      document.documentElement.style.overflow =
+      document.documentElement.style
+        .overflow =
         previousHtmlOverflow;
 
       document.body.style.overflow =
@@ -155,6 +162,10 @@ export function Header() {
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
@@ -175,7 +186,11 @@ export function Header() {
           }
         >
           <nav
-            aria-label="Основная навигация"
+            aria-label={
+              locale === 'ru'
+                ? 'Основная навигация'
+                : 'Main navigation'
+            }
             className="flex min-w-0 items-center"
           >
             {headerNavigation.map(
@@ -184,9 +199,11 @@ export function Header() {
                   isNavigationItemActive(
                     item.path,
                   );
-                
+
                 return (
-                  <Fragment key={item.path}>
+                  <Fragment
+                    key={item.path}
+                  >
                     <Link
                       to={item.path}
                       draggable={false}
@@ -201,9 +218,13 @@ export function Header() {
                           : 'border-transparent text-white hover:text-white/55 focus-visible:border-white/40 focus-visible:text-white'
                       }`}
                     >
-                      {item.label[locale]}
+                      {
+                        item.label[
+                          locale
+                        ]
+                      }
                     </Link>
-                    
+
                     {index <
                       headerNavigation.length -
                         1 && (
@@ -220,7 +241,11 @@ export function Header() {
 
           <Link
             to="/"
-            aria-label="Altioria — главная страница"
+            aria-label={
+              locale === 'ru'
+                ? 'Altioria — главная страница'
+                : 'Altioria — home page'
+            }
             draggable={false}
             className="mx-10 block transition-opacity duration-200"
             style={
@@ -256,46 +281,78 @@ export function Header() {
 
         {/* Mobile navbar */}
         <div
-          className="grid h-20 grid-cols-[1fr_auto_1fr] items-center px-5 will-change-transform min-[1201px]:hidden"
+          className="flex h-20 items-center justify-between px-5 will-change-transform min-[1201px]:hidden"
           style={
             isHomePage
               ? {
-                  transform: isMenuOpen
-                    ? 'translate3d(0, 0, 0)'
-                    : 'translate3d(0, var(--home-nav-offset, 0px), 0)',
+                  transform:
+                    isMenuOpen
+                      ? 'translate3d(0, 0, 0)'
+                      : 'translate3d(0, var(--home-nav-offset, 0px), 0)',
                 }
               : undefined
           }
         >
-          <div className="justify-self-start">
-            <LanguageSwitcher />
-          </div>
-        
-          <span
-            aria-hidden="true"
-            className="block w-px"
-          />
+          <Link
+            to="/"
+            aria-label={
+              locale === 'ru'
+                ? 'Altioria — главная страница'
+                : 'Altioria — home page'
+            }
+            draggable={false}
+            onClick={closeMenu}
+            className="relative z-50 block transition-opacity duration-300"
+            style={
+              isHomePage
+                ? {
+                    opacity:
+                      isMenuOpen
+                        ? 1
+                        : 'var(--home-header-logo-opacity, 0)',
+                  }
+                : {
+                    opacity: 1,
+                  }
+            }
+          >
+            <img
+              src="/images/altioria-logo.svg"
+              alt="Altioria"
+              draggable={false}
+              className="block w-[118px]"
+            />
+          </Link>
 
           <button
             type="button"
             aria-label={
               isMenuOpen
-                ? 'Закрыть меню'
-                : 'Открыть меню'
+                ? locale === 'ru'
+                  ? 'Закрыть меню'
+                  : 'Close menu'
+                : locale === 'ru'
+                  ? 'Открыть меню'
+                  : 'Open menu'
             }
-            aria-expanded={isMenuOpen}
+            aria-expanded={
+              isMenuOpen
+            }
             aria-controls="mobile-navigation"
             onClick={() =>
               setIsMenuOpen(
-                (current) => !current,
+                (current) =>
+                  !current,
               )
             }
-            className="relative z-50 flex h-11 w-11 items-center justify-center justify-self-end focus-visible:outline-none"
+            className="relative z-50 flex h-11 w-11 items-center justify-center focus-visible:outline-none"
           >
             <span className="sr-only">
-              Меню
+              {locale === 'ru'
+                ? 'Меню'
+                : 'Menu'}
             </span>
-          
+
             <span
               className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
                 isMenuOpen
@@ -326,35 +383,19 @@ export function Header() {
       <div
         id="mobile-navigation"
         aria-hidden={!isMenuOpen}
-        className={`site-mono fixed inset-0 z-40 flex flex-col bg-black px-5 pb-8 pt-[104px] text-white transition-[transform,opacity] duration-500 min-[1201px]:hidden ${
+        className={`site-mono fixed inset-0 z-40 flex flex-col overflow-hidden bg-black px-5 pb-7 pt-[104px] text-white transition-[transform,opacity,visibility] duration-500 min-[1201px]:hidden ${
           isMenuOpen
-            ? 'pointer-events-auto translate-y-0 opacity-100'
-            : 'pointer-events-none -translate-y-full opacity-0'
+            ? 'visible pointer-events-auto translate-y-0 opacity-100'
+            : 'invisible pointer-events-none -translate-y-full opacity-0'
         }`}
       >
-        <Link
-          to="/"
-          tabIndex={
-            isMenuOpen ? 0 : -1
-          }
-          aria-label="Altioria — главная страница"
-          draggable={false}
-          onClick={closeMenu}
-          className={`mx-auto mb-10 block transition-[opacity,transform] duration-500 ${
+        <div
+          className={`shrink-0 transition-[opacity,transform] delay-100 duration-500 ${
             isMenuOpen
               ? 'translate-y-0 opacity-100'
               : '-translate-y-3 opacity-0'
           }`}
         >
-          <img
-            src="/images/altioria-logo.svg"
-            alt="Altioria"
-            draggable={false}
-            className="block w-[160px]"
-          />
-        </Link>
-
-        <div className="mb-10">
           <CatalogSearch
             mode="mobile"
             tabIndex={
@@ -365,8 +406,12 @@ export function Header() {
         </div>
 
         <nav
-          aria-label="Мобильная навигация"
-          className="flex flex-col border-t border-white/20"
+          aria-label={
+            locale === 'ru'
+              ? 'Мобильная навигация'
+              : 'Mobile navigation'
+          }
+          className="mt-9 flex shrink-0 flex-col border-t border-white/20"
         >
           {headerNavigation.map(
             (item) => {
@@ -374,13 +419,15 @@ export function Header() {
                 isNavigationItemActive(
                   item.path,
                 );
-              
+
               return (
                 <Link
                   key={item.path}
                   to={item.path}
                   tabIndex={
-                    isMenuOpen ? 0 : -1
+                    isMenuOpen
+                      ? 0
+                      : -1
                   }
                   draggable={false}
                   aria-current={
@@ -398,13 +445,42 @@ export function Header() {
                         : 'text-white/70 hover:text-white'
                     }`}
                   >
-                    {item.label[locale]}
+                    {
+                      item.label[
+                        locale
+                      ]
+                    }
                   </span>
                 </Link>
               );
             },
           )}
         </nav>
+
+        <div
+          className={`mt-auto flex shrink-0 justify-start border-t border-white/20 pt-6 transition-[opacity,transform] delay-200 duration-500 ${
+            isMenuOpen
+              ? 'translate-y-0 opacity-100'
+              : 'translate-y-3 opacity-0'
+          }`}
+          onClick={closeMenu}
+        >
+          <div>
+            <p className="mb-3 text-[9px] lowercase text-white/30">
+              {locale === 'ru'
+                ? 'язык'
+                : 'language'}
+            </p>
+
+            <LanguageSwitcher
+              tabIndex={
+                isMenuOpen
+                  ? 0
+                  : -1
+              }
+            />
+          </div>
+        </div>
       </div>
     </>
   );
