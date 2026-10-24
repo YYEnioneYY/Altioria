@@ -27,6 +27,10 @@ import {
   AboutSection,
 } from '../../../widgets/about-section';
 
+import {
+  Footer,
+} from '../../../widgets/footer';
+
 function clamp(
   value: number,
   minimum: number,
@@ -415,6 +419,8 @@ export function HomePage() {
 
           <AboutSection variant="home" />
         </main>
+
+        <Footer />
     </>
   );
 }

@@ -31,15 +31,17 @@ export function AboutSection({
 
   const [isRevealed, setIsRevealed] =
     useState(() => {
-      const prefersReducedMotion =
-        window.matchMedia(
-          '(prefers-reduced-motion: reduce)',
-        ).matches;
+      if (variant === 'page') {
+        return true;
+      }
 
-      return (
-        variant === 'page' ||
-        prefersReducedMotion
-      );
+      if (typeof window === 'undefined') {
+        return false;
+      }
+
+      return window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
     });
 
   useEffect(() => {
@@ -77,7 +79,10 @@ export function AboutSection({
     return () => {
       observer.disconnect();
     };
-  }, [isRevealed, variant]);
+  }, [
+    isRevealed,
+    variant,
+  ]);
 
   const wordState =
     isRevealed
@@ -91,13 +96,36 @@ export function AboutSection({
 
   const spacing =
     variant === 'home'
-      ? 'pb-12 pt-3 min-[901px]:pb-16 min-[901px]:pt-4'
+      ? 'relative z-10 -mt-[65dvh] pb-12 pt-0 min-[901px]:-mt-[50dvh] min-[901px]:pb-16'
       : 'pb-12 pt-[6.5rem] min-[901px]:pb-16 min-[901px]:pt-[7rem]';
 
   const lastStory =
     content.story[
       content.story.length - 1
     ];
+
+  const conclusionContent =
+    locale === 'ru'
+      ? {
+          tagline:
+            'продолжение архитектуры в масштабе предмета',
+
+          paragraphs: [
+            'Со временем эта практика получила собственное имя. Так появилась Altioria — предметный дизайн, рождённый из архитектурного опыта и основанный на его принципах: точность пропорций, работа с материалами, внимание к деталям.',
+
+            'Изделия Altioria формируются из архитектурного мышления и проходят долгий путь — от идеи и чертежа до ручной работы в мастерских. Этот процесс позволяет сохранить авторскую интонацию в каждой детали.',
+          ],
+        }
+      : {
+          tagline:
+            'architecture continued at the scale of an object',
+
+          paragraphs: [
+            'Over time, this practice acquired a name of its own. This is how Altioria emerged — object design born from architectural experience and founded on its principles: precision of proportions, work with materials and attention to detail.',
+
+            'Altioria pieces are shaped by architectural thinking and undergo a long journey — from an idea and drawing to handcrafting in the workshops. This process preserves the author’s intonation in every detail.',
+          ],
+        };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -131,16 +159,16 @@ export function AboutSection({
                       : index === 1
                         ? 'ml-[25%] min-[901px]:ml-[27%]'
                         : 'ml-[48%] min-[901px]:ml-[50%]';
-              
+
                 const color =
                   index ===
                   content.headline.length - 1
                     ? 'text-white'
                     : 'text-[#626266]';
-              
+
                 return (
                   <span
-                    key={word}
+                    key={`${word}-${index}`}
                     className={`block w-max whitespace-nowrap ${position} ${color}`}
                   >
                     <span
@@ -150,10 +178,7 @@ export function AboutSection({
                           `${index * 140}ms`,
                       }}
                     >
-                      {word.replace(
-                        /\.$/,
-                        '',
-                      )}
+                      {word.replace(/\.$/, '')}
                     </span>
                   </span>
                 );
@@ -164,7 +189,7 @@ export function AboutSection({
 
         <div className="about-editorial-grid">
           <p
-            className={`about-editorial-lead site-mono max-w-[36rem] whitespace-pre-line text-[11px] font-normal leading-[1.12] tracking-[-0.025em] text-white transition-[opacity,transform] duration-700 min-[901px]:text-[clamp(11px,1.05vw,15px)] ${contentState}`}
+            className={`about-editorial-lead text-[12px] font-normal leading-[1.35] text-white/80 transition-[opacity,transform] duration-700 min-[901px]:text-[14px] min-[901px]:leading-[1.3] ${contentState}`}
           >
             {content.lead}
           </p>
@@ -177,32 +202,32 @@ export function AboutSection({
               alt={content.personImageAlt}
               draggable={false}
               loading="lazy"
-              className="pointer-events-none block w-full object-cover object-top"
+              className="pointer-events-none block h-auto w-full object-cover object-top"
             />
           </figure>
 
           <article
-            className={`about-editorial-biography transition-[opacity,transform] duration-700 [transition-delay:180ms] ${contentState}`}
+            className={`about-editorial-biography transition-[opacity,transform] duration-700 [transition-delay:160ms] ${contentState}`}
             aria-labelledby="oleg-klodt-heading"
           >
-            <div className="site-mono flex items-center justify-between gap-4 border-b border-white/20 pb-3 text-[10px] min-[901px]:text-[12px]">
+            <div className="mb-5 flex items-center justify-between min-[901px]:mb-7">
               <h2
                 id="oleg-klodt-heading"
-                className="font-normal tracking-[-0.02em]"
+                className="site-mono text-[12px] font-normal leading-none tracking-[-0.02em] text-white min-[901px]:text-[13px]"
               >
                 {content.personName}
               </h2>
 
-              <div className="flex shrink-0 items-center gap-4">
+              <div className="flex items-center gap-4 min-[901px]:hidden">
                 <span
                   aria-hidden="true"
-                  className="h-4 w-px bg-white/35"
+                  className="h-4 w-px shrink-0 bg-white/35"
                 />
 
                 <button
                   type="button"
                   onClick={scrollToTop}
-                  className="font-normal lowercase text-white/60 transition-colors duration-300 hover:text-white"
+                  className="site-mono whitespace-nowrap text-[10px] font-normal lowercase text-white/60 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:text-white"
                 >
                   {locale === 'ru'
                     ? 'наверх'
@@ -211,17 +236,17 @@ export function AboutSection({
 
                 <span
                   aria-hidden="true"
-                  className="h-4 w-px bg-white/35"
+                  className="h-4 w-px shrink-0 bg-white/35"
                 />
               </div>
             </div>
 
-            <div className="about-biography-copy mt-3 border-l border-white/35 pl-2 text-[12px] leading-[1.18] tracking-[-0.02em] text-white min-[901px]:max-w-[31rem] min-[901px]:text-[clamp(12px,1.05vw,16px)]">
+            <div className="about-biography-copy border-l border-white/35 pl-4 text-[13px] font-normal leading-[1.32] tracking-[-0.015em] text-white/75 min-[901px]:border-l-0 min-[901px]:border-r min-[901px]:pl-0 min-[901px]:pr-6 min-[901px]:text-[15px] min-[901px]:leading-[1.22]">
               {content.biography.map(
-                (paragraph) => (
+                (paragraph, index) => (
                   <p
-                    key={paragraph}
-                    className="mb-[1em] last:mb-0"
+                    key={`${paragraph}-${index}`}
+                    className="mb-[1.15em] last:mb-0"
                   >
                     {paragraph}
                   </p>
@@ -232,23 +257,90 @@ export function AboutSection({
 
           {lastStory && (
             <div
-              className={`about-editorial-story site-mono max-w-[40rem] text-[10px] leading-[1.13] tracking-[-0.025em] text-white transition-[opacity,transform] duration-700 [transition-delay:260ms] min-[901px]:text-[clamp(10px,1vw,14px)] ${contentState}`}
-              aria-label={
-                content.aboutLabel
-              }
+              className={`about-editorial-story text-[13px] font-normal leading-[1.32] tracking-[-0.015em] text-white/75 transition-[opacity,transform] duration-700 [transition-delay:200ms] min-[901px]:text-[15px] min-[901px]:leading-[1.22] ${contentState}`}
+              aria-label={content.aboutLabel}
             >
               <p>
-                {lastStory.beforeBrand}
-
-                <span>
-                  Altioria
-                </span>
-
-                {lastStory.afterBrand}
+                {`${lastStory.beforeBrand}Altioria${lastStory.afterBrand}`}
               </p>
             </div>
           )}
+
+          <aside
+            className={`about-editorial-rail transition-opacity duration-700 [transition-delay:220ms] ${contentState}`}
+            aria-label={
+              locale === 'ru'
+                ? 'Навигация по странице'
+                : 'Page navigation'
+            }
+          >
+            <div className="sticky top-[31dvh] flex items-center justify-center gap-5">
+              <span
+                aria-hidden="true"
+                className="h-7 w-px shrink-0 bg-white/45"
+              />
+
+              <button
+                type="button"
+                onClick={scrollToTop}
+                className="site-mono whitespace-nowrap px-1 text-[12px] font-normal lowercase text-white/70 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:text-white"
+              >
+                {locale === 'ru'
+                  ? 'наверх'
+                  : 'up'}
+              </button>
+
+              <span
+                aria-hidden="true"
+                className="h-7 w-px shrink-0 bg-white/45"
+              />
+            </div>
+          </aside>
+
         </div>
+
+                <section
+          className={`about-conclusion transition-[opacity,transform] duration-700 [transition-delay:260ms] ${contentState}`}
+          aria-label={
+            locale === 'ru'
+              ? 'Философия Altioria'
+              : 'Altioria philosophy'
+          }
+        >
+          <div className="about-conclusion-brand">
+            <img
+              src="/images/altioria-logo.svg"
+              alt="Altioria"
+              draggable={false}
+              loading="lazy"
+              className="about-conclusion-logo"
+            />
+
+            <p className="about-conclusion-tagline site-mono">
+              <span aria-hidden="true">
+                —
+              </span>
+
+              <span>
+                {conclusionContent.tagline}
+              </span>
+            </p>
+          </div>
+
+          <div className="about-conclusion-copy">
+            {conclusionContent.paragraphs.map(
+              (paragraph, index) => (
+                <p
+                  key={index}
+                  className="about-conclusion-paragraph"
+                >
+                  {paragraph}
+                </p>
+              ),
+            )}
+          </div>
+        </section>
+
       </div>
     </section>
   );

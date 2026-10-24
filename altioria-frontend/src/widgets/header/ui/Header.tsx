@@ -39,6 +39,27 @@ export function Header() {
     pathname,
   } = useLocation();
 
+  const normalizedPathname =
+    pathname.replace(
+      /^\/(?:ru|en)(?=\/|$)/,
+      '',
+    ) || '/';
+
+  const isNavigationItemActive = (
+    path: string,
+  ): boolean => {
+    if (path === '/products') {
+      return (
+        normalizedPathname === '/products' ||
+        normalizedPathname.startsWith(
+          '/products/',
+        )
+      );
+    }
+
+    return normalizedPathname === path;
+  };
+
   const isHomePage =
     /^\/(?:ru|en)?\/?$/.test(pathname);
 
@@ -140,7 +161,7 @@ export function Header() {
 
   return (
     <>
-      <header className="header-enter site-mono fixed inset-x-0 top-0 z-50 select-none bg-transparent text-white">
+      <header className="header-enter site-mono fixed inset-x-0 top-0 z-50 select-none bg-black text-white">
         {/* Desktop navbar */}
         <div
           className="hidden h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center px-[60px] will-change-transform min-[1201px]:grid"
@@ -158,26 +179,42 @@ export function Header() {
             className="flex min-w-0 items-center"
           >
             {headerNavigation.map(
-              (item, index) => (
-                <Fragment key={item.path}>
-                  <Link
-                    to={item.path}
-                    draggable={false}
-                    className="whitespace-nowrap text-[17px] font-normal lowercase leading-none text-white transition-colors duration-300 hover:text-white/55 focus-visible:outline-none focus-visible:text-white/60"
-                  >
-                    {item.label[locale]}
-                  </Link>
-
-                  {index <
-                    headerNavigation.length -
-                      1 && (
-                    <span
-                      aria-hidden="true"
-                      className="mx-[30px] h-7 w-px shrink-0 bg-white/35"
-                    />
-                  )}
-                </Fragment>
-              ),
+              (item, index) => {
+                const isActive =
+                  isNavigationItemActive(
+                    item.path,
+                  );
+                
+                return (
+                  <Fragment key={item.path}>
+                    <Link
+                      to={item.path}
+                      draggable={false}
+                      aria-current={
+                        isActive
+                          ? 'page'
+                          : undefined
+                      }
+                      className={`inline-flex h-8 items-center justify-center whitespace-nowrap border px-[30px] text-[17px] font-normal lowercase leading-none transition-[border-color,color] duration-300 focus-visible:outline-none ${
+                        isActive
+                          ? 'border-white/75 text-white'
+                          : 'border-transparent text-white hover:text-white/55 focus-visible:border-white/40 focus-visible:text-white'
+                      }`}
+                    >
+                      {item.label[locale]}
+                    </Link>
+                    
+                    {index <
+                      headerNavigation.length -
+                        1 && (
+                      <span
+                        aria-hidden="true"
+                        className="h-7 w-px shrink-0 bg-white/35"
+                      />
+                    )}
+                  </Fragment>
+                );
+              },
             )}
           </nav>
 
@@ -332,20 +369,40 @@ export function Header() {
           className="flex flex-col border-t border-white/20"
         >
           {headerNavigation.map(
-            (item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                tabIndex={
-                  isMenuOpen ? 0 : -1
-                }
-                draggable={false}
-                onClick={closeMenu}
-                className="border-b border-white/20 py-5 text-[22px] font-normal lowercase transition-colors duration-300 hover:text-white/50"
-              >
-                {item.label[locale]}
-              </Link>
-            ),
+            (item) => {
+              const isActive =
+                isNavigationItemActive(
+                  item.path,
+                );
+              
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  tabIndex={
+                    isMenuOpen ? 0 : -1
+                  }
+                  draggable={false}
+                  aria-current={
+                    isActive
+                      ? 'page'
+                      : undefined
+                  }
+                  onClick={closeMenu}
+                  className="border-b border-white/20 py-5 text-[22px] font-normal lowercase text-white focus-visible:outline-none"
+                >
+                  <span
+                    className={`relative inline-block pb-2 transition-colors duration-300 ${
+                      isActive
+                        ? 'text-white after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    {item.label[locale]}
+                  </span>
+                </Link>
+              );
+            },
           )}
         </nav>
       </div>

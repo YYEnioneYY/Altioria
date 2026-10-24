@@ -4,6 +4,10 @@ import { seoContent } from '../../../shared/config/seo-content';
 import { useLocale } from '../../../shared/lib/i18n';
 import { AboutSection } from '../../../widgets/about-section';
 
+import {
+  Footer,
+} from '../../../widgets/footer';
+
 export function AboutPage() {
   const { locale } = useLocale();
   const seo = seoContent[locale].about;
@@ -16,9 +20,11 @@ export function AboutPage() {
         description={seo.description}
         path="/about"
       />
-      <main className="min-h-dvh overflow-x-clip bg-black text-white">
+      <main className="min-h-dvh overflow-x-clip bg-black text-white pt-30 min-[901px]:pt-40">
         <AboutSection variant="page" />
       </main>
+
+      <Footer />
     </>
   );
 }
