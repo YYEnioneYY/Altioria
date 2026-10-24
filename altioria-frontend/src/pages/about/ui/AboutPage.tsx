@@ -16,7 +16,7 @@ export function AboutPage() {
         description={seo.description}
         path="/about"
       />
-      <main className="min-h-dvh overflow-x-hidden bg-[#0c0c0c] text-white">
+      <main className="min-h-dvh overflow-x-clip bg-black text-white">
         <AboutSection variant="page" />
       </main>
     </>

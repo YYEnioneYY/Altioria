@@ -1,7 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { siteContent } from '../../../shared/config/site-content';
-import { useLocale } from '../../../shared/lib/i18n';
+import {
+  siteContent,
+} from '../../../shared/config/site-content';
+
+import {
+  useLocale,
+} from '../../../shared/lib/i18n';
 
 interface AboutSectionProps {
   variant: 'home' | 'page';
@@ -10,43 +19,58 @@ interface AboutSectionProps {
 export function AboutSection({
   variant,
 }: AboutSectionProps) {
-  const { locale } = useLocale();
-  const content = siteContent[locale];
+  const {
+    locale,
+  } = useLocale();
 
-  const sectionRef = useRef<HTMLElement>(null);
+  const content =
+    siteContent[locale];
 
-  const [isRevealed, setIsRevealed] = useState(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches;
+  const sectionRef =
+    useRef<HTMLElement>(null);
 
-    return variant === 'page' || prefersReducedMotion;
-  });
+  const [isRevealed, setIsRevealed] =
+    useState(() => {
+      const prefersReducedMotion =
+        window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        ).matches;
+
+      return (
+        variant === 'page' ||
+        prefersReducedMotion
+      );
+    });
 
   useEffect(() => {
-    if (variant === 'page' || isRevealed) {
+    if (
+      variant === 'page' ||
+      isRevealed
+    ) {
       return;
     }
 
-    const section = sectionRef.current;
+    const section =
+      sectionRef.current;
 
     if (!section) {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
 
-        setIsRevealed(true);
-        observer.disconnect();
-      },
-      {
-        threshold: 0.05,
-      },
-    );
+          setIsRevealed(true);
+          observer.disconnect();
+        },
+        {
+          threshold: 0.05,
+        },
+      );
 
     observer.observe(section);
 
@@ -55,122 +79,176 @@ export function AboutSection({
     };
   }, [isRevealed, variant]);
 
-  const wordState = isRevealed
-    ? 'translate-y-0 opacity-100 blur-0 [clip-path:inset(-0.2em_-0.4em_-0.2em_-0.12em)]'
-    : 'translate-y-[1.05em] opacity-0 blur-[10px] [clip-path:inset(100%_-0.4em_0_-0.12em)]';
+  const wordState =
+    isRevealed
+      ? 'translate-y-0 opacity-100 blur-0'
+      : 'translate-y-[0.8em] opacity-0 blur-[8px]';
 
-  const contentState = isRevealed
-    ? 'translate-y-0 opacity-100'
-    : 'translate-y-5 opacity-0';
+  const contentState =
+    isRevealed
+      ? 'translate-y-0 opacity-100'
+      : 'translate-y-5 opacity-0';
 
   const spacing =
     variant === 'home'
-      ? 'pb-10 pt-[clamp(4rem,8vw,6.5rem)]'
-      : 'pb-20 pt-[7.5rem] max-[640px]:pb-14 max-[640px]:pt-[5.75rem]';
+      ? 'pb-12 pt-3 min-[901px]:pb-16 min-[901px]:pt-4'
+      : 'pb-12 pt-[6.5rem] min-[901px]:pb-16 min-[901px]:pt-[7rem]';
+
+  const lastStory =
+    content.story[
+      content.story.length - 1
+    ];
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <section
       ref={sectionRef}
-      className={`select-none px-[clamp(1.15rem,5vw,4rem)] text-[#e8e8e8] ${spacing}`}
+      className={`overflow-x-clip bg-black px-[15px] text-white min-[901px]:px-[29px] ${spacing}`}
     >
       <div
         key={locale}
-        className="language-content-in mx-auto max-w-[58rem]"
+        className="language-content-in mx-auto w-full max-w-[1600px]"
       >
-        <header className="mb-[clamp(3rem,6vw,5rem)]">
-          <h1 className="mb-[clamp(2rem,4.5vw,3.25rem)] text-[2.75rem] font-medium leading-[0.99] tracking-[-0.055em] lowercase sm:text-[4rem] md:text-[6rem] lg:w-[calc(100vw-8rem)] lg:max-w-[90rem] lg:text-[9rem]">
-            {content.headline.map((word, index) => (
-              <span
-                key={word}
-                className={`block ${
-                  index === content.headline.length - 1
+        <header className="mb-9 min-[901px]:mb-[clamp(6rem,10vw,8rem)]">
+          <h1 className="site-display w-full max-w-[1000px] overflow-visible text-[35px] font-normal uppercase leading-[0.88] tracking-[-0.035em] min-[901px]:text-[90px]">
+            {content.headline.map(
+              (word, index) => {
+                const position =
+                  locale === 'ru'
+                    ? index === 0
+                      ? 'ml-0'
+                      : index === 1
+                        ? 'ml-[42%] min-[901px]:ml-[43%]'
+                        : 'ml-[58%] min-[901px]:ml-[60%]'
+                    : index === 0
+                      ? 'ml-0'
+                      : index === 1
+                        ? 'ml-[25%] min-[901px]:ml-[27%]'
+                        : 'ml-[48%] min-[901px]:ml-[50%]';
+              
+                const color =
+                  index ===
+                  content.headline.length - 1
                     ? 'text-white'
-                    : 'text-[#4d4d4d]'
-                }`}
-              >
-                <span
-                  className={`inline-block transition-[opacity,transform,filter,clip-path] duration-[1200ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${wordState}`}
-                  style={{
-                    transitionDelay: `${index * 160}ms`,
-                  }}
-                >
-                  {word}
-                </span>
-              </span>
-            ))}
+                    : 'text-[#626266]';
+              
+                return (
+                  <span
+                    key={word}
+                    className={`block w-max whitespace-nowrap ${position} ${color}`}
+                  >
+                    <span
+                      className={`inline-block transition-[opacity,transform,filter] duration-[1100ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${wordState}`}
+                      style={{
+                        transitionDelay:
+                          `${index * 140}ms`,
+                      }}
+                    >
+                      {word.replace(
+                        /\.$/,
+                        '',
+                      )}
+                    </span>
+                  </span>
+                );
+              },
+            )}
           </h1>
+        </header>
 
+        <div className="about-editorial-grid">
           <p
-            className={`text-[1.3rem] leading-[1.55] tracking-[-0.01em] transition-[opacity,transform] duration-[400ms] [transition-delay:520ms] sm:text-[clamp(0.98rem,1.65vw,1.4rem)] ${contentState}`}
+            className={`about-editorial-lead site-mono max-w-[36rem] whitespace-pre-line text-[11px] font-normal leading-[1.12] tracking-[-0.025em] text-white transition-[opacity,transform] duration-700 min-[901px]:text-[clamp(11px,1.05vw,15px)] ${contentState}`}
           >
             {content.lead}
           </p>
-        </header>
 
-        <section
-          className="mb-[clamp(2.5rem,5.5vw,3rem)] grid items-start gap-[clamp(1.5rem,3.5vw,2.75rem)] min-[901px]:grid-cols-[minmax(14rem,0.88fr)_minmax(16rem,1.12fr)]"
-          aria-labelledby="oleg-klodt-heading"
-        >
           <figure
-            className={`m-0 w-full max-w-[26rem] transition-[opacity,transform] duration-[400ms] [transition-delay:580ms] min-[901px]:max-w-none ${contentState}`}
+            className={`about-editorial-image m-0 transition-[opacity,transform] duration-700 [transition-delay:100ms] ${contentState}`}
           >
             <img
               src="/images/oleg-klodt.webp"
               alt={content.personImageAlt}
               draggable={false}
               loading="lazy"
-              className="pointer-events-none block aspect-[3/4] w-full rounded-[clamp(1.15rem,2vw,1.5rem)] object-cover object-top grayscale"
+              className="pointer-events-none block w-full object-cover object-top"
             />
           </figure>
 
           <article
-            className={`transition-[opacity,transform] duration-[400ms] [transition-delay:640ms] ${contentState}`}
+            className={`about-editorial-biography transition-[opacity,transform] duration-700 [transition-delay:180ms] ${contentState}`}
+            aria-labelledby="oleg-klodt-heading"
           >
-            <h2
-              id="oleg-klodt-heading"
-              className="mb-[1.1rem] text-[clamp(1.35rem,2.1vw,2.5rem)] font-bold leading-[1.15] tracking-[-0.03em] text-white"
-            >
-              {content.personName}
-            </h2>
+            <div className="site-mono flex items-center justify-between gap-4 border-b border-white/20 pb-3 text-[10px] min-[901px]:text-[12px]">
+              <h2
+                id="oleg-klodt-heading"
+                className="font-normal tracking-[-0.02em]"
+              >
+                {content.personName}
+              </h2>
 
-            <div className="space-y-[1.15em] text-[clamp(1.1rem,1.4vw,1.15rem)] leading-[1.55] tracking-[-0.01em] text-[#b4b4b4]">
-              {content.biography.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+              <div className="flex shrink-0 items-center gap-4">
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-px bg-white/35"
+                />
+
+                <button
+                  type="button"
+                  onClick={scrollToTop}
+                  className="font-normal lowercase text-white/60 transition-colors duration-300 hover:text-white"
+                >
+                  {locale === 'ru'
+                    ? 'наверх'
+                    : 'up'}
+                </button>
+
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-px bg-white/35"
+                />
+              </div>
+            </div>
+
+            <div className="about-biography-copy mt-3 border-l border-white/35 pl-2 text-[12px] leading-[1.18] tracking-[-0.02em] text-white min-[901px]:max-w-[31rem] min-[901px]:text-[clamp(12px,1.05vw,16px)]">
+              {content.biography.map(
+                (paragraph) => (
+                  <p
+                    key={paragraph}
+                    className="mb-[1em] last:mb-0"
+                  >
+                    {paragraph}
+                  </p>
+                ),
+              )}
             </div>
           </article>
-        </section>
 
-        <section
-          className="text-[clamp(1.3rem,1.6vw,1.4rem)] leading-[1.55] tracking-[-0.01em]"
-          aria-label={content.aboutLabel}
-        >
-          {content.story.map((paragraph, index) => (
-            <p
-              key={paragraph.afterBrand}
-              className={`mb-[0.8em] transition-[opacity,transform] duration-[400ms] ${contentState}`}
-              style={{
-                transitionDelay: `${700 + index * 60}ms`,
-              }}
+          {lastStory && (
+            <div
+              className={`about-editorial-story site-mono max-w-[40rem] text-[10px] leading-[1.13] tracking-[-0.025em] text-white transition-[opacity,transform] duration-700 [transition-delay:260ms] min-[901px]:text-[clamp(10px,1vw,14px)] ${contentState}`}
+              aria-label={
+                content.aboutLabel
+              }
             >
-              {paragraph.beforeBrand}
+              <p>
+                {lastStory.beforeBrand}
 
-              <strong className="font-bold text-white">
-                Altioria
-              </strong>
+                <span>
+                  Altioria
+                </span>
 
-              {paragraph.afterBrand}
-            </p>
-          ))}
-
-          <p
-            className={`mt-[1.75em] transition-[opacity,transform] duration-[400ms] [transition-delay:880ms] ${contentState}`}
-          >
-            <strong className="font-bold text-white">
-              {content.closing}
-            </strong>
-          </p>
-        </section>
+                {lastStory.afterBrand}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
