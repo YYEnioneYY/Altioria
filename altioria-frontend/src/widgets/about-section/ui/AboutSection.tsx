@@ -144,35 +144,35 @@ export function AboutSection({
         className="language-content-in mx-auto w-full max-w-[1600px]"
       >
         <header className="mb-9 min-[901px]:mb-[clamp(6rem,10vw,8rem)]">
-          <h1 className="site-display w-full max-w-[1000px] overflow-visible text-[35px] font-normal uppercase leading-[0.88] tracking-[-0.035em] min-[901px]:text-[90px]">
+          <h1 className="site-display mx-auto w-full max-w-[1450px] overflow-x-clip overflow-y-visible text-[clamp(18px,5.6vw,80px)] font-normal uppercase leading-[0.88] tracking-[-0.035em]">
             {content.headline.map(
               (word, index) => {
-                const position =
-                  locale === 'ru'
-                    ? index === 0
-                      ? 'ml-0'
-                      : index === 1
-                        ? 'ml-[42%] min-[901px]:ml-[43%]'
-                        : 'ml-[58%] min-[901px]:ml-[60%]'
-                    : index === 0
-                      ? 'ml-0'
-                      : index === 1
-                        ? 'ml-[25%] min-[901px]:ml-[27%]'
-                        : 'ml-[48%] min-[901px]:ml-[50%]';
-
-                const color =
+                const isFirst =
+                  index === 0;
+              
+                const isLast =
                   index ===
-                  content.headline.length - 1
+                  content.headline.length - 1;
+              
+                const position =
+                  isFirst
+                    ? 'justify-start'
+                    : isLast
+                      ? 'justify-end'
+                      : 'justify-center pl-[32%]';
+              
+                const color =
+                  isLast
                     ? 'text-white'
                     : 'text-[#626266]';
-
+              
                 return (
                   <span
                     key={`${word}-${index}`}
-                    className={`block w-max whitespace-nowrap ${position} ${color}`}
+                    className={`flex w-full min-w-0 ${position} ${color}`}
                   >
                     <span
-                      className={`inline-block transition-[opacity,transform,filter] duration-[1100ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${wordState}`}
+                      className={`inline-block max-w-full whitespace-nowrap transition-[opacity,transform,filter] duration-[1100ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${wordState}`}
                       style={{
                         transitionDelay:
                           `${index * 140}ms`,
@@ -239,7 +239,7 @@ export function AboutSection({
               </div>
             </div>
                   
-            <div className="site-serif text-[15px] font-normal leading-[1.1] tracking-[-0.012em] text-white/90 min-[901px]:text-[18px] min-[901px]:leading-[1.05]">
+            <div className="site-serif text-[12px] font-normal leading-[1.28] tracking-[-0.012em] text-white/90 min-[901px]:text-[15px] min-[901px]:leading-[1.18]">
               {content.biography.map(
                 (paragraph, index) => (
                   <p

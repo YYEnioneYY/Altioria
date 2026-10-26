@@ -390,7 +390,7 @@ export function Header() {
         }`}
       >
         <div
-          className={`shrink-0 transition-[opacity,transform] delay-100 duration-500 ${
+          className={`relative z-[100] shrink-0 transition-[opacity,transform] delay-100 duration-500 ${
             isMenuOpen
               ? 'translate-y-0 opacity-100'
               : '-translate-y-3 opacity-0'
@@ -411,7 +411,7 @@ export function Header() {
               ? 'Мобильная навигация'
               : 'Mobile navigation'
           }
-          className="mt-9 flex shrink-0 flex-col border-t border-white/20"
+          className="relative z-0 mt-9 flex shrink-0 flex-col border-t border-white/20"
         >
           {headerNavigation.map(
             (item) => {
@@ -458,7 +458,7 @@ export function Header() {
         </nav>
 
         <div
-          className={`mt-auto flex shrink-0 justify-start border-t border-white/20 pt-6 transition-[opacity,transform] delay-200 duration-500 ${
+          className={`relative z-0 mt-auto flex shrink-0 justify-start border-t border-white/20 pt-6 transition-[opacity,transform] delay-200 duration-500 ${
             isMenuOpen
               ? 'translate-y-0 opacity-100'
               : 'translate-y-3 opacity-0'

@@ -124,7 +124,7 @@ function ResultImage({
 
   if (!src || hasError) {
     return (
-      <div className="flex h-full min-h-[92px] w-full items-center justify-center border-r border-white/40 bg-[#090909] px-2 text-center text-[9px] lowercase text-white/25 transition-colors group-hover:border-black/35 group-hover:bg-[#ededed] group-hover:text-black/35">
+      <div className="flex h-full w-full items-center justify-center border-r border-white/40 bg-[#090909] px-2 text-center text-[9px] lowercase text-white/25 transition-colors group-hover:border-black/35 group-hover:bg-[#ededed] group-hover:text-black/35">
         {fallback}
       </div>
     );
@@ -139,7 +139,7 @@ function ResultImage({
       onError={() =>
         setHasError(true)
       }
-      className="block h-full min-h-[92px] w-full border-r border-white/40 object-cover transition-[border-color,filter] duration-300 group-hover:border-black/35"
+      className="block h-full w-full border-r border-white/40 object-cover transition-[border-color,filter] duration-300 group-hover:border-black/35"
     />
   );
 }
@@ -469,7 +469,11 @@ export function CatalogSearch({
   return (
     <div
       ref={rootRef}
-      className="relative w-full"
+      className={`relative w-full ${
+        isDesktop
+          ? ''
+          : 'z-[120]'
+      }`}
     >
       <form
         role="search"
@@ -477,7 +481,7 @@ export function CatalogSearch({
           event.preventDefault();
           setIsOpen(true);
         }}
-        className={`flex items-center gap-3 border-b bg-black transition-colors duration-300 ${
+        className={`relative z-[90] flex items-center gap-3 border-b bg-black transition-colors duration-300 ${
           isOpen
             ? 'border-white'
             : 'border-white/50'
@@ -559,10 +563,10 @@ export function CatalogSearch({
 
       <div
         aria-hidden={!isOpen}
-        className={`site-mono z-[80] flex max-h-[calc(100dvh-100px)] flex-col overflow-hidden border border-white/65 bg-black text-white shadow-[0_30px_80px_rgba(0,0,0,0.8)] transition-[opacity,transform,visibility] duration-300 ${
+        className={`site-mono z-[130] flex flex-col overflow-hidden border border-white/70 bg-[#111111] text-white shadow-[0_24px_70px_rgba(0,0,0,0.95)] transition-[opacity,transform,visibility] duration-300 ${
           isDesktop
-            ? 'absolute right-0 top-[calc(100%+18px)] h-[560px] w-[520px]'
-            : 'fixed inset-x-4 top-[92px] h-[calc(100dvh-112px)] w-auto'
+            ? 'absolute right-0 top-[calc(100%+18px)] h-[560px] max-h-[calc(100dvh-100px)] w-[520px]'
+            : 'absolute inset-x-0 top-[calc(100%+12px)] h-[calc(100dvh-190px)] max-h-[520px] w-full'
         } ${
           isOpen
             ? 'visible translate-y-0 opacity-100'
@@ -680,7 +684,11 @@ export function CatalogSearch({
                         onClick={
                           closeSearch
                         }
-                        className="group grid min-h-[108px] grid-cols-[96px_minmax(0,1fr)] border-b border-white/45 bg-black text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black"
+                        className={`group grid border-b border-white/45 bg-[#111111] text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black ${
+                          isDesktop
+                            ? 'min-h-[108px] grid-cols-[96px_minmax(0,1fr)]'
+                            : 'min-h-[88px] grid-cols-[82px_minmax(0,1fr)]'
+                        }`}
                       >
                         <ResultImage
                           src={
