@@ -26,7 +26,7 @@ export const siteContent = {
   ru: {
     productsLinkLabel: 'Перейти к продукции Altioria',
     logoAlt: 'Altioria',
-    heroTagline: 'Не мебель — идентичность',
+    heroTagline: 'не мебель — идентичность',
 
     headline: [
       'пространство.',
@@ -74,7 +74,7 @@ export const siteContent = {
   en: {
     productsLinkLabel: 'Explore Altioria products',
     logoAlt: 'Altioria',
-    heroTagline: 'Not furniture — an identity',
+    heroTagline: 'not furniture — an identity',
 
     headline: [
       'space.',

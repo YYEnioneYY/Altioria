@@ -43,12 +43,12 @@ export function PrivacyPolicyPage() {
     privacyPolicyContent[locale];
 
   return (
-    <main className="min-h-screen bg-[#0c0c0c] px-5 pb-[60px] pt-[120px] text-[#e0e0e0] min-[601px]:px-6 min-[601px]:pb-20 min-[601px]:pt-[140px]">
+    <main className="min-h-screen bg-black px-5 pb-[60px] pt-[120px] text-white/80 min-[601px]:px-6 min-[601px]:pb-20 min-[601px]:pt-[140px]">
       <article
         key={locale}
-        className="language-content-in mx-auto max-w-[640px] text-[15px] font-normal leading-[1.6] min-[601px]:text-[16px]"
+        className="language-content-in site-mono mx-auto max-w-[720px] text-[13px] font-normal leading-[1.7] text-white/75 min-[601px]:text-[14px]"
       >
-        <h1 className="mb-10 text-center text-[clamp(2rem,5vw,2.75rem)] font-semibold leading-[1.2] tracking-[-0.02em] text-[#a0a0a0]">
+        <h1 className="site-display mb-10 text-center text-[clamp(2rem,5vw,2.75rem)] font-normal uppercase leading-[1.1] tracking-[-0.02em] text-white">
           {content.title}
         </h1>
 
@@ -76,7 +76,7 @@ export function PrivacyPolicyPage() {
               >
                 <h2
                   id={headingId}
-                  className="mb-3 text-[16px] font-semibold leading-[1.5] text-white"
+                  className="mb-4 border-b border-white/25 pb-2 text-[15px] font-normal uppercase leading-[1.5] text-white"
                 >
                   {section.title}
                 </h2>

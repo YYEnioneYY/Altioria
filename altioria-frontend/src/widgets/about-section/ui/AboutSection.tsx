@@ -1,7 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { siteContent } from '../../../shared/config/site-content';
-import { useLocale } from '../../../shared/lib/i18n';
+import {
+  siteContent,
+} from '../../../shared/config/site-content';
+
+import {
+  useLocale,
+} from '../../../shared/lib/i18n';
 
 interface AboutSectionProps {
   variant: 'home' | 'page';
@@ -10,167 +19,344 @@ interface AboutSectionProps {
 export function AboutSection({
   variant,
 }: AboutSectionProps) {
-  const { locale } = useLocale();
-  const content = siteContent[locale];
+  const {
+    locale,
+  } = useLocale();
 
-  const sectionRef = useRef<HTMLElement>(null);
+  const content =
+    siteContent[locale];
 
-  const [isRevealed, setIsRevealed] = useState(() => {
-    const prefersReducedMotion = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches;
+  const sectionRef =
+    useRef<HTMLElement>(null);
 
-    return variant === 'page' || prefersReducedMotion;
-  });
+  const [isRevealed, setIsRevealed] =
+    useState(() => {
+      if (variant === 'page') {
+        return true;
+      }
+
+      if (typeof window === 'undefined') {
+        return false;
+      }
+
+      return window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+    });
 
   useEffect(() => {
-    if (variant === 'page' || isRevealed) {
+    if (
+      variant === 'page' ||
+      isRevealed
+    ) {
       return;
     }
 
-    const section = sectionRef.current;
+    const section =
+      sectionRef.current;
 
     if (!section) {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
+    const observer =
+      new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
 
-        setIsRevealed(true);
-        observer.disconnect();
-      },
-      {
-        threshold: 0.05,
-      },
-    );
+          setIsRevealed(true);
+          observer.disconnect();
+        },
+        {
+          threshold: 0.05,
+        },
+      );
 
     observer.observe(section);
 
     return () => {
       observer.disconnect();
     };
-  }, [isRevealed, variant]);
+  }, [
+    isRevealed,
+    variant,
+  ]);
 
-  const wordState = isRevealed
-    ? 'translate-y-0 opacity-100 blur-0 [clip-path:inset(-0.2em_-0.4em_-0.2em_-0.12em)]'
-    : 'translate-y-[1.05em] opacity-0 blur-[10px] [clip-path:inset(100%_-0.4em_0_-0.12em)]';
+  const wordState =
+    isRevealed
+      ? 'translate-y-0 opacity-100 blur-0'
+      : 'translate-y-[0.8em] opacity-0 blur-[8px]';
 
-  const contentState = isRevealed
-    ? 'translate-y-0 opacity-100'
-    : 'translate-y-5 opacity-0';
+  const contentState =
+    isRevealed
+      ? 'translate-y-0 opacity-100'
+      : 'translate-y-5 opacity-0';
 
   const spacing =
     variant === 'home'
-      ? 'pb-10 pt-[clamp(4rem,8vw,6.5rem)]'
-      : 'pb-20 pt-[7.5rem] max-[640px]:pb-14 max-[640px]:pt-[5.75rem]';
+      ? 'relative z-10 -mt-[65dvh] pb-12 pt-0 min-[901px]:-mt-[50dvh] min-[901px]:pb-16'
+      : 'pb-12 pt-[6.5rem] min-[901px]:pb-16 min-[901px]:pt-[7rem]';
+
+  const lastStory =
+    content.story[
+      content.story.length - 1
+    ];
+
+  const conclusionContent =
+    locale === 'ru'
+      ? {
+          tagline:
+            'продолжение архитектуры в масштабе предмета',
+
+          paragraphs: [
+            'Со временем эта практика получила собственное имя. Так появилась Altioria — предметный дизайн, рождённый из архитектурного опыта и основанный на его принципах: точность пропорций, работа с материалами, внимание к деталям.',
+
+            'Изделия Altioria формируются из архитектурного мышления и проходят долгий путь — от идеи и чертежа до ручной работы в мастерских. Этот процесс позволяет сохранить авторскую интонацию в каждой детали.',
+          ],
+        }
+      : {
+          tagline:
+            'architecture continued at the scale of an object',
+
+          paragraphs: [
+            'Over time, this practice acquired a name of its own. This is how Altioria emerged — object design born from architectural experience and founded on its principles: precision of proportions, work with materials and attention to detail.',
+
+            'Altioria pieces are shaped by architectural thinking and undergo a long journey — from an idea and drawing to handcrafting in the workshops. This process preserves the author’s intonation in every detail.',
+          ],
+        };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   return (
     <section
       ref={sectionRef}
-      className={`select-none px-[clamp(1.15rem,5vw,4rem)] text-[#e8e8e8] ${spacing}`}
+      className={`overflow-x-clip bg-black px-[15px] text-white min-[901px]:px-[29px] ${spacing}`}
     >
       <div
         key={locale}
-        className="language-content-in mx-auto max-w-[58rem]"
+        className="language-content-in mx-auto w-full max-w-[1600px]"
       >
-        <header className="mb-[clamp(3rem,6vw,5rem)]">
-          <h1 className="mb-[clamp(2rem,4.5vw,3.25rem)] text-[2.75rem] font-medium leading-[0.99] tracking-[-0.055em] lowercase sm:text-[4rem] md:text-[6rem] lg:w-[calc(100vw-8rem)] lg:max-w-[90rem] lg:text-[9rem]">
-            {content.headline.map((word, index) => (
-              <span
-                key={word}
-                className={`block ${
-                  index === content.headline.length - 1
+        <header className="mb-9 min-[901px]:mb-[clamp(6rem,10vw,8rem)]">
+          <h1 className="site-display mx-auto w-full max-w-[1450px] overflow-x-clip overflow-y-visible text-[clamp(18px,5.6vw,80px)] font-normal uppercase leading-[0.88] tracking-[-0.035em]">
+            {content.headline.map(
+              (word, index) => {
+                const isFirst =
+                  index === 0;
+              
+                const isLast =
+                  index ===
+                  content.headline.length - 1;
+              
+                const position =
+                  isFirst
+                    ? 'justify-start'
+                    : isLast
+                      ? 'justify-end'
+                      : 'justify-center pl-[32%]';
+              
+                const color =
+                  isLast
                     ? 'text-white'
-                    : 'text-[#4d4d4d]'
-                }`}
-              >
-                <span
-                  className={`inline-block transition-[opacity,transform,filter,clip-path] duration-[1200ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${wordState}`}
-                  style={{
-                    transitionDelay: `${index * 160}ms`,
-                  }}
-                >
-                  {word}
-                </span>
-              </span>
-            ))}
+                    : 'text-[#626266]';
+              
+                return (
+                  <span
+                    key={`${word}-${index}`}
+                    className={`flex w-full min-w-0 ${position} ${color}`}
+                  >
+                    <span
+                      className={`inline-block max-w-full whitespace-nowrap transition-[opacity,transform,filter] duration-[1100ms] [transition-timing-function:cubic-bezier(0.16,1,0.3,1)] ${wordState}`}
+                      style={{
+                        transitionDelay:
+                          `${index * 140}ms`,
+                      }}
+                    >
+                      {word.replace(/\.$/, '')}
+                    </span>
+                  </span>
+                );
+              },
+            )}
           </h1>
-
-          <p
-            className={`text-[1.3rem] leading-[1.55] tracking-[-0.01em] transition-[opacity,transform] duration-[400ms] [transition-delay:520ms] sm:text-[clamp(0.98rem,1.65vw,1.4rem)] ${contentState}`}
-          >
-            {content.lead}
-          </p>
         </header>
 
-        <section
-          className="mb-[clamp(2.5rem,5.5vw,3rem)] grid items-start gap-[clamp(1.5rem,3.5vw,2.75rem)] min-[901px]:grid-cols-[minmax(14rem,0.88fr)_minmax(16rem,1.12fr)]"
-          aria-labelledby="oleg-klodt-heading"
-        >
+        <div className="about-editorial-grid">
+          <p className="about-editorial-lead site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[15px] min-[901px]:leading-[1.12]">
+            {content.lead}
+          </p>
+
           <figure
-            className={`m-0 w-full max-w-[26rem] transition-[opacity,transform] duration-[400ms] [transition-delay:580ms] min-[901px]:max-w-none ${contentState}`}
+            className={`about-editorial-image m-0 transition-[opacity,transform] duration-700 [transition-delay:100ms] ${contentState}`}
           >
             <img
               src="/images/oleg-klodt.webp"
               alt={content.personImageAlt}
               draggable={false}
               loading="lazy"
-              className="pointer-events-none block aspect-[3/4] w-full rounded-[clamp(1.15rem,2vw,1.5rem)] object-cover object-top grayscale"
+              className="pointer-events-none block h-auto w-full object-cover object-top"
             />
           </figure>
 
           <article
-            className={`transition-[opacity,transform] duration-[400ms] [transition-delay:640ms] ${contentState}`}
+            className="about-editorial-biography border-l border-white/35 pl-4 min-[901px]:border-l-0 min-[901px]:border-r min-[901px]:pl-0 min-[901px]:pr-6"
+            aria-labelledby="oleg-klodt-heading"
           >
-            <h2
-              id="oleg-klodt-heading"
-              className="mb-[1.1rem] text-[clamp(1.35rem,2.1vw,2.5rem)] font-bold leading-[1.15] tracking-[-0.03em] text-white"
-            >
-              {content.personName}
-            </h2>
+            <div className="mb-6 flex items-center justify-between min-[901px]:mb-8">
+              <h2
+                id="oleg-klodt-heading"
+                className="site-mono text-[11px] font-normal leading-none tracking-[-0.025em] text-white min-[901px]:text-[14px]"
+              >
+                {content.personName}
+              </h2>
 
-            <div className="space-y-[1.15em] text-[clamp(1.1rem,1.4vw,1.15rem)] leading-[1.55] tracking-[-0.01em] text-[#b4b4b4]">
-              {content.biography.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+              <div className="flex items-center gap-4 min-[901px]:hidden">
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-px bg-white/35"
+                />
+
+                <button
+                  type="button"
+                  onClick={scrollToTop}
+                  className="site-mono text-[9px] lowercase text-white/55"
+                >
+                  {locale === 'ru'
+                    ? 'наверх'
+                    : 'up'}
+                </button>
+                  
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-px bg-white/35"
+                />
+              </div>
+            </div>
+                  
+            <div className="site-serif text-[12px] font-normal leading-[1.28] tracking-[-0.012em] text-white/90 min-[901px]:text-[15px] min-[901px]:leading-[1.18]">
+              {content.biography.map(
+                (paragraph, index) => (
+                  <p
+                    key={paragraph}
+                    className="mb-[1.05em] last:mb-0"
+                  >
+                    {index === 0 ? (
+                      <>
+                        <span className="italic">
+                          {content.personName}
+                        </span>
+                    
+                        {paragraph.startsWith(
+                          content.personName,
+                        )
+                          ? paragraph.slice(
+                              content.personName.length,
+                            )
+                          : ` ${paragraph}`}
+                      </>
+                    ) : (
+                      paragraph
+                    )}
+                  </p>
+                ),
+              )}
             </div>
           </article>
-        </section>
+
+          {lastStory && (
+            <div
+              className="about-editorial-story site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[15px] min-[901px]:leading-[1.12]"
+              aria-label={content.aboutLabel}
+            >
+              <p>
+                {lastStory.beforeBrand}
+                Altioria
+                {lastStory.afterBrand}
+              </p>
+            </div>
+          )}
+
+          <aside
+            className={`about-editorial-rail transition-opacity duration-700 [transition-delay:220ms] ${contentState}`}
+            aria-label={
+              locale === 'ru'
+                ? 'Навигация по странице'
+                : 'Page navigation'
+            }
+          >
+            <div className="sticky top-[31dvh] flex items-center justify-center gap-5">
+              <span
+                aria-hidden="true"
+                className="h-7 w-px shrink-0 bg-white/45"
+              />
+
+              <button
+                type="button"
+                onClick={scrollToTop}
+                className="site-mono whitespace-nowrap px-1 text-[12px] font-normal lowercase text-white/70 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:text-white"
+              >
+                {locale === 'ru'
+                  ? 'наверх'
+                  : 'up'}
+              </button>
+
+              <span
+                aria-hidden="true"
+                className="h-7 w-px shrink-0 bg-white/45"
+              />
+            </div>
+          </aside>
+
+        </div>
 
         <section
-          className="text-[clamp(1.3rem,1.6vw,1.4rem)] leading-[1.55] tracking-[-0.01em]"
-          aria-label={content.aboutLabel}
+          className={`about-conclusion transition-[opacity,transform] duration-700 [transition-delay:260ms] ${contentState}`}
+          aria-label={
+            locale === 'ru'
+              ? 'Философия Altioria'
+              : 'Altioria philosophy'
+          }
         >
-          {content.story.map((paragraph, index) => (
-            <p
-              key={paragraph.afterBrand}
-              className={`mb-[0.8em] transition-[opacity,transform] duration-[400ms] ${contentState}`}
-              style={{
-                transitionDelay: `${700 + index * 60}ms`,
-              }}
-            >
-              {paragraph.beforeBrand}
+          <div className="about-conclusion-brand">
+            <img
+              src="/images/altioria-logo.svg"
+              alt="Altioria"
+              draggable={false}
+              loading="lazy"
+              className="about-conclusion-logo"
+            />
 
-              <strong className="font-bold text-white">
-                Altioria
-              </strong>
+            <p className="about-conclusion-tagline site-mono">
+              <span aria-hidden="true">
+                —
+              </span>
 
-              {paragraph.afterBrand}
+              <span>
+                {conclusionContent.tagline}
+              </span>
             </p>
-          ))}
+          </div>
 
-          <p
-            className={`mt-[1.75em] transition-[opacity,transform] duration-[400ms] [transition-delay:880ms] ${contentState}`}
-          >
-            <strong className="font-bold text-white">
-              {content.closing}
-            </strong>
-          </p>
+          <div className="about-conclusion-copy">
+            {conclusionContent.paragraphs.map(
+              (paragraph, index) => (
+                <p
+                  key={index}
+                  className="about-conclusion-paragraph"
+                >
+                  {paragraph}
+                </p>
+              ),
+            )}
+          </div>
         </section>
+
       </div>
     </section>
   );

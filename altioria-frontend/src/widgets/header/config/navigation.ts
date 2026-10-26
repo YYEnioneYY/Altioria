@@ -1,16 +1,9 @@
 export const headerNavigation = [
   {
-    path: '/about',
-    label: {
-      ru: 'О нас',
-      en: 'About Us',
-    },
-  },
-  {
     path: '/products',
     label: {
-      ru: 'Продукция',
-      en: 'Products',
+      ru: 'Каталог',
+      en: 'Catalog',
     },
   },
   {
@@ -18,6 +11,13 @@ export const headerNavigation = [
     label: {
       ru: 'Контакты',
       en: 'Contacts',
+    },
+  },
+  {
+    path: '/about',
+    label: {
+      ru: 'О нас',
+      en: 'About Us',
     },
   },
 ] as const;

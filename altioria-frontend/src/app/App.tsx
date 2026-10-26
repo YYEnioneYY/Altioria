@@ -27,7 +27,6 @@ import { AboutPage } from '../pages/about';
 import { ContactsPage } from '../pages/contacts';
 import { CategoryProductsPage } from '../pages/category-products';
 import { ProductDetailsPage } from '../pages/product-details';
-import { ProductInquiryPage } from '../pages/product-inquiry';
 
 import { ProductsPage } from '../pages/products';
 
@@ -239,13 +238,6 @@ function App() {
                   />
 
                   <Route
-                    path="products/:categorySlug/:productSlug/inquiry"
-                    element={
-                      <ProductInquiryPage />
-                    }
-                  />
-
-                  <Route
                     path="contacts"
                     element={
                       <ContactsPage />
@@ -266,7 +258,6 @@ function App() {
             <Route path="about" element={<LegacyPublicRedirect />} />
             <Route path="products" element={<LegacyPublicRedirect />} />
             <Route path="products/:categorySlug" element={<LegacyPublicRedirect />} />
-            <Route path="products/:categorySlug/:productSlug/inquiry" element={<LegacyPublicRedirect />} />
             <Route path="products/:categorySlug/:productSlug" element={<LegacyPublicRedirect />} />
             <Route path="contacts" element={<LegacyPublicRedirect />}/>
             <Route path="privacy-policy" element={<LegacyPublicRedirect />} />

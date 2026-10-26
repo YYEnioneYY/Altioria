@@ -11,11 +11,9 @@ export interface PublicProduct {
   slug: string;
   name: string;
   coverImageUrl: string;
-
   priceType: PublicProductPriceType;
   priceAmount: string | null;
   priceCurrency: string | null;
-
   category: {
     slug: string;
     name: string;
@@ -31,43 +29,64 @@ export class PublicProductsApiError extends Error {
   ) {
     super(message);
 
-    this.name = 'PublicProductsApiError';
+    this.name =
+      'PublicProductsApiError';
+
     this.status = status;
   }
 }
 
 export async function getPublicProducts(
   locale: Locale,
-  category: string,
+  category?: string,
   signal?: AbortSignal,
 ): Promise<PublicProduct[]> {
-  const searchParams = new URLSearchParams({
-    locale,
-    category,
-  });
+  const searchParams =
+    new URLSearchParams({
+      locale,
+    });
+
+  /*
+   * Если категория передана, получаем товары
+   * только выбранной категории.
+   *
+   * Если категория не передана, API вернёт
+   * все опубликованные товары.
+   */
+  if (category) {
+    searchParams.set(
+      'category',
+      category,
+    );
+  }
 
   const response = await fetch(
     `/api/products?${searchParams.toString()}`,
     {
       method: 'GET',
+
       headers: {
         Accept: 'application/json',
       },
+
       signal,
     },
   );
 
   if (!response.ok) {
-    const body = (await response
-      .json()
-      .catch(() => null)) as {
+    const body = (
+      await response
+        .json()
+        .catch(() => null)
+    ) as {
       message?: string | string[];
     } | null;
 
-    const message = Array.isArray(body?.message)
-      ? body.message.join(', ')
-      : body?.message ??
-        'Не удалось загрузить товары';
+    const message =
+      Array.isArray(body?.message)
+        ? body.message.join(', ')
+        : body?.message ??
+          'Не удалось загрузить товары';
 
     throw new PublicProductsApiError(
       message,
@@ -75,5 +94,7 @@ export async function getPublicProducts(
     );
   }
 
-  return (await response.json()) as PublicProduct[];
+  return (
+    await response.json()
+  ) as PublicProduct[];
 }

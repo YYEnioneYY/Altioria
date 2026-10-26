@@ -1,9 +1,21 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import {
+  Fragment,
+  useEffect,
+  useState,
+} from 'react';
 
-import { headerNavigation } from '../config/navigation';
+import {
+  Link,
+  useLocation,
+} from 'react-router';
 
-import { LanguageSwitcher } from '../../../features/language-switcher';
+import {
+  headerNavigation,
+} from '../config/navigation';
+
+import {
+  LanguageSwitcher,
+} from '../../../features/language-switcher';
 
 import {
   useLocale,
@@ -14,31 +26,145 @@ import {
 } from '../../../features/catalog-search';
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { locale } = useLocale();
+  const [
+    isMenuOpen,
+    setIsMenuOpen,
+  ] = useState(false);
+
+  const {
+    locale,
+  } = useLocale();
+
+  const {
+    pathname,
+  } = useLocation();
+
+  const normalizedPathname =
+    pathname.replace(
+      /^\/(?:ru|en)(?=\/|$)/,
+      '',
+    ) || '/';
+
+  const isNavigationItemActive = (
+    path: string,
+  ): boolean => {
+    if (path === '/products') {
+      return (
+        normalizedPathname ===
+          '/products' ||
+        normalizedPathname.startsWith(
+          '/products/',
+        )
+      );
+    }
+
+    return (
+      normalizedPathname === path
+    );
+  };
+
+  const isHomePage =
+    /^\/(?:ru|en)?\/?$/.test(
+      pathname,
+    );
 
   useEffect(() => {
     if (!isMenuOpen) {
       return;
     }
 
-    const previousOverflow = document.body.style.overflow;
+    const scrollPosition =
+      window.scrollY;
 
-    document.body.style.overflow = 'hidden';
+    const previousBodyOverflow =
+      document.body.style.overflow;
 
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const previousBodyPosition =
+      document.body.style.position;
+
+    const previousBodyTop =
+      document.body.style.top;
+
+    const previousBodyLeft =
+      document.body.style.left;
+
+    const previousBodyRight =
+      document.body.style.right;
+
+    const previousBodyWidth =
+      document.body.style.width;
+
+    const previousHtmlOverflow =
+      document.documentElement.style
+        .overflow;
+
+    document.documentElement.style
+      .overflow = 'hidden';
+
+    document.body.style.overflow =
+      'hidden';
+
+    document.body.style.position =
+      'fixed';
+
+    document.body.style.top =
+      `-${scrollPosition}px`;
+
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+
+    const handleKeyDown = (
+      event: KeyboardEvent,
+    ) => {
       if (event.key === 'Escape') {
         setIsMenuOpen(false);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener(
+      'keydown',
+      handleKeyDown,
+    );
 
     return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener(
+        'keydown',
+        handleKeyDown,
+      );
+
+      document.documentElement.style
+        .overflow =
+        previousHtmlOverflow;
+
+      document.body.style.overflow =
+        previousBodyOverflow;
+
+      document.body.style.position =
+        previousBodyPosition;
+
+      document.body.style.top =
+        previousBodyTop;
+
+      document.body.style.left =
+        previousBodyLeft;
+
+      document.body.style.right =
+        previousBodyRight;
+
+      document.body.style.width =
+        previousBodyWidth;
+
+      window.scrollTo(
+        0,
+        scrollPosition,
+      );
     };
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -46,132 +172,315 @@ export function Header() {
 
   return (
     <>
-      <header className="header-enter fixed select-none inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-[15px] text-white min-[1201px]:px-[60px] min-[1201px]:py-[25px] min-[1201px]:backdrop-blur-[6px]">
-        <Link
-          to="/"
-          className="relative z-50 block"
-          aria-label="Altioria — главная страница"
-          draggable={false}
-          onClick={closeMenu}
+      <header className="header-enter site-mono fixed inset-x-0 top-0 z-50 select-none bg-black text-white">
+        {/* Desktop navbar */}
+        <div
+          className="hidden h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center px-[60px] will-change-transform min-[1201px]:grid"
+          style={
+            isHomePage
+              ? {
+                  transform:
+                    'translate3d(0, var(--home-nav-offset, 0px), 0)',
+                }
+              : undefined
+          }
         >
-          <img
-            src="/images/altioria-logo.svg"
-            alt="Altioria"
-            className="block w-[100px]"
+          <nav
+            aria-label={
+              locale === 'ru'
+                ? 'Основная навигация'
+                : 'Main navigation'
+            }
+            className="flex min-w-0 items-center"
+          >
+            {headerNavigation.map(
+              (item, index) => {
+                const isActive =
+                  isNavigationItemActive(
+                    item.path,
+                  );
+
+                return (
+                  <Fragment
+                    key={item.path}
+                  >
+                    <Link
+                      to={item.path}
+                      draggable={false}
+                      aria-current={
+                        isActive
+                          ? 'page'
+                          : undefined
+                      }
+                      className={`inline-flex h-8 items-center justify-center whitespace-nowrap border px-[30px] text-[17px] font-normal lowercase leading-none transition-[border-color,color] duration-300 focus-visible:outline-none ${
+                        isActive
+                          ? 'border-white/75 text-white'
+                          : 'border-transparent text-white hover:text-white/55 focus-visible:border-white/40 focus-visible:text-white'
+                      }`}
+                    >
+                      {
+                        item.label[
+                          locale
+                        ]
+                      }
+                    </Link>
+
+                    {index <
+                      headerNavigation.length -
+                        1 && (
+                      <span
+                        aria-hidden="true"
+                        className="h-7 w-px shrink-0 bg-white/35"
+                      />
+                    )}
+                  </Fragment>
+                );
+              },
+            )}
+          </nav>
+
+          <Link
+            to="/"
+            aria-label={
+              locale === 'ru'
+                ? 'Altioria — главная страница'
+                : 'Altioria — home page'
+            }
             draggable={false}
-          />
-        </Link>
-
-        <nav
-          className="hidden items-center gap-10 min-[1201px]:flex"
-          aria-label="Основная навигация"
-        >
-          {headerNavigation.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
+            className="mx-10 block transition-opacity duration-200"
+            style={
+              isHomePage
+                ? {
+                    opacity:
+                      'var(--home-header-logo-opacity, 0)',
+                  }
+                : {
+                    opacity: 1,
+                  }
+            }
+          >
+            <img
+              src="/images/altioria-logo.svg"
+              alt="Altioria"
               draggable={false}
-              className="text-[17px] transition-colors duration-300 hover:text-[#8f8f8f]"
-            >
-              {item.label[locale]}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="hidden items-center gap-3 min-[1201px]:flex">
-          <LanguageSwitcher />
-
-          <div className="hidden items-center gap-3 min-[1201px]:flex">
-            <CatalogSearch
-              mode="desktop"
-              onNavigate={closeMenu}
+              className="block w-[210px]"
             />
+          </Link>
+
+          <div className="flex min-w-0 items-center justify-end gap-5">
+            <div className="w-[300px]">
+              <CatalogSearch
+                mode="desktop"
+                onNavigate={closeMenu}
+              />
+            </div>
+
+            <LanguageSwitcher />
           </div>
         </div>
 
-        <button
-          type="button"
-          className="relative z-50 flex h-10 w-10 items-center justify-center min-[1201px]:hidden"
-          aria-label={isMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
-          aria-expanded={isMenuOpen}
-          aria-controls="mobile-navigation"
-          onClick={() => setIsMenuOpen((current) => !current)}
+        {/* Mobile navbar */}
+        <div
+          className="flex h-20 items-center justify-between px-5 will-change-transform min-[1201px]:hidden"
+          style={
+            isHomePage
+              ? {
+                  transform:
+                    isMenuOpen
+                      ? 'translate3d(0, 0, 0)'
+                      : 'translate3d(0, var(--home-nav-offset, 0px), 0)',
+                }
+              : undefined
+          }
         >
-          <svg
-            viewBox="0 0 100 100"
-            className="h-10 w-10"
-            aria-hidden="true"
+          <Link
+            to="/"
+            aria-label={
+              locale === 'ru'
+                ? 'Altioria — главная страница'
+                : 'Altioria — home page'
+            }
+            draggable={false}
+            onClick={closeMenu}
+            className="relative z-50 block transition-opacity duration-300"
+            style={
+              isHomePage
+                ? {
+                    opacity:
+                      isMenuOpen
+                        ? 1
+                        : 'var(--home-header-logo-opacity, 0)',
+                  }
+                : {
+                    opacity: 1,
+                  }
+            }
           >
-            <path
-              className="fill-none stroke-white stroke-[5] [stroke-linecap:round] transition-[stroke-dashoffset] duration-[400ms]"
-              style={{
-                strokeDasharray: '40 172',
-                strokeDashoffset: isMenuOpen ? -132 : 0,
-              }}
-              d="m 30,33 h 40 c 13.100415,0 14.380204,31.80258 6.899646,33.421777 -24.612039,5.327373 9.016154,-52.337577 -12.75751,-30.563913 l -28.284272,28.284272"
+            <img
+              src="/images/altioria-logo.svg"
+              alt="Altioria"
+              draggable={false}
+              className="block w-[118px]"
+            />
+          </Link>
+
+          <button
+            type="button"
+            aria-label={
+              isMenuOpen
+                ? locale === 'ru'
+                  ? 'Закрыть меню'
+                  : 'Close menu'
+                : locale === 'ru'
+                  ? 'Открыть меню'
+                  : 'Open menu'
+            }
+            aria-expanded={
+              isMenuOpen
+            }
+            aria-controls="mobile-navigation"
+            onClick={() =>
+              setIsMenuOpen(
+                (current) =>
+                  !current,
+              )
+            }
+            className="relative z-50 flex h-11 w-11 items-center justify-center focus-visible:outline-none"
+          >
+            <span className="sr-only">
+              {locale === 'ru'
+                ? 'Меню'
+                : 'Menu'}
+            </span>
+
+            <span
+              className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
+                isMenuOpen
+                  ? 'rotate-45'
+                  : '-translate-y-[8px]'
+              }`}
             />
 
-            <path
-              className="fill-none stroke-white stroke-[5] [stroke-linecap:round] transition-[stroke-dashoffset] duration-[400ms]"
-              style={{
-                strokeDasharray: '40 111',
-                strokeDashoffset: isMenuOpen ? -71 : 0,
-              }}
-              d="m 70,50 c 0,0 -32.213436,0 -40,0 -7.786564,0 -6.428571,-4.640244 -6.428571,-8.571429 0,-5.895471 6.073743,-11.783399 12.286435,-5.570707 6.212692,6.212692 28.284272,28.284272 28.284272,28.284272"
+            <span
+              className={`absolute h-px w-8 bg-white transition-opacity duration-300 ${
+                isMenuOpen
+                  ? 'opacity-0'
+                  : 'opacity-100'
+              }`}
             />
 
-            <path
-              className="fill-none stroke-white stroke-[5] [stroke-linecap:round] transition-[stroke-dashoffset] duration-[400ms]"
-              style={{
-                strokeDasharray: '40 172',
-                strokeDashoffset: isMenuOpen ? -132 : 0,
-              }}
-              d="m 69.575405,67.073826 h -40 c -13.100415,0 -14.380204,-31.80258 -6.899646,-33.421777 24.612039,5.327373 -9.016154,52.337577 12.75751,30.563913 l 28.284272,-28.284272"
+            <span
+              className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
+                isMenuOpen
+                  ? '-rotate-45'
+                  : 'translate-y-[8px]'
+              }`}
             />
-          </svg>
-        </button>
+          </button>
+        </div>
       </header>
 
       <div
         id="mobile-navigation"
         aria-hidden={!isMenuOpen}
-        className={`fixed inset-0 select-none z-40 flex flex-col bg-[#0c0c0c] px-5 pb-8 pt-20 transition-transform duration-[400ms] min-[1201px]:hidden ${
+        className={`site-mono fixed inset-0 z-40 flex flex-col overflow-hidden bg-black px-5 pb-7 pt-[104px] text-white transition-[transform,opacity,visibility] duration-500 min-[1201px]:hidden ${
           isMenuOpen
-            ? 'pointer-events-auto translate-y-0'
-            : 'pointer-events-none -translate-y-full'
+            ? 'visible pointer-events-auto translate-y-0 opacity-100'
+            : 'invisible pointer-events-none -translate-y-full opacity-0'
         }`}
       >
-        <div className="mb-[30px] flex items-center gap-3">
-          <LanguageSwitcher
-            tabIndex={isMenuOpen ? 0 : -1}
+        <div
+          className={`relative z-[100] shrink-0 transition-[opacity,transform] delay-100 duration-500 ${
+            isMenuOpen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-3 opacity-0'
+          }`}
+        >
+          <CatalogSearch
+            mode="mobile"
+            tabIndex={
+              isMenuOpen ? 0 : -1
+            }
+            onNavigate={closeMenu}
           />
-        
-          <div className="relative z-20 mb-[30px]">
-            <CatalogSearch
-              mode="mobile"
-              tabIndex={isMenuOpen ? 0 : -1}
-              onNavigate={closeMenu}
-            />
-          </div>
         </div>
 
         <nav
-          className="flex flex-col gap-[5px]"
-          aria-label="Мобильная навигация"
+          aria-label={
+            locale === 'ru'
+              ? 'Мобильная навигация'
+              : 'Mobile navigation'
+          }
+          className="relative z-0 mt-9 flex shrink-0 flex-col border-t border-white/20"
         >
-          {headerNavigation.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              tabIndex={isMenuOpen ? 0 : -1}
-              draggable={false}
-              className="py-[10px] text-center text-white text-xl transition-colors duration-300 hover:text-[#8f8f8f]"
-              onClick={closeMenu}
-            >
-              {item.label[locale]}
-            </Link>
-          ))}
+          {headerNavigation.map(
+            (item) => {
+              const isActive =
+                isNavigationItemActive(
+                  item.path,
+                );
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  tabIndex={
+                    isMenuOpen
+                      ? 0
+                      : -1
+                  }
+                  draggable={false}
+                  aria-current={
+                    isActive
+                      ? 'page'
+                      : undefined
+                  }
+                  onClick={closeMenu}
+                  className="border-b border-white/20 py-5 text-[22px] font-normal lowercase text-white focus-visible:outline-none"
+                >
+                  <span
+                    className={`relative inline-block pb-2 transition-colors duration-300 ${
+                      isActive
+                        ? 'text-white after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    {
+                      item.label[
+                        locale
+                      ]
+                    }
+                  </span>
+                </Link>
+              );
+            },
+          )}
         </nav>
+
+        <div
+          className={`relative z-0 mt-auto flex shrink-0 justify-start border-t border-white/20 pt-6 transition-[opacity,transform] delay-200 duration-500 ${
+            isMenuOpen
+              ? 'translate-y-0 opacity-100'
+              : 'translate-y-3 opacity-0'
+          }`}
+          onClick={closeMenu}
+        >
+          <div>
+            <p className="mb-3 text-[9px] lowercase text-white/30">
+              {locale === 'ru'
+                ? 'язык'
+                : 'language'}
+            </p>
+
+            <LanguageSwitcher
+              tabIndex={
+                isMenuOpen
+                  ? 0
+                  : -1
+              }
+            />
+          </div>
+        </div>
       </div>
     </>
   );
