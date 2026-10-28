@@ -2137,8 +2137,13 @@ body {
 
   .product-details-title {
     min-height: 0;
-    padding: 0 0 8px;
-    font-size: 38px;
+    margin: 0;
+    padding: 0 0 10px;
+    overflow: visible;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    text-overflow: clip;
     white-space: normal;
   }
   
@@ -2181,5 +2186,351 @@ body {
 
   .product-application button {
     font-size: 13px;
+  }
+}
+
+/*
+ * Детальная страница товара:
+ * полноэкранная десктопная версия.
+ */
+@media (min-width: 1001px) {
+  .product-details-page {
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding:
+      82px
+      22px
+      18px;
+    background: #000;
+  }
+
+  .product-details-layout {
+    display: grid;
+    width: 100%;
+    height: calc(
+      100dvh - 100px
+    );
+    min-height: 0;
+    grid-template-columns:
+      minmax(0, 61.5%)
+      minmax(0, 38.5%);
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  /*
+   * Левая часть — галерея.
+   */
+  .product-gallery-shell {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    grid-template-columns:
+      clamp(
+        88px,
+        8vw,
+        118px
+      )
+      minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .product-thumbnails {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 8px;
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(
+        255,
+        255,
+        255,
+        0.3
+      )
+      transparent;
+  }
+
+  .product-thumbnail {
+    width: 100%;
+    flex: 0 0 auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .product-main-image-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 8px;
+  }
+
+  .product-main-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .product-image-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+
+  /*
+   * Правая часть — информация.
+   */
+  .product-details-side {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    padding-left: 10px;
+  }
+
+  .product-details-title {
+    min-height: 48px;
+    flex: 0 0 auto;
+    margin: 0;
+    padding:
+      2px
+      8px
+      6px;
+    overflow: hidden;
+    font-size: 43px;
+    font-weight: 400;
+    line-height: 0.9;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .product-variants {
+    max-height: 68px;
+    flex: 0 0 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(
+        255,
+        255,
+        255,
+        0.3
+      )
+      transparent;
+  }
+
+  .product-variants button {
+    min-height: 30px;
+    padding:
+      5px
+      12px;
+    font-size: 10px;
+  }
+
+  /*
+   * Панель заполняет всё оставшееся
+   * пространство справа.
+   */
+  .product-information-panel {
+    display: flex;
+    width: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /*
+   * Описание занимает всё свободное
+   * пространство правой колонки.
+   */
+  .product-description {
+    min-height: 0;
+    flex: 1 1 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding:
+      11px
+      10px;
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(
+        255,
+        255,
+        255,
+        0.3
+      )
+      transparent;
+  }
+
+  .product-description p {
+    margin-top: 10px;
+    font-size: clamp(
+      11px,
+      0.9vw,
+      14px
+    );
+    line-height: 1.18;
+  }
+
+  .product-specification-grid {
+    flex: 0 0 auto;
+  }
+
+  .product-materials,
+  .product-dimensions {
+    padding:
+      11px
+      10px;
+  }
+
+  .product-materials > div,
+  .product-dimensions > div {
+    margin-top: 18px;
+  }
+
+  .product-materials p,
+  .product-dimensions p {
+    margin-bottom: 9px;
+    font-size: clamp(
+      10px,
+      0.85vw,
+      13px
+    );
+  }
+
+  .product-files {
+    flex: 0 0 auto;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .product-files a {
+    min-height: 27px;
+    padding:
+      4px
+      8px;
+    font-size: 9px;
+  }
+
+  .product-application {
+    min-height: 78px;
+    flex: 0 0 auto;
+    padding: 12px;
+  }
+
+  .product-application button {
+    min-width: min(
+      240px,
+      100%
+    );
+    min-height: 38px;
+    font-size: 14px;
+  }
+
+  /*
+   * Форма заявки также помещается
+   * внутрь правой части страницы.
+   */
+  .product-inquiry-form,
+  .product-inquiry-success {
+    width: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color:
+      rgba(
+        255,
+        255,
+        255,
+        0.3
+      )
+      transparent;
+  }
+
+  .product-inquiry-heading {
+    min-height: 105px;
+    padding:
+      11px
+      10px
+      9px;
+  }
+
+  .product-inquiry-field {
+    min-height: 30px;
+  }
+
+  .product-inquiry-question {
+    min-height: 150px;
+  }
+
+  .product-inquiry-question textarea {
+    min-height: 148px;
+  }
+
+  .product-inquiry-submit-wrapper {
+    min-height: 68px;
+    padding: 10px;
+  }
+
+  /*
+   * Скелетон загрузки тоже занимает
+   * оставшуюся высоту экрана.
+   */
+  .product-details-layout.animate-pulse {
+    height: calc(
+      100dvh - 100px
+    );
+  }
+
+  .product-details-layout.animate-pulse
+  > div {
+    min-height: 0;
+  }
+
+  /*
+   * Характеристики, файлы и заявка
+   * не растягиваются и остаются внизу.
+   */
+  .product-specification-grid,
+  .product-files,
+  .product-application {
+    flex: 0 0 auto;
+  }
+
+  .product-application {
+    margin-top: auto;
+  }
+}
+
+.product-details-mobile-footer {
+  display: none;
+}
+
+@media (max-width: 1000px) {
+  .product-details-mobile-footer {
+    display: block;
+    width: 100%;
+    background: #000;
   }
 }

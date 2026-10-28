@@ -30,7 +30,8 @@ const contentByLocale = {
     title: 'Результаты',
     loading: 'Ищем...',
     empty: 'Ничего не найдено',
-    error: 'Не удалось выполнить поиск',
+    error:
+      'Не удалось выполнить поиск',
     product: 'товар',
     category: 'категория',
     variant: 'исполнение',
@@ -42,6 +43,7 @@ const contentByLocale = {
     open: 'открыть',
     initial:
       'Первые предметы каталога',
+    retry: 'повторить',
   },
 
   en: {
@@ -61,8 +63,16 @@ const contentByLocale = {
     open: 'open',
     initial:
       'First catalog items',
+    retry: 'retry',
   },
 } as const;
+
+const skeletonItems = [
+  'first',
+  'second',
+  'third',
+  'fourth',
+];
 
 function getResultPath(
   result: SearchResult,
@@ -124,7 +134,7 @@ function ResultImage({
 
   if (!src || hasError) {
     return (
-      <div className="flex h-full w-full items-center justify-center border-r border-white/40 bg-[#090909] px-2 text-center text-[9px] lowercase text-white/25 transition-colors group-hover:border-black/35 group-hover:bg-[#ededed] group-hover:text-black/35">
+      <div className="flex h-full w-full items-center justify-center border-r border-white/35 bg-[#0a0a0a] px-1 text-center text-[8px] font-normal lowercase leading-tight text-white/30 transition-colors group-hover:border-black/35 group-hover:bg-[#ededed] group-hover:text-black/40">
         {fallback}
       </div>
     );
@@ -139,33 +149,26 @@ function ResultImage({
       onError={() =>
         setHasError(true)
       }
-      className="block h-full w-full border-r border-white/40 object-cover transition-[border-color,filter] duration-300 group-hover:border-black/35"
+      className="block h-full w-full border-r border-white/35 object-cover transition-[border-color,filter] duration-300 group-hover:border-black/35"
     />
   );
 }
 
-const skeletonItems = [
-  'first',
-  'second',
-  'third',
-  'fourth',
-];
-
 function SearchSkeleton() {
   return (
-    <div className="border-t border-white/45">
+    <div>
       {skeletonItems.map(
         (item) => (
           <div
             key={item}
-            className="grid min-h-[108px] animate-pulse grid-cols-[96px_minmax(0,1fr)] border-b border-white/45"
+            className="grid min-h-[76px] animate-pulse grid-cols-[68px_minmax(0,1fr)] border-b border-white/30"
           >
-            <div className="border-r border-white/30 bg-white/[0.05]" />
+            <div className="border-r border-white/25 bg-white/[0.05]" />
 
-            <div className="flex flex-col justify-center px-4">
-              <div className="h-4 w-2/3 bg-white/[0.08]" />
+            <div className="flex flex-col justify-center px-3">
+              <div className="h-3 w-2/3 bg-white/[0.08]" />
 
-              <div className="mt-3 h-2.5 w-1/3 bg-white/[0.05]" />
+              <div className="mt-2 h-2 w-1/3 bg-white/[0.05]" />
             </div>
           </div>
         ),
@@ -354,7 +357,8 @@ export function CatalogSearch({
     useMemo(() => {
       if (!results?.length) {
         return {
-          title: content.products,
+          title:
+            content.products,
 
           path:
             `/${locale}/products`,
@@ -390,7 +394,8 @@ export function CatalogSearch({
         categorySlugs.size !== 1
       ) {
         return {
-          title: content.products,
+          title:
+            content.products,
 
           path:
             `/${locale}/products`,
@@ -444,7 +449,7 @@ export function CatalogSearch({
 
     if (
       result.type ===
-      'PRODUCT_VARIANT'
+        'PRODUCT_VARIANT'
     ) {
       return result
         .parentProductName
@@ -471,7 +476,7 @@ export function CatalogSearch({
       ref={rootRef}
       className={`relative w-full ${
         isDesktop
-          ? ''
+          ? 'z-[60]'
           : 'z-[120]'
       }`}
     >
@@ -481,7 +486,7 @@ export function CatalogSearch({
           event.preventDefault();
           setIsOpen(true);
         }}
-        className={`relative z-[90] flex items-center gap-3 border-b bg-black transition-colors duration-300 ${
+        className={`relative z-[140] flex items-center gap-3 border-b bg-black transition-colors duration-300 ${
           isOpen
             ? 'border-white'
             : 'border-white/50'
@@ -513,11 +518,7 @@ export function CatalogSearch({
 
             setIsOpen(true);
           }}
-          className={`site-mono min-w-0 flex-1 border-0 bg-black p-0 font-normal lowercase text-white outline-none placeholder:text-white/35 ${
-            isDesktop
-              ? 'text-[13px]'
-              : 'text-[14px]'
-          }`}
+          className="site-mono min-w-0 flex-1 border-0 bg-black p-0 text-[14px] font-normal lowercase leading-none text-white outline-none placeholder:text-white/35"
         />
 
         {query && (
@@ -533,7 +534,7 @@ export function CatalogSearch({
               setQuery('');
               inputRef.current?.focus();
             }}
-            className="site-mono border-0 bg-transparent text-[13px] text-white/40 transition-colors hover:text-white"
+            className="site-mono border-0 bg-transparent text-[14px] font-normal text-white/40 transition-colors hover:text-white"
           >
             ×
           </button>
@@ -555,7 +556,7 @@ export function CatalogSearch({
               src="/images/search-icon.svg"
               alt=""
               draggable={false}
-              className="h-[15px] w-[15px]"
+              className="h-[14px] w-[14px]"
             />
           )}
         </button>
@@ -563,23 +564,23 @@ export function CatalogSearch({
 
       <div
         aria-hidden={!isOpen}
-        className={`site-mono z-[130] flex flex-col overflow-hidden border border-white/70 bg-[#111111] text-white shadow-[0_24px_70px_rgba(0,0,0,0.95)] transition-[opacity,transform,visibility] duration-300 ${
+        className={`site-mono z-[130] flex flex-col overflow-hidden border border-white/60 bg-black text-white shadow-[0_24px_70px_rgba(0,0,0,0.95)] transition-[opacity,transform,visibility] duration-300 ${
           isDesktop
-            ? 'absolute right-0 top-[calc(100%+18px)] h-[560px] max-h-[calc(100dvh-100px)] w-[520px]'
-            : 'absolute inset-x-0 top-[calc(100%+12px)] h-[calc(100dvh-190px)] max-h-[520px] w-full'
+            ? 'absolute right-0 top-[calc(100%+14px)] h-[500px] max-h-[calc(100dvh-96px)] w-[440px]'
+            : 'absolute left-0 top-[calc(100%+12px)] h-[calc(100dvh-112px)] max-h-[460px] w-[calc(100vw-30px)]'
         } ${
           isOpen
             ? 'visible translate-y-0 opacity-100'
             : 'invisible pointer-events-none -translate-y-2 opacity-0'
         }`}
       >
-        <header className="flex min-h-[58px] shrink-0 items-center justify-between border-b border-white/65 px-4">
-          <div>
-            <h2 className="site-display text-[24px] font-normal uppercase leading-none">
+        <header className="flex min-h-[48px] shrink-0 items-center justify-between border-b border-white/50 px-3">
+          <div className="min-w-0">
+            <h2 className="site-mono truncate text-[14px] font-normal lowercase leading-none text-white">
               {content.title}
             </h2>
 
-            <p className="mt-1 text-[9px] lowercase text-white/35">
+            <p className="mt-1 truncate text-[9px] font-normal lowercase text-white/35">
               {normalizedQuery
                 ? `“${normalizedQuery}”`
                 : content.initial}
@@ -595,7 +596,7 @@ export function CatalogSearch({
             onClick={() =>
               setIsOpen(false)
             }
-            className="flex h-8 w-8 items-center justify-center border border-white/45 bg-black text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black"
+            className="ml-3 flex h-7 w-7 shrink-0 items-center justify-center border-0 bg-black text-white/70 transition-colors duration-300 hover:text-white"
           >
             <svg
               viewBox="0 0 24 24"
@@ -607,7 +608,7 @@ export function CatalogSearch({
                 fill="none"
                 stroke="currentColor"
                 strokeLinecap="round"
-                strokeWidth="1.5"
+                strokeWidth="1.2"
               />
             </svg>
           </button>
@@ -625,12 +626,12 @@ export function CatalogSearch({
 
             {!isLoading &&
               error && (
-                <div className="flex h-full min-h-[260px] flex-col items-center justify-center px-6 text-center">
-                  <span className="flex h-10 w-10 items-center justify-center border border-white/50 text-white/60">
+                <div className="flex h-full min-h-[220px] flex-col items-center justify-center px-5 text-center">
+                  <span className="flex h-8 w-8 items-center justify-center border border-white/40 text-[12px] text-white/60">
                     !
                   </span>
 
-                  <p className="mt-4 max-w-xs text-[12px] leading-relaxed text-white/55">
+                  <p className="mt-4 max-w-xs text-[11px] leading-relaxed text-white/55">
                     {error}
                   </p>
 
@@ -641,15 +642,12 @@ export function CatalogSearch({
                         (
                           current,
                         ) =>
-                          current +
-                          1,
+                          current + 1,
                       )
                     }
-                    className="mt-5 border border-white/50 bg-black px-5 py-2 text-[11px] lowercase text-white transition-[background-color,color] hover:bg-white hover:text-black"
+                    className="mt-5 border border-white/50 bg-black px-4 py-2 text-[10px] font-normal lowercase text-white transition-[background-color,color] hover:bg-white hover:text-black"
                   >
-                    {locale === 'ru'
-                      ? 'повторить'
-                      : 'retry'}
+                    {content.retry}
                   </button>
                 </div>
               )}
@@ -658,8 +656,8 @@ export function CatalogSearch({
               !error &&
               results?.length ===
                 0 && (
-                <div className="flex h-full min-h-[260px] items-center justify-center px-6 text-center">
-                  <p className="site-display text-[clamp(24px,4vw,38px)] uppercase leading-none text-white/30">
+                <div className="flex h-full min-h-[220px] items-center justify-center px-5 text-center">
+                  <p className="site-mono text-[14px] font-normal lowercase text-white/35">
                     {content.empty}
                   </p>
                 </div>
@@ -667,9 +665,8 @@ export function CatalogSearch({
 
             {!error &&
               results &&
-              results.length >
-                0 && (
-                <div className="border-t border-white/45">
+              results.length > 0 && (
+                <div>
                   {results.map(
                     (
                       result,
@@ -684,10 +681,10 @@ export function CatalogSearch({
                         onClick={
                           closeSearch
                         }
-                        className={`group grid border-b border-white/45 bg-[#111111] text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black ${
+                        className={`group grid border-b border-white/30 bg-black text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black ${
                           isDesktop
-                            ? 'min-h-[108px] grid-cols-[96px_minmax(0,1fr)]'
-                            : 'min-h-[88px] grid-cols-[82px_minmax(0,1fr)]'
+                            ? 'min-h-[84px] grid-cols-[76px_minmax(0,1fr)]'
+                            : 'min-h-[72px] grid-cols-[64px_minmax(0,1fr)]'
                         }`}
                       >
                         <ResultImage
@@ -702,15 +699,15 @@ export function CatalogSearch({
                           }
                         />
 
-                        <div className="flex min-w-0 flex-col justify-between px-4 py-3">
-                          <div className="flex items-start justify-between gap-4">
-                            <span className="text-[9px] lowercase text-white/35 transition-colors group-hover:text-black/40">
+                        <div className="flex min-w-0 flex-col justify-between px-3 py-2">
+                          <div className="flex items-start justify-between gap-3">
+                            <span className="truncate text-[9px] font-normal lowercase text-white/35 transition-colors group-hover:text-black/45">
                               {getResultDescription(
                                 result,
                               )}
                             </span>
 
-                            <span className="text-[9px] text-white/25 transition-colors group-hover:text-black/35">
+                            <span className="shrink-0 text-[9px] text-white/25 transition-colors group-hover:text-black/35">
                               {String(
                                 index + 1,
                               ).padStart(
@@ -720,14 +717,14 @@ export function CatalogSearch({
                             </span>
                           </div>
 
-                          <h3 className="site-display truncate text-[clamp(20px,2.1vw,29px)] font-normal uppercase leading-none">
+                          <h3 className="site-mono truncate text-[14px] font-normal uppercase leading-none text-white transition-colors group-hover:text-black">
                             {result.name}
                           </h3>
 
-                          <span className="flex items-center justify-between text-[9px] lowercase text-white/35 transition-colors group-hover:text-black/50">
+                          <span className="flex items-center justify-between text-[9px] font-normal lowercase text-white/35 transition-colors group-hover:text-black/50">
                             {content.open}
 
-                            <span className="text-[15px] transition-transform duration-300 group-hover:translate-x-1">
+                            <span className="text-[13px] transition-transform duration-300 group-hover:translate-x-1">
                               →
                             </span>
                           </span>
@@ -740,16 +737,16 @@ export function CatalogSearch({
           </div>
         </div>
 
-        <footer className="flex min-h-[66px] shrink-0 items-center justify-between gap-5 border-t border-white/65 px-4 py-3">
+        <footer className="flex min-h-[56px] shrink-0 items-center justify-between gap-4 border-t border-white/50 px-3 py-2">
           <div className="min-w-0">
-            <p className="text-[8px] lowercase text-white/30">
+            <p className="text-[8px] font-normal lowercase text-white/30">
               {categoryInformation
                 .isSingleCategory
                 ? content.category
                 : content.catalog}
             </p>
 
-            <p className="site-display mt-1 truncate text-[18px] uppercase leading-none text-white">
+            <p className="site-mono mt-1 truncate text-[13px] font-normal lowercase leading-none text-white">
               {
                 categoryInformation.title
               }
@@ -761,7 +758,7 @@ export function CatalogSearch({
               categoryInformation.path
             }
             onClick={closeSearch}
-            className="shrink-0 border border-white/55 px-4 py-2 text-[10px] lowercase text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black"
+            className="shrink-0 border border-white/50 px-3 py-2 text-[10px] font-normal lowercase text-white transition-[background-color,color] duration-300 hover:bg-white hover:text-black"
           >
             {content.viewAll}
           </Link>

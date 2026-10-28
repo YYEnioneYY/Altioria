@@ -212,7 +212,7 @@ export function Header() {
                           ? 'page'
                           : undefined
                       }
-                      className={`inline-flex h-8 items-center justify-center whitespace-nowrap border px-[30px] text-[17px] font-normal lowercase leading-none transition-[border-color,color] duration-300 focus-visible:outline-none ${
+                      className={`inline-flex h-8 items-center justify-center whitespace-nowrap border px-[30px] text-[14px] font-normal lowercase leading-none transition-[border-color,color] duration-300 focus-visible:outline-none ${
                         isActive
                           ? 'border-white/75 text-white'
                           : 'border-transparent text-white hover:text-white/55 focus-visible:border-white/40 focus-visible:text-white'
@@ -281,7 +281,7 @@ export function Header() {
 
         {/* Mobile navbar */}
         <div
-          className="flex h-20 items-center justify-between px-5 will-change-transform min-[1201px]:hidden"
+          className="flex h-[72px] items-center justify-between px-[15px] will-change-transform min-[1201px]:hidden"
           style={
             isHomePage
               ? {
@@ -320,10 +320,10 @@ export function Header() {
               src="/images/altioria-logo.svg"
               alt="Altioria"
               draggable={false}
-              className="block w-[118px]"
+              className="block w-[64px]"
             />
           </Link>
-
+          
           <button
             type="button"
             aria-label={
@@ -335,34 +335,31 @@ export function Header() {
                   ? 'Открыть меню'
                   : 'Open menu'
             }
-            aria-expanded={
-              isMenuOpen
-            }
+            aria-expanded={isMenuOpen}
             aria-controls="mobile-navigation"
             onClick={() =>
               setIsMenuOpen(
-                (current) =>
-                  !current,
+                (current) => !current,
               )
             }
-            className="relative z-50 flex h-11 w-11 items-center justify-center focus-visible:outline-none"
+            className="relative z-50 flex h-8 w-8 items-center justify-center focus-visible:outline-none"
           >
             <span className="sr-only">
               {locale === 'ru'
                 ? 'Меню'
                 : 'Menu'}
             </span>
-
+              
             <span
-              className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
+              className={`absolute h-px w-4 bg-white transition-transform duration-300 ${
                 isMenuOpen
                   ? 'rotate-45'
-                  : '-translate-y-[8px]'
+                  : '-translate-y-[5px]'
               }`}
             />
 
             <span
-              className={`absolute h-px w-8 bg-white transition-opacity duration-300 ${
+              className={`absolute h-px w-4 bg-white transition-opacity duration-300 ${
                 isMenuOpen
                   ? 'opacity-0'
                   : 'opacity-100'
@@ -370,10 +367,10 @@ export function Header() {
             />
 
             <span
-              className={`absolute h-px w-8 bg-white transition-transform duration-300 ${
+              className={`absolute h-px w-4 bg-white transition-transform duration-300 ${
                 isMenuOpen
                   ? '-rotate-45'
-                  : 'translate-y-[8px]'
+                  : 'translate-y-[5px]'
               }`}
             />
           </button>
@@ -383,14 +380,14 @@ export function Header() {
       <div
         id="mobile-navigation"
         aria-hidden={!isMenuOpen}
-        className={`site-mono fixed inset-0 z-40 flex flex-col overflow-hidden bg-black px-5 pb-7 pt-[104px] text-white transition-[transform,opacity,visibility] duration-500 min-[1201px]:hidden ${
+        className={`site-mono fixed inset-0 z-40 flex flex-col overflow-hidden bg-black px-[15px] pb-[61px] pt-[68px] text-white transition-[transform,opacity,visibility] duration-500 min-[1201px]:hidden ${
           isMenuOpen
             ? 'visible pointer-events-auto translate-y-0 opacity-100'
             : 'invisible pointer-events-none -translate-y-full opacity-0'
         }`}
       >
         <div
-          className={`relative z-[100] shrink-0 transition-[opacity,transform] delay-100 duration-500 ${
+          className={`relative z-[100] w-[225px] max-w-[calc(100vw-80px)] shrink-0 transition-[opacity,transform] delay-100 duration-500 ${
             isMenuOpen
               ? 'translate-y-0 opacity-100'
               : '-translate-y-3 opacity-0'
@@ -404,22 +401,26 @@ export function Header() {
             onNavigate={closeMenu}
           />
         </div>
-
+          
         <nav
           aria-label={
             locale === 'ru'
               ? 'Мобильная навигация'
               : 'Mobile navigation'
           }
-          className="relative z-0 mt-9 flex shrink-0 flex-col border-t border-white/20"
+          className="relative z-0 mt-[clamp(11rem,27dvh,13.5rem)] flex w-[142px] shrink-0 flex-col"
         >
           {headerNavigation.map(
-            (item) => {
+            (item, index) => {
               const isActive =
                 isNavigationItemActive(
                   item.path,
                 );
-
+              
+              const isLast =
+                index ===
+                headerNavigation.length - 1;
+              
               return (
                 <Link
                   key={item.path}
@@ -436,13 +437,17 @@ export function Header() {
                       : undefined
                   }
                   onClick={closeMenu}
-                  className="border-b border-white/20 py-5 text-[22px] font-normal lowercase text-white focus-visible:outline-none"
+                  className={`site-mono flex min-h-[68px] items-center text-[14px] font-normal lowercase leading-none text-white focus-visible:outline-none ${
+                    isLast
+                      ? ''
+                      : 'border-b border-white/75'
+                  }`}
                 >
                   <span
-                    className={`relative inline-block pb-2 transition-colors duration-300 ${
+                    className={`relative inline-block pb-[3px] transition-colors duration-300 ${
                       isActive
                         ? 'text-white after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white'
-                        : 'text-white/70 hover:text-white'
+                        : 'text-white/80 hover:text-white'
                     }`}
                   >
                     {
@@ -456,30 +461,23 @@ export function Header() {
             },
           )}
         </nav>
-
+        
         <div
-          className={`relative z-0 mt-auto flex shrink-0 justify-start border-t border-white/20 pt-6 transition-[opacity,transform] delay-200 duration-500 ${
+          className={`relative z-0 mt-auto flex shrink-0 justify-start transition-[opacity,transform] delay-200 duration-500 ${
             isMenuOpen
               ? 'translate-y-0 opacity-100'
               : 'translate-y-3 opacity-0'
           }`}
           onClick={closeMenu}
         >
-          <div>
-            <p className="mb-3 text-[9px] lowercase text-white/30">
-              {locale === 'ru'
-                ? 'язык'
-                : 'language'}
-            </p>
-
-            <LanguageSwitcher
-              tabIndex={
-                isMenuOpen
-                  ? 0
-                  : -1
-              }
-            />
-          </div>
+          <LanguageSwitcher
+            compact
+            tabIndex={
+              isMenuOpen
+                ? 0
+                : -1
+            }
+          />
         </div>
       </div>
     </>

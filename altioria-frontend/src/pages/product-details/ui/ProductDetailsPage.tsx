@@ -33,6 +33,10 @@ import {
   ProductInquiryPanel,
 } from './ProductInquiryPanel';
 
+import {
+  Footer,
+} from '../../../widgets/footer';
+
 interface DisplayedProductData {
   name: string;
   description: string;
@@ -980,6 +984,10 @@ export function ProductDetailsPage() {
           </section>
         </div>
       </main>
+
+      <div className="product-details-mobile-footer">
+        <Footer />
+      </div>
     </>
   );
 }

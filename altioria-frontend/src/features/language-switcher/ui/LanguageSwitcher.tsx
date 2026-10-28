@@ -5,6 +5,7 @@ import {
 
 interface LanguageSwitcherProps {
   tabIndex?: number;
+  compact?: boolean;
 }
 
 const languages = [
@@ -26,6 +27,7 @@ const languages = [
 
 export function LanguageSwitcher({
   tabIndex,
+  compact = false,
 }: LanguageSwitcherProps) {
   const {
     locale,
@@ -40,7 +42,11 @@ export function LanguageSwitcher({
           ? 'Выбор языка'
           : 'Choose language'
       }
-      className="relative grid h-[34px] w-[76px] shrink-0 grid-cols-2 overflow-hidden border border-white/70 bg-black/20 backdrop-blur-sm min-[1201px]:h-[32px] min-[1201px]:w-[70px]"
+      className={`site-serif relative grid shrink-0 grid-cols-2 overflow-hidden border border-white/70 bg-black font-normal ${
+        compact
+          ? 'h-[20px] w-[44px]'
+          : 'h-[34px] w-[76px] min-[1201px]:h-[32px] min-[1201px]:w-[70px]'
+      }`}
     >
       <span
         aria-hidden="true"
@@ -60,12 +66,20 @@ export function LanguageSwitcher({
             key={language.value}
             type="button"
             tabIndex={tabIndex}
-            aria-label={language.ariaLabel}
+            aria-label={
+              language.ariaLabel
+            }
             aria-pressed={isActive}
             onClick={() =>
-              setLocale(language.value)
+              setLocale(
+                language.value,
+              )
             }
-            className={`relative z-10 flex h-full items-center justify-center text-[15px] min-[1201px]:text-[14px] font-normal lowercase transition-colors duration-300 focus-visible:outline-none ${
+            className={`site-serif relative z-10 flex h-full items-center justify-center font-normal lowercase leading-none transition-colors duration-300 focus-visible:outline-none ${
+              compact
+                ? 'text-[14px]'
+                : 'text-[14px]'
+            } ${
               isActive
                 ? 'text-black'
                 : 'text-white/55 hover:text-white'
