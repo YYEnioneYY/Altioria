@@ -23,6 +23,12 @@ import {
   useLocale,
 } from '../../../shared/lib/i18n';
 
+function isWideCategory(
+  slug: string,
+): boolean {
+  return slug === 'bedside-tables';
+}
+
 function ProductImage({
   src,
   alt,
@@ -252,6 +258,7 @@ export function PublicCatalog() {
         : [
             {
               id: 'all-products',
+              slug: 'all-products',
               name: allProductsName,
               path: '/products',
             },
@@ -267,6 +274,7 @@ export function PublicCatalog() {
       .map(
         (category) => ({
           id: category.id,
+          slug: category.slug,
           name: category.name,
           path:
             `/products/${category.slug}`,
@@ -303,15 +311,22 @@ export function PublicCatalog() {
                   : ''
               }`}
             >
-              {allProductsName}
+              <span className="catalog-tab-label">
+                {allProductsName}
+              </span>
             </Link>
-            
+
             {categories.map(
               (category) => {
                 const isActive =
                   category.slug ===
                   categorySlug;
-              
+
+                const wideCategory =
+                  isWideCategory(
+                    category.slug,
+                  );
+
                 return (
                   <div
                     key={category.id}
@@ -319,13 +334,17 @@ export function PublicCatalog() {
                       isActive
                         ? 'catalog-tab-group-active'
                         : ''
+                    } ${
+                      wideCategory
+                        ? 'catalog-wide-category-group'
+                        : ''
                     }`}
                   >
                     <span
                       aria-hidden="true"
                       className="catalog-tab-divider"
                     />
-      
+
                     <Link
                       to={`/products/${category.slug}`}
                       aria-current={
@@ -337,9 +356,15 @@ export function PublicCatalog() {
                         isActive
                           ? 'catalog-tab-active'
                           : ''
+                      } ${
+                        wideCategory
+                          ? 'catalog-wide-category'
+                          : ''
                       }`}
                     >
-                      {category.name}
+                      <span className="catalog-tab-label">
+                        {category.name}
+                      </span>
                     </Link>
                   </div>
                 );
@@ -347,7 +372,7 @@ export function PublicCatalog() {
             )}
           </nav>
         </div>
-          
+
         {/* Мобильная навигация */}
         <div className="catalog-tabs-mobile">
           {allProductsSelected && (
@@ -356,10 +381,12 @@ export function PublicCatalog() {
               aria-current="page"
               className="catalog-mobile-selected catalog-mobile-selected-top"
             >
-              {allProductsName}
+              <span className="catalog-mobile-selected-label">
+                {allProductsName}
+              </span>
             </Link>
           )}
-      
+
           <nav
             className="catalog-mobile-grid"
             aria-label={
@@ -369,30 +396,51 @@ export function PublicCatalog() {
             }
           >
             {mobileNavigationItems.map(
-              (item) => (
-                <div
-                  key={item.id}
-                  className="catalog-mobile-cell"
-                >
-                  <Link
-                    to={item.path}
-                    className="catalog-mobile-link"
+              (item) => {
+                const wideCategory =
+                  isWideCategory(
+                    item.slug,
+                  );
+
+                return (
+                  <div
+                    key={item.id}
+                    className="catalog-mobile-cell"
                   >
-                    {item.name}
-                  </Link>
-                </div>
-              ),
+                    <Link
+                      to={item.path}
+                      className={`catalog-mobile-link ${
+                        wideCategory
+                          ? 'catalog-wide-category'
+                          : ''
+                      }`}
+                    >
+                      <span className="catalog-mobile-link-label">
+                        {item.name}
+                      </span>
+                    </Link>
+                  </div>
+                );
+              },
             )}
           </nav>
-          
+
           {!allProductsSelected &&
             activeCategory && (
               <Link
                 to={`/products/${activeCategory.slug}`}
                 aria-current="page"
-                className="catalog-mobile-selected catalog-mobile-selected-bottom"
+                className={`catalog-mobile-selected catalog-mobile-selected-bottom ${
+                  isWideCategory(
+                    activeCategory.slug,
+                  )
+                    ? 'catalog-wide-category'
+                    : ''
+                }`}
               >
-                {activeCategory.name}
+                <span className="catalog-mobile-selected-label">
+                  {activeCategory.name}
+                </span>
               </Link>
             )}
         </div>
