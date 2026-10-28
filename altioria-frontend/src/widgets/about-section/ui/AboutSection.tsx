@@ -29,6 +29,14 @@ export function AboutSection({
   const sectionRef =
     useRef<HTMLElement>(null);
 
+  const biographyRef =
+    useRef<HTMLElement>(null);
+
+  const [
+    isTopButtonVisible,
+    setIsTopButtonVisible,
+  ] = useState(false);
+
   const [isRevealed, setIsRevealed] =
     useState(() => {
       if (variant === 'page') {
@@ -83,6 +91,87 @@ export function AboutSection({
     isRevealed,
     variant,
   ]);
+
+  useEffect(() => {
+    const biography =
+      biographyRef.current;
+
+    if (!biography) {
+      return;
+    }
+
+    let animationFrameId = 0;
+
+    const updateTopButton = () => {
+      animationFrameId = 0;
+
+      const biographyRect =
+        biography.getBoundingClientRect();
+
+      /*
+       * На странице about кнопка
+       * появляется немного раньше,
+       * примерно на уровне середины
+       * второго текстового блока.
+       */
+      const activationPoint =
+        window.innerHeight *
+        (
+          variant === 'page'
+            ? 0.68
+            : 0.34
+        );
+
+      setIsTopButtonVisible(
+        biographyRect.top <=
+          activationPoint,
+      );
+    };
+
+    const requestUpdate = () => {
+      if (animationFrameId !== 0) {
+        return;
+      }
+
+      animationFrameId =
+        window.requestAnimationFrame(
+          updateTopButton,
+        );
+    };
+
+    updateTopButton();
+
+    window.addEventListener(
+      'scroll',
+      requestUpdate,
+      {
+        passive: true,
+      },
+    );
+
+    window.addEventListener(
+      'resize',
+      requestUpdate,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'scroll',
+        requestUpdate,
+      );
+
+      window.removeEventListener(
+        'resize',
+        requestUpdate,
+      );
+
+      if (animationFrameId !== 0) {
+        window.cancelAnimationFrame(
+          animationFrameId,
+        );
+      }
+    };
+  }, [variant]);
 
   const wordState =
     isRevealed
@@ -188,10 +277,58 @@ export function AboutSection({
         </header>
 
         <div className="about-editorial-grid">
-          <p className="about-editorial-lead site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[15px] min-[901px]:leading-[1.12]">
-            {content.lead}
-          </p>
-
+          <div className="about-editorial-copy-column">
+            <p className="about-editorial-lead site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[14px] min-[901px]:leading-[1.12]">
+              {content.lead}
+            </p>
+                  
+            <article
+              ref={biographyRef}
+              className="about-editorial-biography min-[901px]:border-r min-[901px]:border-white/35 min-[901px]:pr-6"
+              aria-labelledby="oleg-klodt-heading"
+            >
+              <div className="mb-6 flex items-center justify-between min-[901px]:mb-8">
+                <h2
+                  id="oleg-klodt-heading"
+                  className="site-mono text-[11px] font-normal leading-none tracking-[-0.025em] text-white min-[901px]:text-[14px]"
+                >
+                  {content.personName}
+                </h2>
+                
+              </div>
+                    
+              <div className="site-serif text-[12px] font-normal leading-[1.28] tracking-[-0.012em] text-white/90 min-[901px]:text-[16.5px] min-[901px]:leading-[1.1]">
+                {content.biography.map(
+                  (paragraph) => (
+                    <p
+                      key={paragraph}
+                      className="about-conclusion-paragraph site-mono !text-[14px] font-normal"
+                    >
+                      {paragraph}
+                    </p>
+                  ),
+                )}
+              </div>
+            </article>
+              
+            {lastStory && (
+              <div
+                className="about-editorial-story site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[14px] min-[901px]:leading-[1.12]"
+                aria-label={
+                  content.aboutLabel
+                }
+              >
+                <p>
+                  {lastStory.beforeBrand}
+              
+                  Altioria
+              
+                  {lastStory.afterBrand}
+                </p>
+              </div>
+            )}
+          </div>
+          
           <figure
             className={`about-editorial-image m-0 transition-[opacity,transform] duration-700 [transition-delay:100ms] ${contentState}`}
           >
@@ -203,116 +340,49 @@ export function AboutSection({
               className="pointer-events-none block h-auto w-full object-cover object-top"
             />
           </figure>
-
-          <article
-            className="about-editorial-biography border-l border-white/35 pl-4 min-[901px]:border-l-0 min-[901px]:border-r min-[901px]:pl-0 min-[901px]:pr-6"
-            aria-labelledby="oleg-klodt-heading"
-          >
-            <div className="mb-6 flex items-center justify-between min-[901px]:mb-8">
-              <h2
-                id="oleg-klodt-heading"
-                className="site-mono text-[11px] font-normal leading-none tracking-[-0.025em] text-white min-[901px]:text-[14px]"
-              >
-                {content.personName}
-              </h2>
-
-              <div className="flex items-center gap-4 min-[901px]:hidden">
-                <span
-                  aria-hidden="true"
-                  className="h-4 w-px bg-white/35"
-                />
-
-                <button
-                  type="button"
-                  onClick={scrollToTop}
-                  className="site-mono text-[9px] lowercase text-white/55"
-                >
-                  {locale === 'ru'
-                    ? 'наверх'
-                    : 'up'}
-                </button>
-                  
-                <span
-                  aria-hidden="true"
-                  className="h-4 w-px bg-white/35"
-                />
-              </div>
-            </div>
-                  
-            <div className="site-serif text-[12px] font-normal leading-[1.28] tracking-[-0.012em] text-white/90 min-[901px]:text-[15px] min-[901px]:leading-[1.18]">
-              {content.biography.map(
-                (paragraph, index) => (
-                  <p
-                    key={paragraph}
-                    className="mb-[1.05em] last:mb-0"
-                  >
-                    {index === 0 ? (
-                      <>
-                        <span className="italic">
-                          {content.personName}
-                        </span>
-                    
-                        {paragraph.startsWith(
-                          content.personName,
-                        )
-                          ? paragraph.slice(
-                              content.personName.length,
-                            )
-                          : ` ${paragraph}`}
-                      </>
-                    ) : (
-                      paragraph
-                    )}
-                  </p>
-                ),
-              )}
-            </div>
-          </article>
-
-          {lastStory && (
-            <div
-              className="about-editorial-story site-mono text-[12px] font-normal leading-[1.32] tracking-[-0.025em] text-white/85 min-[901px]:text-[15px] min-[901px]:leading-[1.12]"
-              aria-label={content.aboutLabel}
-            >
-              <p>
-                {lastStory.beforeBrand}
-                Altioria
-                {lastStory.afterBrand}
-              </p>
-            </div>
-          )}
-
+          
           <aside
-            className={`about-editorial-rail transition-opacity duration-700 [transition-delay:220ms] ${contentState}`}
+            className={`about-editorial-rail about-editorial-rail-${variant} ${
+              isTopButtonVisible
+                ? 'about-editorial-rail-visible'
+                : ''
+            }`}
+            aria-hidden={
+              !isTopButtonVisible
+            }
             aria-label={
               locale === 'ru'
                 ? 'Навигация по странице'
                 : 'Page navigation'
             }
           >
-            <div className="sticky top-[31dvh] flex items-center justify-center gap-5">
+            <div className="about-editorial-rail-control">
               <span
                 aria-hidden="true"
-                className="h-7 w-px shrink-0 bg-white/45"
+                className="about-editorial-rail-line"
               />
 
               <button
                 type="button"
+                tabIndex={
+                  isTopButtonVisible
+                    ? 0
+                    : -1
+                }
                 onClick={scrollToTop}
-                className="site-mono whitespace-nowrap px-1 text-[12px] font-normal lowercase text-white/70 transition-colors duration-300 hover:text-white focus-visible:outline-none focus-visible:text-white"
+                className="about-editorial-rail-button"
               >
                 {locale === 'ru'
                   ? 'наверх'
-                  : 'up'}
+                  : 'to the top'}
               </button>
-
+                
               <span
                 aria-hidden="true"
-                className="h-7 w-px shrink-0 bg-white/45"
+                className="about-editorial-rail-line"
               />
             </div>
           </aside>
-
         </div>
 
         <section
