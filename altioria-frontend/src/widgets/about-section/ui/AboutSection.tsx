@@ -284,25 +284,24 @@ export function AboutSection({
                   
             <article
               ref={biographyRef}
-              className="about-editorial-biography min-[901px]:border-r min-[901px]:border-white/35 min-[901px]:pr-6"
+              className="about-editorial-biography"
               aria-labelledby="oleg-klodt-heading"
             >
-              <div className="mb-6 flex items-center justify-between min-[901px]:mb-8">
+              <header className="about-editorial-biography-header">
                 <h2
                   id="oleg-klodt-heading"
-                  className="site-mono text-[11px] font-normal leading-none tracking-[-0.025em] text-white min-[901px]:text-[14px]"
+                  className="about-editorial-biography-name site-mono"
                 >
                   {content.personName}
                 </h2>
-                
-              </div>
-                    
-              <div className="site-serif text-[12px] font-normal leading-[1.28] tracking-[-0.012em] text-white/90 min-[901px]:text-[16.5px] min-[901px]:leading-[1.1]">
+              </header>
+
+              <div className="about-editorial-biography-copy site-serif">
                 {content.biography.map(
                   (paragraph) => (
                     <p
                       key={paragraph}
-                      className="about-conclusion-paragraph site-mono !text-[14px] font-normal"
+                      className="mb-[1.15em] last:mb-0"
                     >
                       {paragraph}
                     </p>
@@ -386,39 +385,39 @@ export function AboutSection({
         </div>
 
         <section
-          className={`about-conclusion transition-[opacity,transform] duration-700 [transition-delay:260ms] ${contentState}`}
+          className={`altioria-finale transition-[opacity,transform] duration-700 [transition-delay:260ms] ${contentState}`}
           aria-label={
             locale === 'ru'
               ? 'Философия Altioria'
               : 'Altioria philosophy'
           }
         >
-          <div className="about-conclusion-brand">
+          <div className="altioria-finale-brand">
             <img
               src="/images/altioria-logo.svg"
               alt="Altioria"
               draggable={false}
               loading="lazy"
-              className="about-conclusion-logo"
+              className="altioria-finale-logo"
             />
-
-            <p className="about-conclusion-tagline site-mono">
+        
+            <p className="altioria-finale-tagline">
               <span aria-hidden="true">
                 —
               </span>
-
+        
               <span>
                 {conclusionContent.tagline}
               </span>
             </p>
           </div>
-
-          <div className="about-conclusion-copy">
+        
+          <div className="altioria-finale-copy">
             {conclusionContent.paragraphs.map(
               (paragraph, index) => (
                 <p
                   key={index}
-                  className="about-conclusion-paragraph"
+                  className="altioria-finale-paragraph"
                 >
                   {paragraph}
                 </p>

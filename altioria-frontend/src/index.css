@@ -244,12 +244,10 @@
   letter-spacing: -0.035em;
 }
 
-.about-conclusion-paragraph + 
+.about-conclusion-paragraph +
 .about-conclusion-paragraph {
-  margin-top: 2.5rem;
-  padding-top: 2.5rem;
-  border-top: 1px solid
-    rgba(255, 255, 255, 0.7);
+  border-left: 1px solid
+    rgba(255, 255, 255, 0.55);
 }
 
 @media (min-width: 901px) {
@@ -3682,7 +3680,290 @@ body {
   }
 }
 
+/*
+ * Изолированный блок биографии.
+ * Не использует стили about-conclusion.
+ */
 .about-editorial-biography {
+  box-sizing: border-box;
+  grid-area: biography;
+  width: 100%;
+  min-width: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+
+  border: 0 !important;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
   border-left: 0 !important;
-  padding-left: 0 !important;
+}
+
+.about-editorial-biography::before,
+.about-editorial-biography::after {
+  display: none !important;
+  content: none !important;
+}
+
+.about-editorial-biography-header {
+  display: block;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.about-editorial-biography-name {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+.about-editorial-biography-copy {
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: -0.012em;
+}
+
+.about-editorial-biography-paragraph {
+  margin: 0 0 1.15em;
+  padding: 0;
+  border: 0 !important;
+}
+
+.about-editorial-biography-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.about-editorial-biography-paragraph::before,
+.about-editorial-biography-paragraph::after {
+  display: none !important;
+  content: none !important;
+}
+
+@media (min-width: 901px) {
+  .about-editorial-biography {
+    align-self: center;
+    margin: 0;
+    padding: 0 clamp(0.5rem, 1vw, 1rem) 0 0;
+
+    /*
+     * Оставляем только правый разделитель
+     * между текстом и кнопкой «наверх».
+     */
+    border-right: 1px solid
+      rgba(255, 255, 255, 0.35) !important;
+  }
+
+  .about-editorial-biography-header {
+    margin-bottom: 2rem;
+  }
+
+  .about-editorial-biography-name {
+    font-size: 14px;
+  }
+
+  .about-editorial-biography-copy {
+    font-size: 16.5px;
+    line-height: 1.1;
+  }
+}
+
+/*
+ * Нижний блок с логотипом Altioria.
+ * Классы полностью изолированы
+ * от биографии и остальных секций.
+ */
+.altioria-finale {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: clamp(
+    8rem,
+    22vw,
+    11rem
+  );
+  padding-top: 4rem;
+  padding-bottom: 1.5rem;
+}
+
+.altioria-finale-brand {
+  width: 100%;
+}
+
+.altioria-finale-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.55;
+}
+
+.altioria-finale-tagline {
+  display: grid;
+  width: min(
+    72%,
+    340px
+  );
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+  gap: 0.75rem;
+  margin: 1rem 0 0 auto;
+  color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  );
+  font-family:
+    'PT Mono',
+    monospace;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.altioria-finale-copy {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr);
+  width: 100%;
+  margin-top: clamp(
+    6rem,
+    18vw,
+    8rem
+  );
+}
+
+.altioria-finale-paragraph {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: rgba(
+    255,
+    255,
+    255,
+    0.92
+  );
+  font-family:
+    'PT Mono',
+    monospace;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: -0.035em;
+}
+
+/*
+ * На телефоне два текста расположены
+ * друг под другом и разделены
+ * горизонтальной линией.
+ */
+.altioria-finale-paragraph +
+.altioria-finale-paragraph {
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
+}
+
+@media (min-width: 901px) {
+  .altioria-finale {
+    min-height: 100dvh;
+    padding-top: clamp(
+      8rem,
+      18dvh,
+      12rem
+    );
+    padding-bottom: clamp(
+      3rem,
+      6dvh,
+      5rem
+    );
+  }
+
+  .altioria-finale-tagline {
+    display: flex;
+    width: auto;
+    max-width: none;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+    padding-right: 1.2rem;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /*
+   * Две фразы находятся справа
+   * под логотипом, как на макете.
+   */
+  .altioria-finale-copy {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+    width: min(
+      74%,
+      1060px
+    );
+    margin-top: clamp(
+      9rem,
+      18dvh,
+      13rem
+    );
+    margin-right: 0;
+    margin-left: auto;
+  }
+
+  .altioria-finale-paragraph {
+    padding-right: clamp(
+      1.5rem,
+      2.5vw,
+      3rem
+    );
+    font-size: 14px;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  /*
+   * Вертикальная линия находится
+   * только между двумя нижними фразами.
+   */
+  .altioria-finale-paragraph +
+  .altioria-finale-paragraph {
+    margin-top: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-left: clamp(
+      1.5rem,
+      2.5vw,
+      3rem
+    );
+    border-top: 0;
+    border-left: 1px solid
+      rgba(
+        255,
+        255,
+        255,
+        0.55
+      );
+  }
 }
