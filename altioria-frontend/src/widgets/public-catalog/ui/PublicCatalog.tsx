@@ -112,13 +112,21 @@ function CatalogSkeleton() {
       className="catalog-products-grid"
       aria-label="Загрузка товаров"
     >
-      {Array.from(
-        {
-          length: 10,
-        },
-        (_, index) => (
+      {[
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+      ].map(
+        (item) => (
           <div
-            key={index}
+            key={item}
             className="catalog-product-skeleton"
           >
             <div className="catalog-product-skeleton-image" />
@@ -225,74 +233,169 @@ export function PublicCatalog() {
   const allProductsSelected =
     !categorySlug;
 
+  const allProductsName =
+    locale === 'ru'
+      ? 'Вся мебель'
+      : 'All furniture';
+
+  const activeCategory =
+    categories.find(
+      (category) =>
+        category.slug ===
+        categorySlug,
+    );
+
+  const mobileNavigationItems = [
+    ...(
+      allProductsSelected
+        ? []
+        : [
+            {
+              id: 'all-products',
+              name: allProductsName,
+              path: '/products',
+            },
+          ]
+    ),
+
+    ...categories
+      .filter(
+        (category) =>
+          category.slug !==
+          categorySlug,
+      )
+      .map(
+        (category) => ({
+          id: category.id,
+          name: category.name,
+          path:
+            `/products/${category.slug}`,
+        }),
+      ),
+  ];
+
   return (
     <main className="public-catalog">
       <div
         key={`tabs-${locale}-${categorySlug ?? 'all'}`}
         className="catalog-tabs-scroll language-content-in"
       >
-        <nav
-          className="catalog-tabs"
-          aria-label={
-            locale === 'ru'
-              ? 'Категории каталога'
-              : 'Catalogue categories'
-          }
-        >
-          <Link
-            to="/products"
-            aria-current={
-              allProductsSelected
-                ? 'page'
-                : undefined
+        {/* Десктопная навигация */}
+        <div className="catalog-tabs-desktop">
+          <nav
+            className="catalog-tabs"
+            aria-label={
+              locale === 'ru'
+                ? 'Категории каталога'
+                : 'Catalogue categories'
             }
-            className={`catalog-tab ${
-              allProductsSelected
-                ? 'catalog-tab-active'
-                : ''
-            }`}
           >
-            {locale === 'ru'
-              ? 'Вся мебель'
-              : 'All furniture'}
-          </Link>
-
-          {categories.map(
-            (category) => {
-              const isActive =
-                category.slug ===
-                categorySlug;
-
-              return (
-                <div
-                  key={category.id}
-                  className="catalog-tab-group"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="catalog-tab-divider"
-                  />
-
-                  <Link
-                    to={`/products/${category.slug}`}
-                    aria-current={
+            <Link
+              to="/products"
+              aria-current={
+                allProductsSelected
+                  ? 'page'
+                  : undefined
+              }
+              className={`catalog-tab catalog-tab-all ${
+                allProductsSelected
+                  ? 'catalog-tab-active'
+                  : ''
+              }`}
+            >
+              {allProductsName}
+            </Link>
+            
+            {categories.map(
+              (category) => {
+                const isActive =
+                  category.slug ===
+                  categorySlug;
+              
+                return (
+                  <div
+                    key={category.id}
+                    className={`catalog-tab-group ${
                       isActive
-                        ? 'page'
-                        : undefined
-                    }
-                    className={`catalog-tab ${
-                      isActive
-                        ? 'catalog-tab-active'
+                        ? 'catalog-tab-group-active'
                         : ''
                     }`}
                   >
-                    {category.name}
+                    <span
+                      aria-hidden="true"
+                      className="catalog-tab-divider"
+                    />
+      
+                    <Link
+                      to={`/products/${category.slug}`}
+                      aria-current={
+                        isActive
+                          ? 'page'
+                          : undefined
+                      }
+                      className={`catalog-tab ${
+                        isActive
+                          ? 'catalog-tab-active'
+                          : ''
+                      }`}
+                    >
+                      {category.name}
+                    </Link>
+                  </div>
+                );
+              },
+            )}
+          </nav>
+        </div>
+          
+        {/* Мобильная навигация */}
+        <div className="catalog-tabs-mobile">
+          {allProductsSelected && (
+            <Link
+              to="/products"
+              aria-current="page"
+              className="catalog-mobile-selected catalog-mobile-selected-top"
+            >
+              {allProductsName}
+            </Link>
+          )}
+      
+          <nav
+            className="catalog-mobile-grid"
+            aria-label={
+              locale === 'ru'
+                ? 'Категории каталога'
+                : 'Catalogue categories'
+            }
+          >
+            {mobileNavigationItems.map(
+              (item) => (
+                <div
+                  key={item.id}
+                  className="catalog-mobile-cell"
+                >
+                  <Link
+                    to={item.path}
+                    className="catalog-mobile-link"
+                  >
+                    {item.name}
                   </Link>
                 </div>
-              );
-            },
-          )}
-        </nav>
+              ),
+            )}
+          </nav>
+          
+          {!allProductsSelected &&
+            activeCategory && (
+              <Link
+                to={`/products/${activeCategory.slug}`}
+                aria-current="page"
+                className="catalog-mobile-selected catalog-mobile-selected-bottom"
+              >
+                {activeCategory.name}
+              </Link>
+            )}
+        </div>
       </div>
 
       {products === null &&
