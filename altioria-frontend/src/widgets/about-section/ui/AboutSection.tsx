@@ -332,7 +332,7 @@ export function AboutSection({
             className={`about-editorial-image m-0 transition-[opacity,transform] duration-700 [transition-delay:100ms] ${contentState}`}
           >
             <img
-              src="/images/oleg-klodt.webp"
+              src="/images/oleg-klodtv3.webp"
               alt={content.personImageAlt}
               draggable={false}
               loading="lazy"
@@ -400,7 +400,7 @@ export function AboutSection({
               loading="lazy"
               className="altioria-finale-logo"
             />
-        
+
             <p className="altioria-finale-tagline">
               <span aria-hidden="true">
                 —
