@@ -4121,3 +4121,382 @@ body {
     margin-left: auto;
   }
 }
+
+/*
+ * Категории каталога — только ПК.
+ * Мобильная версия не изменяется.
+ */
+@media (min-width: 701px) {
+  .catalog-tabs {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: visible;
+  }
+
+  /*
+   * Все категории равномерно занимают
+   * доступную ширину полоски.
+   */
+  .catalog-tab-group {
+    display: flex;
+    width: auto;
+    min-width: 0;
+    flex: 1 1 0;
+    align-items: center;
+  }
+
+  /*
+   * Длинной категории оставляем
+   * немного больше пространства.
+   */
+  .catalog-tab-group.catalog-wide-category-group {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex: 1.65 1 0;
+  }
+
+  /*
+   * Активный пункт немного шире остальных,
+   * но не выталкивает всю навигацию.
+   */
+  .catalog-tab-group-active,
+  .catalog-tab-group-active.catalog-wide-category-group {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex: 1.55 1 0;
+  }
+
+  .catalog-tab-group-active.catalog-wide-category-group {
+    flex-grow: 1.85;
+  }
+
+  .catalog-tab-divider {
+    width: 1px;
+    height: 34px;
+    flex: 0 0 1px;
+  }
+
+  /*
+   * Обычная невыбранная категория.
+   * Всегда одна строка, без многоточия.
+   */
+  .catalog-tab,
+  .catalog-tab.catalog-wide-category {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 44px;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    padding-right: clamp(
+      3px,
+      0.65vw,
+      12px
+    );
+    padding-left: clamp(
+      3px,
+      0.65vw,
+      12px
+    );
+    overflow: hidden;
+    text-align: center;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .catalog-tab-label,
+  .catalog-tab.catalog-wide-category
+  .catalog-tab-label {
+    display: block;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+    line-height: 1;
+    text-align: center;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  /*
+   * Длинная неактивная категория
+   * сохраняет одну строку.
+   */
+  .catalog-tab.catalog-wide-category:not(
+    .catalog-tab-active
+  ) {
+    font-size: clamp(
+      9px,
+      0.9vw,
+      14px
+    );
+    letter-spacing: -0.035em;
+  }
+
+  /*
+   * Активная категория может занимать
+   * две строки, но остаётся строго
+   * внутри своего блока.
+   */
+  .catalog-tab-group-active
+  .catalog-tab,
+  .catalog-tab-group-active
+  .catalog-tab.catalog-wide-category {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 44px;
+    flex: 1 1 auto;
+    padding:
+      2px
+      clamp(
+        5px,
+        0.8vw,
+        14px
+      );
+    overflow: hidden;
+    line-height: 0.88;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .catalog-tab-group-active
+  .catalog-tab-label,
+  .catalog-tab-group-active
+  .catalog-tab.catalog-wide-category
+  .catalog-tab-label {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+    line-height: 0.88;
+    overflow-wrap: normal;
+    text-align: center;
+    text-overflow: clip;
+    white-space: normal;
+    word-break: normal;
+  }
+
+  /*
+   * «Вся мебель» участвует в общей
+   * разметке и не смещает полосу.
+   */
+  .catalog-tab-all,
+  .catalog-tab-all.catalog-tab-active {
+    box-sizing: border-box;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    min-height: 44px;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-right: clamp(
+      4px,
+      0.7vw,
+      14px
+    );
+    padding-left: clamp(
+      4px,
+      0.7vw,
+      14px
+    );
+    line-height: 1;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .catalog-tab-all
+  .catalog-tab-label,
+  .catalog-tab-all.catalog-tab-active
+  .catalog-tab-label {
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+    line-height: 1;
+    text-align: center;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+}
+
+/*
+ * Исправление ширины выбранной
+ * категории на десктопе.
+ */
+@media (min-width: 701px) {
+  /*
+   * Выбранная обычная категория получает
+   * отдельную фиксируемую долю строки.
+   *
+   * min-width: min-content запрещает
+   * сжимать блок уже самого длинного слова.
+   */
+  .catalog-tab-group-active {
+    box-sizing: border-box;
+    width: clamp(
+      145px,
+      13vw,
+      220px
+    );
+    min-width: min-content;
+    max-width: 220px;
+    flex:
+      0
+      0
+      clamp(
+        145px,
+        13vw,
+        220px
+      );
+    overflow: visible;
+  }
+
+  /*
+   * Длинной выбранной категории
+   * предоставляем чуть больше места.
+   */
+  .catalog-tab-group-active.catalog-wide-category-group {
+    width: clamp(
+      175px,
+      16vw,
+      260px
+    );
+    min-width: min-content;
+    max-width: 260px;
+    flex:
+      0
+      0
+      clamp(
+        175px,
+        16vw,
+        260px
+      );
+  }
+
+  /*
+   * Ссылка не может стать уже
+   * самого длинного слова.
+   */
+  .catalog-tab-group-active
+  .catalog-tab,
+  .catalog-tab-group-active
+  .catalog-tab.catalog-wide-category {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: min-content;
+    max-width: 100%;
+    min-height: 44px;
+    flex: 1 1 auto;
+    overflow: hidden;
+    padding:
+      2px
+      clamp(
+        6px,
+        0.8vw,
+        14px
+      );
+    line-height: 0.88;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .catalog-tab-group-active
+  .catalog-tab-label,
+  .catalog-tab-group-active
+  .catalog-tab.catalog-wide-category
+  .catalog-tab-label {
+    display: block;
+    width: 100%;
+    min-width: min-content;
+    max-width: 100%;
+    overflow: visible;
+    line-height: 0.88;
+    overflow-wrap: normal;
+    text-align: center;
+    text-overflow: clip;
+    white-space: normal;
+    word-break: normal;
+  }
+
+  /*
+   * Остальные категории забирают
+   * оставшееся свободное место.
+   */
+  .catalog-tab-group:not(
+    .catalog-tab-group-active
+  ) {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
+  /*
+   * Выбранная «Вся мебель» рассчитывает
+   * ширину строго по полному тексту.
+   */
+  .catalog-tabs >
+  .catalog-tab-all.catalog-tab-active {
+    box-sizing: border-box;
+    width: auto;
+    min-width: max-content;
+    max-width: none;
+    flex: 0 0 auto;
+    overflow: visible;
+    padding-right: clamp(
+      12px,
+      1.4vw,
+      24px
+    );
+    padding-left: clamp(
+      12px,
+      1.4vw,
+      24px
+    );
+    line-height: 1;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .catalog-tabs >
+  .catalog-tab-all.catalog-tab-active
+  .catalog-tab-label {
+    width: auto;
+    min-width: max-content;
+    max-width: none;
+    overflow: visible;
+    line-height: 1;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  /*
+   * Неактивная «Вся мебель» делит
+   * оставшееся место с категориями.
+   */
+  .catalog-tabs >
+  .catalog-tab-all:not(
+    .catalog-tab-active
+  ) {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 0;
+  }
+}
